@@ -115,7 +115,7 @@ export function Hero() {
                   Terminal
                 </Button>
                 <Button asChild variant="outline" size="lg" className="glass-card flex-1">
-                  <Link href={data.bio.resumeUrl} target="_blank">
+                  <Link href={data.bio.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
                   </Link>
@@ -202,7 +202,7 @@ export function Hero() {
                   Open Terminal
                 </Button>
                 <Button asChild variant="outline" size="lg" className="glass-card">
-                  <Link href={data.bio.resumeUrl} target="_blank">
+                  <Link href={data.bio.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
                   </Link>
