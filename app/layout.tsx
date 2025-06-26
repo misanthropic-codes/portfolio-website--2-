@@ -1,0 +1,66 @@
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter, JetBrains_Mono } from "next/font/google"
+import "./globals.css"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { Toaster } from "@/components/ui/toaster"
+import { ThemeProvider } from "@/components/theme-provider"
+import { BackgroundEffects } from "@/components/background-effects"
+import { InteractiveSound } from "@/components/interactive-sound"
+
+const inter = Inter({ subsets: ["latin"] })
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+})
+
+export const metadata: Metadata = {
+  title: {
+    default: "Abhishek Kumar - Full Stack Developer",
+    template: "%s | Abhishek Kumar",
+  },
+  description:
+    "Full Stack Developer & Graphics Designer. Building innovative web solutions with React, Next.js, and modern technologies.",
+  keywords: ["Full Stack Developer", "React", "Next.js", "Web Developer", "JavaScript", "TypeScript"],
+  authors: [{ name: "Abhishek Kumar" }],
+  creator: "Abhishek Kumar",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://abhishek-portfolio.vercel.app",
+    title: "Abhishek Kumar - Full Stack Developer",
+    description:
+      "Full Stack Developer & Graphics Designer. Building innovative web solutions with React, Next.js, and modern technologies.",
+    siteName: "Abhishek Kumar Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Abhishek Kumar - Full Stack Developer",
+    description:
+      "Full Stack Developer & Graphics Designer. Building innovative web solutions with React, Next.js, and modern technologies.",
+    creator: "@airabhishek098",
+  },
+    generator: 'v0.dev'
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} ${jetbrainsMono.variable} min-h-screen`}>
+        <ThemeProvider>
+          <BackgroundEffects />
+          <InteractiveSound />
+          <Navbar />
+          <main className="min-h-screen relative z-10">{children}</main>
+          <Footer />
+          <Toaster />
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}

@@ -1,0 +1,220 @@
+{
+  "bio": {
+    "name": "Abhishek Kumar",
+    "pronouns": "He/Him",
+    "title": "Full Stack Web Developer | Graphics Designer",
+    "location": "Ranchi, Jharkhand, India",
+    "email": "misanthropic.codes@outlook.com",
+    "phone": "+91-9523035004",
+    "headline": "Full Stack Developer | Co-Founder @BullBear.Ai | React, Firebase, Next.js",
+    "summary": "I'm a passionate full-stack web developer and designer currently pursuing B.Tech in Electrical Engineering at Haldia Institute of Technology. From crafting SaaS platforms to building AI-driven fintech products, I bring a mix of design, development, and leadership to everything I do.",
+    "profileImage": "/images/profile.jpg",
+    "socials": {
+      "github": "https://github.com/misanthropic-codes",
+      "linkedin": "https://linkedin.com/in/abhishek-code",
+      "twitter": "https://twitter.com/airabhishek098"
+    },
+    "resumeUrl": "/resume.pdf"
+  },
+  "skills": [
+    {
+      "category": "Frontend",
+      "items": ["React.js", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Redux"]
+    },
+    {
+      "category": "Backend",
+      "items": ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "Firebase", "JWT"]
+    },
+    {
+      "category": "Tools & Others",
+      "items": ["Git", "Linux", "Graphics Design", "Project Management", "Figma", "Docker"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Haldia Institute of Technology",
+      "degree": "B.Tech, Electrical Engineering",
+      "start": "2024-08",
+      "end": "2028-08",
+      "activities": ["Google Developer Group (GDG)", "The HIT Times"],
+      "location": "Haldia, West Bengal",
+      "description": "Currently pursuing Bachelor's degree with focus on software development and emerging technologies."
+    },
+    {
+      "institution": "Maheshwari Public School",
+      "degree": "Intermediate, PCM",
+      "start": "2021-06",
+      "end": "2023-06",
+      "percentage": "82.5%",
+      "location": "Kota, Rajasthan",
+      "description": "Completed higher secondary education with Physics, Chemistry, and Mathematics."
+    }
+  ],
+  "experience": [
+    {
+      "role": "Co-Founder & Developer",
+      "company": "BullBear.Ai",
+      "start": "2025-06",
+      "end": "Present",
+      "location": "Remote",
+      "description": "Leading product development for AI-powered trading systems. Building scalable backend infrastructure, integrating ML models, and crafting seamless SaaS UIs for financial clarity.",
+      "achievements": [
+        "Built AI-powered trading analysis platform",
+        "Integrated ML models for market predictions",
+        "Designed scalable SaaS architecture"
+      ]
+    },
+    {
+      "role": "Frontend Developer",
+      "company": "CrackIIT:JEE Smashers",
+      "start": "2024-05",
+      "end": "Present",
+      "location": "Remote",
+      "description": "Led frontend development of a SaaS platform from scratch, improved SEO, and managed a team to enhance reach and engagement.",
+      "achievements": [
+        "Built SaaS platform from ground up",
+        "Improved SEO performance by 150%",
+        "Led team of 3 developers"
+      ]
+    },
+    {
+      "role": "Web Developer",
+      "company": "GDG on Campus - HIT",
+      "start": "2024-11",
+      "end": "Present",
+      "location": "Haldia",
+      "description": "Collaborated on building the GDG HIT website, focusing on design, performance, and UX to boost student engagement.",
+      "achievements": [
+        "Designed responsive website architecture",
+        "Improved user engagement by 200%",
+        "Implemented modern UI/UX patterns"
+      ]
+    },
+    {
+      "role": "Web Developer",
+      "company": "The HIT Times",
+      "start": "2024-12",
+      "end": "Present",
+      "location": "Haldia",
+      "description": "Contributed to the campus media portal, delivering dynamic content pages and mobile-responsive layouts.",
+      "achievements": [
+        "Built dynamic content management system",
+        "Optimized for mobile-first experience",
+        "Integrated social media features"
+      ]
+    },
+    {
+      "role": "Young Innovator Intern",
+      "company": "Scaler",
+      "start": "2024-06",
+      "end": "2024-09",
+      "location": "Remote",
+      "description": "Worked on scalable education-tech projects. Collaborated with teams to prototype solutions and develop project-based learning tools.",
+      "achievements": [
+        "Developed project-based learning tools",
+        "Collaborated with cross-functional teams",
+        "Prototyped innovative EdTech solutions"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "campus-connect",
+      "title": "Campus Connect",
+      "year": "2024",
+      "tech": ["React", "Firebase", "Tailwind CSS", "Framer Motion"],
+      "description": "A real-time task collaboration platform for college communities with auth, roles, notifications, and a reputation system.",
+      "problem": "Lack of efficient collaboration and task tracking within colleges. Students struggled to coordinate group projects and track progress effectively.",
+      "solution": "Created a dynamic task board with real-time chat, email authentication, badge system, and comprehensive dashboards using Firebase for seamless collaboration.",
+      "learnings": "Mastered Firebase Auth and Realtime Database, learned advanced animation techniques with Framer Motion, and gained expertise in responsive design patterns.",
+      "future": "Planning to develop a mobile app version, implement AI-powered task routing, and integrate calendar synchronization for better project management.",
+      "images": ["/images/p3.png", "/images/p2.png", "/images/p1.png"],
+      "featured": true,
+      "liveUrl": "https://campus-connect-demo.vercel.app",
+      "githubUrl": "https://github.com/misanthropic-codes/campus-connect"
+    },
+    {
+      "id": "finai",
+      "title": "FinAI (Hackfest 2025 - IIT Dhanbad)",
+      "year": "2025",
+      "tech": ["React", "Node.js", "MongoDB", "ML", "Python"],
+      "description": "An AI-based stock and portfolio analysis tool built in a 36hr hackathon. Trained a financial ML model and designed end-to-end stock insights dashboard.",
+      "problem": "Traders lack real-time, intelligent financial predictions and struggle with complex market analysis without proper tools.",
+      "solution": "Built comprehensive ML pipelines and an intuitive stock sentiment dashboard that provides actionable insights for smarter trading decisions.",
+      "learnings": "Learned to work under extreme time pressure, improved teamwork skills, and discovered the powerful synergy between ML and web technologies.",
+      "future": "Planning to integrate brokerage APIs, add advanced charting capabilities, and implement real-time sentiment heatmaps for market analysis.",
+      "images": ["/images/f1.png", "/images/f2.png","/images/f3.png", "/images/f4.png", "/images/f5.png"],
+      "featured": true,
+      "githubUrl": "https://github.com/misanthropic-codes/finai-hackfest"
+    },
+   {
+  "id": "blog-website",
+  "title": "Dev Blog Platform",
+  "year": "2024",
+  "tech": ["Next.js", "Prisma", "Cloudinary", "NextAuth", "Express.js", "REST APIs"],
+  "description": "A full-featured blog platform with authentication, user dashboards, dynamic post creation, and media support using Cloudinary.",
+  "problem": "Content creators needed a minimal, modern blogging solution with rich text editing, secure auth, and media uploads—without relying on bloated CMS tools.",
+  "solution": "Developed a fully functional blog platform using Next.js for the frontend and server-side rendering, Prisma for database ORM, Express.js REST APIs for data operations, Cloudinary for image uploads, and NextAuth for secure user authentication.",
+  "learnings": "Learned how to integrate a complete auth system using NextAuth with role-based access, implement image storage via Cloudinary, and structure a full-stack app with clean separation between backend (Express) and frontend (Next.js).",
+  "future": "Plan to add markdown support, scheduled publishing, AI-generated summaries, and a notification system for user interactions.",
+  "images": ["/images/bq.png", "/images/b2.png"],
+  "featured": false,
+  "githubUrl": "https://github.com/misanthropic-codes/blogity",
+  "liveUrl": "https://blogity-ten.vercel.app/"
+}
+,
+    {
+  "id": "skillsync-ai",
+  "title": "SkillSync AI",
+  "year": "2025",
+  "tech": ["Next.js", "Node.js", "MongoDB", "Tailwind CSS", "Socket.io", "OpenAI API"],
+  "description": "An AI-powered networking platform that connects users based on shared or complementary skillsets. Enables real-time chat and team formation.",
+  "problem": "Finding ideal teammates or collaborators with matching or complementary skills is difficult, especially in large communities or remote environments.",
+  "solution": "Developed an intelligent matching system using AI to analyze user skills, preferences, and availability. Integrated real-time chat and team creation to foster instant collaboration.",
+  "learnings": "Gained experience in building AI-driven user matching algorithms, working with real-time chat systems using Socket.io, and enhancing user engagement with tailored recommendations.",
+  "future": "Plans to add calendar sync for collaboration schedules, skill endorsement system, gamified user progress, and integration with GitHub and LinkedIn for automatic skill imports.",
+  "images": ["/images/s1.png", "/images/s2.png","/images/s3.png", "/images/s4.png","/images/s5.png", "/images/s6.png"],
+  "featured": false,
+ 
+  "githubUrl": "https://github.com/misanthropic-codes/skillsync-ai"
+},
+
+   {
+  "id": "gdg-recruitment-platform",
+  "title": "GDG Recruitment Management Platform",
+  "year": "2025",
+  "tech": ["React.js", "Node.js", "Express", "MongoDB", "Redis", "Socket.io", "Bull Queue", "Tailwind CSS", "JWT Authentication", "Cloudinary"],
+  "description": "Comprehensive recruitment management system built for Google Developer Group on Campus to streamline team member selection and application tracking.",
+  "problem": "GDG on Campus faced challenges managing hundreds of applications, tracking candidate progress, and coordinating between recruiters during team member selection process.",
+  "solution": "Developed a full-stack platform with applicant dashboard, recruiter panel, automated screening, interview scheduling, and real-time status tracking to digitize the entire recruitment workflow.",
+  "learnings": "Gained expertise in building scalable web applications, user authentication systems, database design for complex workflows, and creating intuitive admin interfaces.",
+  "future": "Planning to add AI-powered resume screening, video interview integration, analytics dashboard, and bulk communication features.",
+  "images": ["/images/g1.png", "/images/g2.png", "/images/g3.png"],
+  "featured": true,
+  "liveUrl": "https://gdghit.site"
+  
+},
+   
+    {
+  "id": "ecommerce-platform",
+  "title": "E-Commerce Platform",
+  "year": "2024",
+  "tech": ["Next.js", "Stripe", "PostgreSQL", "Prisma"],
+  "description": "A modern e-commerce platform currently in development with core features like payment integration, inventory management, and admin dashboard already implemented.",
+  "problem": "Small businesses needed an affordable, feature-rich e-commerce solution.",
+  "solution": "Built a scalable and modular architecture with essential e-commerce features such as secure payment processing, product inventory tracking, and admin analytics dashboard.",
+  "learnings": "Learned payment gateway integration, database optimization, and complex state management during MVP development.",
+  "future": "Currently in active development. Upcoming features include multi-vendor support, AI-powered product recommendations, real-time analytics, and a mobile application for end-users.",
+  "images": ["/images/e1.png", "/images/e2.png"],
+  "featured": false,
+  "githubUrl": "https://github.com/misanthropic-codes/ecommerce-platform"
+}
+
+  ],
+  "contact": {
+    "email": "misanthropic.codes@outlook.com",
+    "github": "https://github.com/misanthropic-codes",
+    "linkedin": "https://linkedin.com/in/abhishek-code",
+    "twitter": "https://twitter.com/airabhishek098"
+  }
+}
