@@ -28,6 +28,7 @@ interface ContributionDay {
   date: string
   count: number
   level: number
+  color?: string // Add color property for GitHub-like graph
 }
 
 interface ContributionWeek {
@@ -36,99 +37,66 @@ interface ContributionWeek {
 
 const GITHUB_USERNAME = "misanthropic-codes"
 const GITHUB_GRAPHQL_API = "https://api.github.com/graphql"
+const token = process.env.GITHUB_TOKEN
 
 export function GitHubActivity() {
   const [events, setEvents] = useState<GitHubEvent[]>([])
   const [stats, setStats] = useState<GitHubStats | null>(null)
   const [totalPushes, setTotalPushes] = useState<number>(0)
+  const [totalPRs, setTotalPRs] = useState<number>(0)
   const [contributions, setContributions] = useState<ContributionWeek[]>([])
+  const [totalContributions, setTotalContributions] = useState<number>(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchGitHubData = async () => {
       try {
         // Fetch user stats
-        const userResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`)
+        const userResponse = await fetch("https://api.github.com/users/misanthropic-codes")
         const userData = await userResponse.json()
         setStats(userData)
 
-        // Fetch recent activity (more events to count pushes)
-        const eventsResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=100`)
+        // Fetch recent activity (more events to count pushes and PRs)
+        const eventsResponse = await fetch("https://api.github.com/users/misanthropic-codes/events/public?per_page=100")
         const eventsData = await eventsResponse.json()
         setEvents(eventsData)
 
-        // Count total push events
+        // Count total push events and pull requests
         const pushEvents = eventsData.filter((event: GitHubEvent) => event.type === "PushEvent")
+        const pullRequestEvents = eventsData.filter((event: GitHubEvent) => event.type === "PullRequestEvent")
         setTotalPushes(pushEvents.length)
+        setTotalPRs(pullRequestEvents.length)
 
-        // Fetch real contribution data using GitHub GraphQL API
-        await fetchContributions()
+        // Fetch real contribution data from Next.js API route
+        const contribRes = await fetch("/api/github-contributions")
+        const contribData = await contribRes.json()
+        const weeks = contribData.weeks || []
+        setTotalContributions(contribData.totalContributions || 0)
+        // Map to ContributionWeek[]
+        const mappedWeeks: ContributionWeek[] = weeks.map((week: any) => ({
+          contributionDays: week.contributionDays.map((day: any) => ({
+            date: day.date,
+            count: day.contributionCount,
+            level:
+              day.contributionCount === 0
+                ? 0
+                : day.contributionCount < 3
+                ? 1
+                : day.contributionCount < 6
+                ? 2
+                : day.contributionCount < 10
+                ? 3
+                : 4,
+            color: day.color, // Pass color from API
+          })),
+        }))
+        setContributions(mappedWeeks)
       } catch (error) {
         console.error("Error fetching GitHub data:", error)
       } finally {
         setLoading(false)
       }
     }
-
-    const fetchContributions = async () => {
-      // You must set NEXT_PUBLIC_GITHUB_TOKEN in your .env.local file
-      const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN
-      if (!token) {
-        console.warn("GitHub token not found. Please set NEXT_PUBLIC_GITHUB_TOKEN in your .env.local file.")
-        return
-      }
-      const today = new Date()
-      const lastYear = new Date(today)
-      lastYear.setFullYear(today.getFullYear() - 1)
-      const from = lastYear.toISOString().split("T")[0]
-      const to = today.toISOString().split("T")[0]
-      const query = `
-        query {
-          user(login: \"${GITHUB_USERNAME}\") {
-            contributionsCollection(from: \"${from}\", to: \"${to}\") {
-              contributionCalendar {
-                weeks {
-                  contributionDays {
-                    date
-                    contributionCount
-                    color
-                  }
-                }
-              }
-            }
-          }
-        }
-      `
-      const res = await fetch(GITHUB_GRAPHQL_API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ query }),
-      })
-      const json = await res.json()
-      const weeks = json.data?.user?.contributionsCollection?.contributionCalendar?.weeks || []
-      // Map to ContributionWeek[]
-      const mappedWeeks: ContributionWeek[] = weeks.map((week: any) => ({
-        contributionDays: week.contributionDays.map((day: any) => ({
-          date: day.date,
-          count: day.contributionCount,
-          level:
-            day.contributionCount === 0
-              ? 0
-              : day.contributionCount < 3
-              ? 1
-              : day.contributionCount < 6
-              ? 2
-              : day.contributionCount < 10
-              ? 3
-              : 4,
-        })),
-      }))
-      setContributions(mappedWeeks)
-    }
-
     fetchGitHubData()
   }, [])
 
@@ -179,11 +147,6 @@ export function GitHubActivity() {
     }
     return colors[level as keyof typeof colors] || colors[0]
   }
-
-  const totalContributions = contributions.reduce(
-    (total, week) => total + week.contributionDays.reduce((weekTotal, day) => weekTotal + day.count, 0),
-    0,
-  )
 
   if (loading) {
     return (
@@ -236,8 +199,8 @@ export function GitHubActivity() {
                 <div className="text-sm text-muted-foreground">Following</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-foreground">{totalPushes}</div>
-                <div className="text-sm text-muted-foreground">Total Pushes</div>
+                <div className="text-2xl font-bold text-foreground">{totalContributions}</div>
+                <div className="text-sm text-muted-foreground">Total Commits (last year)</div>
               </div>
             </div>
           </CardContent>
@@ -266,21 +229,31 @@ export function GitHubActivity() {
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <div className="grid grid-flow-col gap-1 min-w-max">
-              {contributions.map((week, weekIndex) => (
-                <div key={weekIndex} className="grid grid-rows-7 gap-1">
-                  {week.contributionDays.map((day, dayIndex) => (
-                    <motion.div
-                      key={`${weekIndex}-${dayIndex}`}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: (weekIndex * 7 + dayIndex) * 0.001 }}
-                      className={`w-3 h-3 rounded-sm ${getContributionColor(day.level)} cursor-pointer hover:ring-2 hover:ring-primary/50 transition-all`}
-                      title={`${day.count} contributions on ${day.date}`}
-                    />
-                  ))}
-                </div>
-              ))}
+            <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-end">
+              {/* Weekday labels */}
+              <div className="flex flex-col justify-between h-[112px] py-1 mr-1 text-xs text-muted-foreground select-none">
+                {["Mon", "Wed", "Fri"].map((day, i) => (
+                  <span key={i} style={{ marginTop: i === 0 ? 0 : 32 }}>{day}</span>
+                ))}
+              </div>
+              {/* Contribution squares */}
+              <div className="grid grid-flow-col gap-[2px] min-w-max">
+                {contributions.map((week, weekIndex) => (
+                  <div key={weekIndex} className="grid grid-rows-7 gap-[2px]">
+                    {week.contributionDays.map((day, dayIndex) => (
+                      <motion.div
+                        key={`${weekIndex}-${dayIndex}`}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: (weekIndex * 7 + dayIndex) * 0.001 }}
+                        className={`w-3 h-3 md:w-4 md:h-4 rounded-sm ${getContributionColor(day.level)} cursor-pointer hover:ring-2 hover:ring-primary/50 transition-all`}
+                        title={`${day.count} contributions on ${day.date}`}
+                        style={{ backgroundColor: day.color }}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </CardContent>
