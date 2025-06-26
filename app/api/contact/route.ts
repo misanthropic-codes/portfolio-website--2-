@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
-import { Resend } from "resend"
+import nodemailer from "nodemailer"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
+  },
+})
+
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL // your email
 
 export async function POST(req: NextRequest) {
@@ -15,23 +22,23 @@ export async function POST(req: NextRequest) {
     }
 
     // Email to you
-    const toYou = await resend.emails.send({
-      from: 'Portfolio Contact <contact@misanthropic.site>',
+    const mailToYou = await transporter.sendMail({
+      from: `Portfolio Contact <${process.env.GMAIL_USER}>`,
       to: TO_EMAIL,
       subject: `New Contact Form Submission from ${name}`,
-      replyTo: email, // Use correct property name
+      replyTo: email,
       html: `<p><b>Name:</b> ${name}</p><p><b>Email:</b> ${email}</p><p><b>Message:</b> ${message}</p>`
     })
-    console.log('Resend to you:', toYou)
+    console.log('Nodemailer to you:', mailToYou)
 
     // Auto-reply to user
-    const toUser = await resend.emails.send({
-      from: 'Abhishek Kumar <onboarding@resend.dev>',
+    const mailToUser = await transporter.sendMail({
+      from: `Abhishek Kumar <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'Thank you for contacting me!',
       html: `<p>Hi ${name},</p><p>Thank you for reaching out! I have received your message and will get back to you shortly.</p><p>Best regards,<br/>Abhishek Kumar</p>`
     })
-    console.log('Resend to user:', toUser)
+    console.log('Nodemailer to user:', mailToUser)
 
     return NextResponse.json({ success: true })
   } catch (error) {
