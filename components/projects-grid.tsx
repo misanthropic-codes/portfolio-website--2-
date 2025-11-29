@@ -26,7 +26,7 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
           key={project.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: index * 0.1 }}
+          transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.5) }}
           className={index % 5 === 0 ? "bento-item-large" : ""}
         >
           <ProjectCard project={project} />

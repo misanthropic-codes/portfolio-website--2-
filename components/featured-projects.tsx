@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ProjectCard } from "@/components/project-card"
-import { ArrowRight, Sparkles } from "lucide-react"
-import data from "@/data/data.json"
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ProjectCard } from "@/components/project-card";
+import { ArrowRight, Sparkles } from "lucide-react";
+import data from "@/data/data.json";
 
 export function FeaturedProjects() {
-  const featuredProjects = data.projects.filter((project) => project.featured)
+  const featuredProjects = data.projects.filter((project) => project.featured);
 
   return (
     <section className="py-20 px-4 relative">
@@ -25,8 +25,8 @@ export function FeaturedProjects() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          viewport={{ once: true, margin: "-50px" }}
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full mb-6">
@@ -37,7 +37,8 @@ export function FeaturedProjects() {
             Selected <span className="gradient-text">Projects</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A showcase of my recent work, from SaaS platforms to AI-powered applications.
+            A showcase of my recent work, from SaaS platforms to AI-powered
+            applications.
           </p>
         </motion.div>
 
@@ -47,8 +48,8 @@ export function FeaturedProjects() {
               key={project.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              viewport={{ once: true, margin: "-50px" }}
               className={index === 0 ? "bento-item-large" : ""}
             >
               <ProjectCard project={project} />
@@ -59,11 +60,16 @@ export function FeaturedProjects() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          viewport={{ once: true, margin: "-50px" }}
           className="text-center"
         >
-          <Button asChild size="lg" variant="outline" className="glass-card glow">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="glass-card glow"
+          >
             <Link href="/projects">
               View All Projects
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -72,5 +78,5 @@ export function FeaturedProjects() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

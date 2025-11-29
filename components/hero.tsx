@@ -1,18 +1,25 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Github, Linkedin, Twitter, Download, ArrowRight, TerminalIcon } from "lucide-react"
-import { Typewriter } from "./typewriter"
-import { TechGlobe } from "./tech-globe"
-import { useState } from "react"
-import { Terminal } from "./terminal"
-import data from "@/data/data.json"
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  Download,
+  ArrowRight,
+  TerminalIcon,
+} from "lucide-react";
+import { Typewriter } from "./typewriter";
+import { TechGlobe } from "./tech-globe";
+import { useState } from "react";
+import { Terminal } from "./terminal";
+import data from "@/data/data.json";
 
 export function Hero() {
-  const [terminalOpen, setTerminalOpen] = useState(false)
+  const [terminalOpen, setTerminalOpen] = useState(false);
 
   return (
     <>
@@ -36,11 +43,15 @@ export function Hero() {
         <div className="container mx-auto relative z-10">
           {/* Mobile Layout */}
           <div className="lg:hidden flex flex-col items-center text-center space-y-8">
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.1 }}
                 className="text-primary font-medium mb-4 font-mono"
               >
                 {">"} Hello, I'm
@@ -49,18 +60,22 @@ export function Hero() {
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.2 }}
                 className="text-3xl md:text-5xl font-bold mb-6"
               >
-                <Typewriter text={data.bio.name} delay={150} className="gradient-text" />
+                <Typewriter
+                  text={data.bio.name}
+                  delay={100}
+                  className="gradient-text"
+                />
               </motion.h1>
             </motion.div>
 
             {/* Profile Image - Mobile */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 1.5 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
               className="relative"
             >
               <div className="relative w-64 h-64 mx-auto">
@@ -71,6 +86,7 @@ export function Hero() {
                   width={256}
                   height={256}
                   className="relative z-10 rounded-full border-4 border-primary/20 glass-card"
+                  priority
                 />
               </div>
             </motion.div>
@@ -79,18 +95,22 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2 }}
+              transition={{ delay: 1 }}
               className="glass-card p-6 rounded-lg max-w-md"
             >
-              <p className="text-lg text-muted-foreground mb-4 font-mono">{data.bio.title}</p>
-              <p className="text-base text-muted-foreground">{data.bio.summary}</p>
+              <p className="text-lg text-muted-foreground mb-4 font-mono">
+                {data.bio.title}
+              </p>
+              <p className="text-base text-muted-foreground">
+                {data.bio.summary}
+              </p>
             </motion.div>
 
             {/* Tech Globe - Mobile */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 3 }}
+              transition={{ delay: 1.3 }}
               className="scale-75"
             >
               <TechGlobe />
@@ -100,7 +120,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 3.5 }}
+              transition={{ delay: 1.5 }}
               className="flex flex-col gap-4 w-full max-w-sm"
             >
               <Button asChild size="lg" className="glow w-full">
@@ -110,11 +130,21 @@ export function Hero() {
                 </Link>
               </Button>
               <div className="flex gap-2">
-                <Button variant="outline" size="lg" className="glass-card flex-1" onClick={() => setTerminalOpen(true)}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="glass-card flex-1"
+                  onClick={() => setTerminalOpen(true)}
+                >
                   <TerminalIcon className="w-4 h-4 mr-2" />
                   Terminal
                 </Button>
-                <Button asChild variant="outline" size="lg" className="glass-card flex-1">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="glass-card flex-1"
+                >
                   <Link href={data.bio.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
@@ -127,7 +157,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 4 }}
+              transition={{ delay: 1.7 }}
               className="flex space-x-6"
             >
               <Link
@@ -156,11 +186,15 @@ export function Hero() {
 
           {/* Desktop Layout */}
           <div className="hidden lg:grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.1 }}
                 className="text-primary font-medium mb-4 font-mono"
               >
                 {">"} Hello, I'm
@@ -169,26 +203,34 @@ export function Hero() {
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.2 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
               >
-                <Typewriter text={data.bio.name} delay={150} className="gradient-text" />
+                <Typewriter
+                  text={data.bio.name}
+                  delay={100}
+                  className="gradient-text"
+                />
               </motion.h1>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2 }}
+                transition={{ delay: 1 }}
                 className="glass-card p-6 rounded-lg mb-8"
               >
-                <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-mono">{data.bio.title}</p>
-                <p className="text-lg text-muted-foreground max-w-2xl">{data.bio.summary}</p>
+                <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-mono">
+                  {data.bio.title}
+                </p>
+                <p className="text-lg text-muted-foreground max-w-2xl">
+                  {data.bio.summary}
+                </p>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2.5 }}
+                transition={{ delay: 1.2 }}
                 className="flex flex-wrap gap-4 mb-8"
               >
                 <Button asChild size="lg" className="glow">
@@ -197,11 +239,21 @@ export function Hero() {
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button variant="outline" size="lg" className="glass-card" onClick={() => setTerminalOpen(true)}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="glass-card"
+                  onClick={() => setTerminalOpen(true)}
+                >
                   <TerminalIcon className="w-4 h-4 mr-2" />
                   Open Terminal
                 </Button>
-                <Button asChild variant="outline" size="lg" className="glass-card">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="glass-card"
+                >
                   <Link href={data.bio.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
@@ -212,7 +264,7 @@ export function Hero() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 3 }}
+                transition={{ delay: 1.4 }}
                 className="flex space-x-6"
               >
                 <Link
@@ -240,9 +292,9 @@ export function Hero() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
               <div className="relative">
@@ -255,14 +307,15 @@ export function Hero() {
                     width={320}
                     height={320}
                     className="relative z-10 rounded-full border-4 border-primary/20 glass-card"
+                    priority
                   />
                 </div>
 
                 {/* Tech Globe - Desktop */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 3.5, duration: 1 }}
+                  transition={{ delay: 1.6, duration: 0.6 }}
                 >
                   <TechGlobe />
                 </motion.div>
@@ -274,5 +327,5 @@ export function Hero() {
 
       <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
     </>
-  )
+  );
 }

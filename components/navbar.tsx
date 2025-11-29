@@ -35,7 +35,8 @@ export function Navbar() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? "glass-strong" : "glass"}`}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className={`fixed top-0 w-full z-40 transition-all duration-200 ${scrolled ? "glass-strong" : "glass"}`}
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
@@ -88,6 +89,7 @@ export function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
               className="md:hidden glass-strong border-t border-white/10"
             >
               <div className="px-4 py-4 space-y-4">

@@ -1,10 +1,22 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useEffect, useRef, useState } from "react"
-import { motion } from "framer-motion"
-import { Code, Database, Globe, Server, Cloud, Cpu, Zap, Layers, Box, Terminal, Palette } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Code,
+  Database,
+  Globe,
+  Server,
+  Cloud,
+  Cpu,
+  Zap,
+  Layers,
+  Box,
+  Terminal,
+  Palette,
+} from "lucide-react";
 
 const technologies = [
   { name: "React", icon: Code, color: "#61DAFB" },
@@ -23,49 +35,57 @@ const technologies = [
   { name: "Python", icon: Terminal, color: "#3776AB" },
   { name: "JavaScript", icon: Zap, color: "#F7DF1E" },
   { name: "Vue.js", icon: Code, color: "#4FC08D" },
-]
+];
 
 export function TechGlobe() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [rotation, setRotation] = useState({ x: 0, y: 0 })
-  const [autoRotate, setAutoRotate] = useState(true)
-  const animationRef = useRef<number>()
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [autoRotate, setAutoRotate] = useState(true);
+  const animationRef = useRef<number>();
+  const lastUpdateRef = useRef<number>(0);
 
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+    const container = containerRef.current;
+    if (!container) return;
 
-    const updatePositions = () => {
-      const techs = container.querySelectorAll(".tech-item")
-      const time = Date.now() * 0.001
+    const updatePositions = (currentTime: number) => {
+      // Throttle updates to 60fps max
+      if (currentTime - lastUpdateRef.current < 16) {
+        animationRef.current = requestAnimationFrame(updatePositions);
+        return;
+      }
+      lastUpdateRef.current = currentTime;
+
+      const techs = container.querySelectorAll(".tech-item");
+      const time = Date.now() * 0.0005; // Reduced rotation speed
 
       techs.forEach((tech, index) => {
-        const phi = Math.acos(-1 + (2 * index) / techs.length)
-        const theta = Math.sqrt(techs.length * Math.PI) * phi
+        const phi = Math.acos(-1 + (2 * index) / techs.length);
+        const theta = Math.sqrt(techs.length * Math.PI) * phi;
 
-        const radius = 120
-        let x = radius * Math.cos(theta) * Math.sin(phi)
-        let y = radius * Math.sin(theta) * Math.sin(phi)
-        let z = radius * Math.cos(phi)
+        const radius = 120;
+        let x = radius * Math.cos(theta) * Math.sin(phi);
+        let y = radius * Math.sin(theta) * Math.sin(phi);
+        let z = radius * Math.cos(phi);
 
         // Apply rotation
-        const rotX = rotation.x + (autoRotate ? time * 0.2 : 0)
-        const rotY = rotation.y + (autoRotate ? time * 0.1 : 0)
+        const rotX = rotation.x + (autoRotate ? time * 0.3 : 0)
+        const rotY = rotation.y + (autoRotate ? time * 0.15 : 0)
 
         // Rotate around Y axis
-        const cosY = Math.cos(rotY)
-        const sinY = Math.sin(rotY)
-        const tempX = x * cosY - z * sinY
-        z = x * sinY + z * cosY
-        x = tempX
+        const cosY = Math.cos(rotY);
+        const sinY = Math.sin(rotY);
+        const tempX = x * cosY - z * sinY;
+        z = x * sinY + z * cosY;
+        x = tempX;
 
         // Rotate around X axis
-        const cosX = Math.cos(rotX)
-        const sinX = Math.sin(rotX)
-        const tempY = y * cosX - z * sinX
-        z = y * sinX + z * cosX
-        y = tempY
+        const cosX = Math.cos(rotX);
+        const sinX = Math.sin(rotX);
+        const tempY = y * cosX - z * sinX;
+        z = y * sinX + z * cosX;
+        y = tempY;
 
         const element = tech as HTMLElement
         const scale = (z + radius) / (radius * 2)
@@ -74,72 +94,70 @@ export function TechGlobe() {
         element.style.transform = `translate3d(${x}px, ${y}px, 0px) scale(${scale})`
         element.style.opacity = opacity.toString()
         element.style.zIndex = Math.floor(z + radius).toString()
+        element.style.willChange = 'transform, opacity'
       })
+
+      animationRef.current = requestAnimationFrame(updatePositions)
     }
 
-    const animate = () => {
-      updatePositions()
-      animationRef.current = requestAnimationFrame(animate)
-    }
-
-    animate()
+    animationRef.current = requestAnimationFrame(updatePositions)
 
     return () => {
       if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
+        cancelAnimationFrame(animationRef.current);
       }
-    }
-  }, [rotation, autoRotate])
+    };
+  }, [rotation, autoRotate]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true)
-    setAutoRotate(false)
-    e.preventDefault()
-  }
+    setIsDragging(true);
+    setAutoRotate(false);
+    e.preventDefault();
+  };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return
+    if (!isDragging) return;
 
-    const deltaX = e.movementX * 0.01
-    const deltaY = e.movementY * 0.01
+    const deltaX = e.movementX * 0.01;
+    const deltaY = e.movementY * 0.01;
 
     setRotation((prev) => ({
       x: prev.x + deltaY,
       y: prev.y + deltaX,
-    }))
-  }
+    }));
+  };
 
   const handleMouseUp = () => {
-    setIsDragging(false)
-    setTimeout(() => setAutoRotate(true), 2000) // Resume auto-rotation after 2 seconds
-  }
+    setIsDragging(false);
+    setTimeout(() => setAutoRotate(true), 2000); // Resume auto-rotation after 2 seconds
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true)
-    setAutoRotate(false)
-    e.preventDefault()
-  }
+    setIsDragging(true);
+    setAutoRotate(false);
+    e.preventDefault();
+  };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || e.touches.length !== 1) return
+    if (!isDragging || e.touches.length !== 1) return;
 
-    const touch = e.touches[0]
-    const rect = containerRef.current?.getBoundingClientRect()
-    if (!rect) return
+    const touch = e.touches[0];
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
 
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-    const deltaX = (touch.clientX - centerX) * 0.001
-    const deltaY = (touch.clientY - centerY) * 0.001
+    const deltaX = (touch.clientX - centerX) * 0.001;
+    const deltaY = (touch.clientY - centerY) * 0.001;
 
-    setRotation({ x: deltaY, y: deltaX })
-  }
+    setRotation({ x: deltaY, y: deltaX });
+  };
 
   const handleTouchEnd = () => {
-    setIsDragging(false)
-    setTimeout(() => setAutoRotate(true), 2000)
-  }
+    setIsDragging(false);
+    setTimeout(() => setAutoRotate(true), 2000);
+  };
 
   return (
     <div className="relative w-80 h-80 mx-auto cursor-grab active:cursor-grabbing select-none">
@@ -156,21 +174,21 @@ export function TechGlobe() {
         style={{ perspective: "1000px" }}
       >
         {technologies.map((tech, index) => {
-          const Icon = tech.icon
+          const Icon = tech.icon;
           return (
             <motion.div
               key={tech.name}
               className="tech-item absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.05 }}
+              transition={{ delay: index * 0.03, duration: 0.3 }}
             >
               <div className="glass-card p-2 rounded-lg flex items-center gap-2 whitespace-nowrap text-xs font-mono border border-primary/20">
                 <Icon className="w-4 h-4" style={{ color: tech.color }} />
                 <span>{tech.name}</span>
               </div>
             </motion.div>
-          )
+          );
         })}
       </div>
 
@@ -178,5 +196,5 @@ export function TechGlobe() {
         {isDragging ? "Drag to rotate" : "Interactive Tech Stack"}
       </div>
     </div>
-  )
+  );
 }
