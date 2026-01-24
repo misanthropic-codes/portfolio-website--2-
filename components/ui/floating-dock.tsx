@@ -29,8 +29,10 @@ export const FloatingDock = ({
 }) => {
   return (
     <>
-      <FloatingDockDesktop items={items} className={desktopClassName} />
-      <FloatingDockMobile items={items} className={mobileClassName} />
+      {/* Desktop - with hover scaling */}
+      <FloatingDockDesktop items={items} className={cn("hidden md:flex", desktopClassName)} />
+      {/* Mobile - compact version without scaling */}
+      <FloatingDockMobile items={items} className={cn("flex md:hidden", mobileClassName)} />
     </>
   );
 };
@@ -42,80 +44,48 @@ const FloatingDockMobile = ({
   items: DockItem[];
   className?: string;
 }) => {
-  const [open, setOpen] = useState(false);
   return (
-    <div className={cn("relative block md:hidden", className)}>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            layoutId="nav"
-            className="absolute bottom-full mb-2 inset-x-0 flex flex-col gap-2"
-          >
-            {items.map((item, idx) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: 10,
-                  transition: {
-                    delay: idx * 0.05,
-                  },
-                }}
-                transition={{ delay: (items.length - 1 - idx) * 0.05 }}
-              >
-                {item.onClick ? (
-                  <button
-                    onClick={() => {
-                      item.onClick?.();
-                      setOpen(false);
-                    }}
-                    className="h-10 w-10 rounded-full bg-card/90 backdrop-blur-md border border-border flex items-center justify-center"
-                  >
-                    <div className="h-4 w-4">{item.icon}</div>
-                  </button>
-                ) : (
-                  <Link
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="h-10 w-10 rounded-full bg-card/90 backdrop-blur-md border border-border flex items-center justify-center"
-                  >
-                    <div className="h-4 w-4">{item.icon}</div>
-                  </Link>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <button
-        onClick={() => setOpen(!open)}
-        className="h-10 w-10 rounded-full bg-card/90 backdrop-blur-md border border-border flex items-center justify-center"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-foreground"
-        >
-          <line x1="4" x2="20" y1="12" y2="12" />
-          <line x1="4" x2="20" y1="6" y2="6" />
-          <line x1="4" x2="20" y1="18" y2="18" />
-        </svg>
-      </button>
-    </div>
+    <motion.div
+      className={cn(
+        "flex h-12 gap-2 items-center rounded-2xl bg-card/90 backdrop-blur-md border border-border px-3",
+        className
+      )}
+    >
+      {items.map((item) => (
+        <MobileIconContainer key={item.title} {...item} />
+      ))}
+    </motion.div>
   );
 };
+
+function MobileIconContainer({
+  title,
+  icon,
+  href,
+  onClick,
+}: DockItem) {
+  const content = (
+    <div className="w-9 h-9 rounded-full bg-secondary/50 flex items-center justify-center active:scale-95 transition-transform">
+      <div className="w-4 h-4">
+        {icon}
+      </div>
+    </div>
+  );
+
+  if (onClick) {
+    return (
+      <button onClick={onClick} aria-label={title}>
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <Link href={href} aria-label={title}>
+      {content}
+    </Link>
+  );
+}
 
 const FloatingDockDesktop = ({
   items,
@@ -130,7 +100,7 @@ const FloatingDockDesktop = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden md:flex h-14 gap-4 items-end rounded-2xl bg-card/80 backdrop-blur-md border border-border px-4 pb-2",
+        "mx-auto h-14 gap-4 items-end rounded-2xl bg-card/80 backdrop-blur-md border border-border px-4 pb-2",
         className
       )}
     >
