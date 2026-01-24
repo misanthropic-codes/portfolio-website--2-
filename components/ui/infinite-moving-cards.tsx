@@ -11,9 +11,8 @@ export const InfiniteMovingCards = ({
   className,
 }: {
   items: {
-    quote: string;
     name: string;
-    title: string;
+    category: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -27,6 +26,7 @@ export const InfiniteMovingCards = ({
     addAnimation();
   }, []);
   const [start, setStart] = useState(false);
+  
   function addAnimation() {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
@@ -43,6 +43,7 @@ export const InfiniteMovingCards = ({
       setStart(true);
     }
   }
+  
   const getDirection = () => {
     if (containerRef.current) {
       if (direction === "left") {
@@ -58,6 +59,7 @@ export const InfiniteMovingCards = ({
       }
     }
   };
+  
   const getSpeed = () => {
     if (containerRef.current) {
       if (speed === "fast") {
@@ -69,46 +71,64 @@ export const InfiniteMovingCards = ({
       }
     }
   };
+
+  // Get category color
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      "Frontend": "from-blue-500 to-cyan-400",
+      "Backend": "from-green-500 to-emerald-400",
+      "Database": "from-purple-500 to-violet-400",
+      "Tools & Others": "from-orange-500 to-amber-400",
+      "DevOps": "from-red-500 to-rose-400",
+    };
+    return colors[category] || "from-primary to-primary/60";
+  };
+
   return (
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-20 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]",
         className,
       )}
     >
       <ul
         ref={scrollerRef}
         className={cn(
-          "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
+          "flex w-max min-w-full shrink-0 flex-nowrap gap-3 py-4",
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]",
         )}
       >
         {items.map((item, idx) => (
           <li
-            className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-b-0 border-border bg-card px-8 py-6 md:w-[450px] glass-card"
             key={item.name + idx}
+            className="group relative shrink-0"
           >
-            <blockquote>
-              <div
-                aria-hidden="true"
-                className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-1 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
-              ></div>
-              <span className="relative z-20 text-sm leading-[1.6] font-normal text-foreground">
-                {item.quote}
+            {/* Gradient border wrapper */}
+            <div className={cn(
+              "absolute inset-0 rounded-xl bg-gradient-to-r opacity-75 blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:blur-md",
+              getCategoryColor(item.category)
+            )} />
+            
+            {/* Card content */}
+            <div className="relative flex items-center gap-3 rounded-xl bg-card/90 backdrop-blur-sm border border-border/50 px-5 py-3 transition-all duration-300 group-hover:scale-105 group-hover:bg-card">
+              {/* Icon dot with gradient */}
+              <div className={cn(
+                "w-2.5 h-2.5 rounded-full bg-gradient-to-r",
+                getCategoryColor(item.category)
+              )} />
+              
+              {/* Skill name */}
+              <span className="text-sm font-medium text-foreground whitespace-nowrap">
+                {item.name}
               </span>
-              <div className="relative z-20 mt-6 flex flex-row items-center">
-                <span className="flex flex-col gap-1">
-                  <span className="text-sm leading-[1.6] font-bold text-primary">
-                    {item.name}
-                  </span>
-                  <span className="text-sm leading-[1.6] font-normal text-muted-foreground">
-                    {item.title}
-                  </span>
-                </span>
-              </div>
-            </blockquote>
+              
+              {/* Category tag */}
+              <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {item.category.split(" ")[0]}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
