@@ -30,7 +30,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <CardContainer className="inter-var" containerClassName="py-4">
+    <CardContainer className="inter-var w-full" containerClassName="py-0 h-full">
       <CardBody className="bg-card relative group/card border-border dark:hover:shadow-2xl dark:hover:shadow-primary/[0.1] w-full h-auto rounded-xl p-6 border glass-card">
         <CardItem
           translateZ="50"

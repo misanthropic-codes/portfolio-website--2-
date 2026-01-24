@@ -42,7 +42,7 @@ export function FeaturedProjects() {
           </p>
         </motion.div>
 
-        <div className="bento-grid mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {featuredProjects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -50,7 +50,7 @@ export function FeaturedProjects() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               viewport={{ once: true, margin: "-50px" }}
-              className={index === 0 ? "bento-item-large" : ""}
+              className="h-full"
             >
               <ProjectCard project={project} />
             </motion.div>
