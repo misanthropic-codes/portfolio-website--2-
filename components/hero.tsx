@@ -108,9 +108,14 @@ export function Hero() {
               transition={{ delay: 1 }}
               className="glass-card p-6 rounded-lg max-w-md"
             >
-              <p className="text-lg text-muted-foreground mb-4 font-mono">
-                {data.bio.title}
-              </p>
+              <div className="text-lg text-muted-foreground mb-4 font-mono flex items-center justify-center gap-2">
+                <span>I'm a</span>
+                <FlipWords 
+                  words={roles} 
+                  duration={3000}
+                  className="text-primary font-bold"
+                />
+              </div>
               <p className="text-base text-muted-foreground">
                 {data.bio.summary}
               </p>
