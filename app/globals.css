@@ -5,7 +5,7 @@
 /* Performance Optimizations */
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth causes lag - removed */
   }
 
   body {
@@ -13,17 +13,28 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* GPU acceleration for common animated elements */
+  /* GPU acceleration - simplified for performance */
   .glass,
   .glass-card,
-  .glass-strong,
-  .interactive-element,
-  img,
-  [class*="motion"] {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
+  .glass-strong {
+    will-change: auto;
   }
+}
+
+/* Aceternity UI Spotlight Animation */
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
 }
 @layer base {
   :root {

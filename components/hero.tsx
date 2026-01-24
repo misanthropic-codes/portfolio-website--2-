@@ -17,6 +17,10 @@ import { TechGlobe } from "./tech-globe";
 import { useState } from "react";
 import { Terminal } from "./terminal";
 import data from "@/data/data.json";
+import { Spotlight } from "@/components/ui/spotlight";
+import { FlipWords } from "@/components/ui/flip-words";
+
+const roles = ["Full Stack Developer", "UI/UX Enthusiast", "Problem Solver", "Tech Explorer"];
 
 export function Hero() {
   const [terminalOpen, setTerminalOpen] = useState(false);
@@ -24,6 +28,12 @@ export function Hero() {
   return (
     <>
       <section className="min-h-screen flex items-center justify-center px-4 pt-16 relative overflow-hidden hero-section">
+        {/* Aceternity Spotlight Effect */}
+        <Spotlight
+          className="-top-40 left-0 md:left-60 md:-top-20"
+          fill="hsl(var(--primary))"
+        />
+
         {/* Grid background for hacker theme only */}
         <div className="hero-grid"></div>
 
@@ -219,9 +229,14 @@ export function Hero() {
                 transition={{ delay: 1 }}
                 className="glass-card p-6 rounded-lg mb-8"
               >
-                <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-mono">
-                  {data.bio.title}
-                </p>
+                <div className="text-xl md:text-2xl text-muted-foreground mb-4 font-mono flex items-center gap-2">
+                  <span>I'm a</span>
+                  <FlipWords 
+                    words={roles} 
+                    duration={3000}
+                    className="text-primary font-bold"
+                  />
+                </div>
                 <p className="text-lg text-muted-foreground max-w-2xl">
                   {data.bio.summary}
                 </p>
