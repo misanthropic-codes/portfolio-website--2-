@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider"
 import { BackgroundEffects } from "@/components/background-effects"
 import { InteractiveSound } from "@/components/interactive-sound"
+import { DockNav } from "@/components/dock-nav"
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -61,6 +62,7 @@ export default function RootLayout({
           <Navbar />
           <main className="min-h-screen relative z-10">{children}</main>
           <Footer />
+          <DockNav />
           <Toaster />
           <Analytics />
            <SpeedInsights />
