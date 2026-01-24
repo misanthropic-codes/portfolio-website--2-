@@ -3,8 +3,6 @@ import data from "@/data/data.json";
 
 export async function getProfile() {
   try {
-    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return data.bio;
-    
     const query = `*[_type == "profile"][0]{
       name,
       title,
@@ -27,8 +25,6 @@ export async function getProfile() {
 
 export async function getProjects() {
   try {
-    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return data.projects;
-
     const query = `*[_type == "project"] | order(year desc) {
       ...,
       "id": slug.current,
@@ -44,10 +40,6 @@ export async function getProjects() {
 
 export async function getProject(id: string) {
   try {
-    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-      return data.projects.find((p) => p.id === id);
-    }
-
     const query = `*[_type == "project" && slug.current == $id][0] {
       ...,
       "id": slug.current,
@@ -63,8 +55,6 @@ export async function getProject(id: string) {
 
 export async function getSkills() {
   try {
-    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return data.skills;
-
     const query = `*[_type == "skill"]`;
     const skills = await client.fetch(query);
     return skills.length > 0 ? skills : data.skills;
@@ -76,8 +66,6 @@ export async function getSkills() {
 
 export async function getExperience() {
   try {
-    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return data.experience;
-
     const query = `*[_type == "experience"] | order(start desc)`;
     const experience = await client.fetch(query);
     return experience.length > 0 ? experience : data.experience;
@@ -89,8 +77,6 @@ export async function getExperience() {
 
 export async function getEducation() {
   try {
-    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return data.education;
-
     const query = `*[_type == "education"] | order(start desc)`;
     const education = await client.fetch(query);
     return education.length > 0 ? education : data.education;
