@@ -11,12 +11,19 @@ import {
 import Link from "next/link";
 import { useRef, useState } from "react";
 
+interface DockItem {
+  title: string;
+  icon: React.ReactNode;
+  href: string;
+  onClick?: () => void;
+}
+
 export const FloatingDock = ({
   items,
   desktopClassName,
   mobileClassName,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: DockItem[];
   desktopClassName?: string;
   mobileClassName?: string;
 }) => {
@@ -32,7 +39,7 @@ const FloatingDockMobile = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: DockItem[];
   className?: string;
 }) => {
   const [open, setOpen] = useState(false);
@@ -61,13 +68,25 @@ const FloatingDockMobile = ({
                 }}
                 transition={{ delay: (items.length - 1 - idx) * 0.05 }}
               >
-                <Link
-                  href={item.href}
-                  key={item.title}
-                  className="h-10 w-10 rounded-full bg-card/90 backdrop-blur-md border border-border flex items-center justify-center"
-                >
-                  <div className="h-4 w-4">{item.icon}</div>
-                </Link>
+                {item.onClick ? (
+                  <button
+                    onClick={() => {
+                      item.onClick?.();
+                      setOpen(false);
+                    }}
+                    className="h-10 w-10 rounded-full bg-card/90 backdrop-blur-md border border-border flex items-center justify-center"
+                  >
+                    <div className="h-4 w-4">{item.icon}</div>
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="h-10 w-10 rounded-full bg-card/90 backdrop-blur-md border border-border flex items-center justify-center"
+                  >
+                    <div className="h-4 w-4">{item.icon}</div>
+                  </Link>
+                )}
               </motion.div>
             ))}
           </motion.div>
@@ -102,7 +121,7 @@ const FloatingDockDesktop = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: DockItem[];
   className?: string;
 }) => {
   const mouseX = useMotionValue(Infinity);
@@ -127,12 +146,8 @@ function IconContainer({
   title,
   icon,
   href,
-}: {
-  mouseX: any;
-  title: string;
-  icon: React.ReactNode;
-  href: string;
-}) {
+  onClick,
+}: DockItem & { mouseX: any }) {
   const ref = useRef<HTMLDivElement>(null);
 
   const distance = useTransform(mouseX, (val: number) => {
@@ -156,34 +171,42 @@ function IconContainer({
 
   const [hovered, setHovered] = useState(false);
 
-  return (
-    <Link href={href}>
+  const content = (
+    <motion.div
+      ref={ref}
+      style={{ width, height }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="aspect-square rounded-full bg-secondary/50 flex items-center justify-center relative"
+    >
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 2, x: "-50%" }}
+            className="px-2 py-0.5 whitespace-pre rounded-md bg-card border border-border text-foreground absolute left-1/2 -translate-x-1/2 -top-8 w-fit text-xs"
+          >
+            {title}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <motion.div
-        ref={ref}
-        style={{ width, height }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="aspect-square rounded-full bg-secondary/50 flex items-center justify-center relative"
+        className="flex items-center justify-center text-foreground"
+        style={{ width: "50%", height: "50%" }}
       >
-        <AnimatePresence>
-          {hovered && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, x: "-50%" }}
-              animate={{ opacity: 1, y: 0, x: "-50%" }}
-              exit={{ opacity: 0, y: 2, x: "-50%" }}
-              className="px-2 py-0.5 whitespace-pre rounded-md bg-card border border-border text-foreground absolute left-1/2 -translate-x-1/2 -top-8 w-fit text-xs"
-            >
-              {title}
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <motion.div
-          className="flex items-center justify-center text-foreground"
-          style={{ width: "50%", height: "50%" }}
-        >
-          {icon}
-        </motion.div>
+        {icon}
       </motion.div>
-    </Link>
+    </motion.div>
   );
+
+  if (onClick) {
+    return (
+      <button onClick={onClick}>
+        {content}
+      </button>
+    );
+  }
+
+  return <Link href={href}>{content}</Link>;
 }

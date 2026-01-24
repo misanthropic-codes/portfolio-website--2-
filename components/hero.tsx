@@ -19,6 +19,7 @@ import { Terminal } from "./terminal";
 import data from "@/data/data.json";
 import { Spotlight } from "@/components/ui/spotlight";
 import { FlipWords } from "@/components/ui/flip-words";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const roles = ["Full Stack Developer", "UI/UX Enthusiast", "Problem Solver", "Tech Explorer"];
 
@@ -117,7 +118,11 @@ export function Hero() {
                 />
               </div>
               <p className="text-base text-muted-foreground">
-                {data.bio.summary}
+                <TextGenerateEffect 
+                  words={data.bio.summary}
+                  className="text-base"
+                  duration={0.3}
+                />
               </p>
             </motion.div>
 
@@ -242,9 +247,12 @@ export function Hero() {
                     className="text-primary font-bold"
                   />
                 </div>
-                <p className="text-lg text-muted-foreground max-w-2xl">
-                  {data.bio.summary}
-                </p>
+                <div className="text-lg text-muted-foreground max-w-2xl">
+                  <TextGenerateEffect 
+                    words={data.bio.summary}
+                    duration={0.3}
+                  />
+                </div>
               </motion.div>
 
               <motion.div

@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -59,7 +58,6 @@ export default function RootLayout({
         <ThemeProvider>
           <BackgroundEffects />
           <InteractiveSound />
-          <Navbar />
           <main className="min-h-screen relative z-10">{children}</main>
           <Footer />
           <DockNav />
