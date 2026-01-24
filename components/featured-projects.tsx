@@ -5,10 +5,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
 import { ArrowRight, Sparkles } from "lucide-react";
+//...
 import data from "@/data/data.json";
 
-export function FeaturedProjects() {
-  const featuredProjects = data.projects.filter((project) => project.featured);
+export function FeaturedProjects({ projects = data.projects }: { projects?: typeof data.projects }) {
+  const featuredProjects = projects.filter((project: any) => project.featured);
 
   return (
     <section className="py-20 px-4 relative">

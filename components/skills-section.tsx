@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+//...
 import data from "@/data/data.json";
 
-export function SkillsSection() {
+export function SkillsSection({ skills = data.skills }: { skills?: typeof data.skills }) {
   // Transform skills into compact format
-  const skillItems = data.skills.flatMap((category) =>
-    category.items.map((skill) => ({
+  const skillItems = skills.flatMap((category: any) =>
+    category.items.map((skill: any) => ({
       name: skill,
       category: category.category,
     }))
@@ -70,7 +71,7 @@ export function SkillsSection() {
           viewport={{ once: true }}
           className="flex flex-wrap justify-center gap-4 mt-10"
         >
-          {data.skills.map((category) => (
+          {skills.map((category: any) => (
             <div key={category.category} className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className={`w-2 h-2 rounded-full ${
                 category.category === "Frontend" ? "bg-gradient-to-r from-blue-500 to-cyan-400" :

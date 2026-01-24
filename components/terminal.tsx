@@ -11,6 +11,9 @@ import data from "@/data/data.json"
 interface TerminalProps {
   isOpen: boolean
   onClose: () => void
+  profile?: typeof data.bio
+  skills?: typeof data.skills
+  projects?: typeof data.projects
 }
 
 interface Command {
@@ -19,7 +22,7 @@ interface Command {
   timestamp: string
 }
 
-export function Terminal({ isOpen, onClose }: TerminalProps) {
+export function Terminal({ isOpen, onClose, profile = data.bio, skills = data.skills, projects = data.projects }: TerminalProps) {
   const [input, setInput] = useState("")
   const [history, setHistory] = useState<Command[]>([])
   const [commandHistory, setCommandHistory] = useState<string[]>([])
@@ -52,46 +55,46 @@ export function Terminal({ isOpen, onClose }: TerminalProps) {
     about: () => [
       "Abhishek Kumar - Full Stack Developer",
       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-      data.bio.summary,
+      profile.summary,
       "",
-      `Location: ${data.bio.location}`,
-      `Email: ${data.bio.email}`,
-      `Role: ${data.bio.title}`,
+      `Location: ${profile.location}`,
+      `Email: ${profile.email}`,
+      `Role: ${profile.title}`,
     ],
     skills: () => [
       "Technical Skills:",
       "━━━━━━━━━━━━━━━━",
-      ...data.skills.map((category) => `${category.category}: ${category.items.join(", ")}`),
+      ...skills.map((category: any) => `${category.category}: ${category.items.join(", ")}`),
     ],
     projects: () => [
       "Featured Projects:",
       "━━━━━━━━━━━━━━━━━",
-      ...data.projects
-        .filter((p) => p.featured)
-        .map((project) => `• ${project.title} (${project.year}) - ${project.description.substring(0, 80)}...`),
+      ...projects
+        .filter((p: any) => p.featured)
+        .map((project: any) => `• ${project.title} (${project.year}) - ${project.description.substring(0, 80)}...`),
     ],
     contact: () => [
       "Contact Information:",
       "━━━━━━━━━━━━━━━━━━━━",
-      `Email: ${data.contact.email}`,
-      `GitHub: ${data.contact.github}`,
-      `LinkedIn: ${data.contact.linkedin}`,
-      `Twitter: ${data.contact.twitter}`,
+      `Email: ${profile.email}`,
+      `GitHub: ${profile.socials.github}`,
+      `LinkedIn: ${profile.socials.linkedin}`,
+      `Twitter: ${profile.socials.twitter}`,
     ],
     resume: () => {
-      window.open(data.bio.resumeUrl, "_blank")
+      window.open(profile.resumeUrl, "_blank")
       return ["Opening resume in new tab..."]
     },
     github: () => {
-      window.open(data.contact.github, "_blank")
+      window.open(profile.socials.github, "_blank")
       return ["Opening GitHub profile..."]
     },
     linkedin: () => {
-      window.open(data.contact.linkedin, "_blank")
+      window.open(profile.socials.linkedin, "_blank")
       return ["Opening LinkedIn profile..."]
     },
     twitter: () => {
-      window.open(data.contact.twitter, "_blank")
+      window.open(profile.socials.twitter, "_blank")
       return ["Opening Twitter profile..."]
     },
     clear: () => {

@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+//...
+//...
 import data from "@/data/data.json";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { TracingBeam, TracingBeamItem } from "@/components/ui/tracing-beam";
 
-export function AboutHero() {
+export function AboutHero({ profile = data.bio }: { profile?: typeof data.bio }) {
   return (
     <section className="mb-20">
       <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
@@ -19,18 +21,18 @@ export function AboutHero() {
             About <span className="gradient-text">Me</span>
           </h1>
           <TextGenerateEffect 
-            words={data.bio.summary}
+            words={profile.summary}
             className="text-lg text-muted-foreground mb-6"
           />
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="glass-card p-4 rounded-lg border-border">
               <h3 className="font-semibold text-primary mb-2">Location</h3>
-              <p className="text-muted-foreground">{data.bio.location}</p>
+              <p className="text-muted-foreground">{profile.location}</p>
             </div>
             <div className="glass-card p-4 rounded-lg border-border">
               <h3 className="font-semibold text-primary mb-2">Email</h3>
               <p className="text-muted-foreground break-all text-sm md:text-base">
-                {data.bio.email}
+                {profile.email}
               </p>
             </div>
           </div>
@@ -45,8 +47,8 @@ export function AboutHero() {
           <div className="relative w-full max-w-md mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/50 rounded-2xl blur-3xl opacity-20 glow"></div>
             <Image
-              src="/profile.jpg"
-              alt={data.bio.name}
+              src={profile.profileImage || "/profile.jpg"}
+              alt={profile.name}
               width={400}
               height={400}
               className="relative z-10 rounded-2xl border-4 border-primary/20 glass-card"

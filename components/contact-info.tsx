@@ -4,9 +4,10 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from "lucide-react"
+//...
 import data from "@/data/data.json"
 
-export function ContactInfo() {
+export function ContactInfo({ profile = data.bio }: { profile?: typeof data.bio }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -22,19 +23,19 @@ export function ContactInfo() {
           <div className="flex items-start gap-3">
             <Mail className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
             <Link
-              href={`mailto:${data.bio.email}`}
+              href={`mailto:${profile.email}`}
               className="text-muted-foreground hover:text-primary transition-colors interactive-element break-all text-sm md:text-base"
             >
-              {data.bio.email}
+              {profile.email}
             </Link>
           </div>
           <div className="flex items-start gap-3">
             <Phone className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-            <span className="text-muted-foreground text-sm md:text-base">{data.bio.phone}</span>
+            <span className="text-muted-foreground text-sm md:text-base">{profile.phone}</span>
           </div>
           <div className="flex items-start gap-3">
             <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-            <span className="text-muted-foreground text-sm md:text-base">{data.bio.location}</span>
+            <span className="text-muted-foreground text-sm md:text-base">{profile.location}</span>
           </div>
         </CardContent>
       </Card>
@@ -46,21 +47,21 @@ export function ContactInfo() {
         <CardContent>
           <div className="flex gap-4">
             <Link
-              href={data.contact.github}
+              href={profile.socials.github}
               target="_blank"
               className="p-2 rounded-lg glass hover:glass-strong transition-colors interactive-element"
             >
               <Github className="w-5 h-5 text-foreground" />
             </Link>
             <Link
-              href={data.contact.linkedin}
+              href={profile.socials.linkedin}
               target="_blank"
               className="p-2 rounded-lg glass hover:glass-strong transition-colors interactive-element"
             >
               <Linkedin className="w-5 h-5 text-foreground" />
             </Link>
             <Link
-              href={data.contact.twitter}
+              href={profile.socials.twitter}
               target="_blank"
               className="p-2 rounded-lg glass hover:glass-strong transition-colors interactive-element"
             >

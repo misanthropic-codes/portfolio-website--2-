@@ -6,7 +6,8 @@ import { MovingBorderButton } from "@/components/ui/moving-border"
 import { LampContainer } from "@/components/ui/lamp"
 import { ArrowRight, Mail } from "lucide-react"
 
-export function ContactCTA() {
+//...
+export function ContactCTA({ email }: { email?: string }) {
   return (
     <LampContainer className="py-0 min-h-[500px]">
       <motion.div

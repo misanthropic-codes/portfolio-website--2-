@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "createdAt": "2026-01-24T12:17:54.298Z",
+  "workspaces": [
+    {
+      "name": "Portfolio_Content_Studio",
+      "title": "Portfolio Content Studio",
+      "basePath": "/studio",
+      "projectId": "snok3q2x",
+      "dataset": "production",
+      "icon": null,
+      "mediaLibrary": {
+        "enabled": false
+      },
+      "schema": "286f0d49.create-schema.json",
+      "tools": "4277de03.create-tools.json"
+    }
+  ],
+  "studioVersion": "4.22.0"
+}

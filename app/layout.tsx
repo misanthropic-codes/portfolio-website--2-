@@ -47,11 +47,19 @@ export const metadata: Metadata = {
    
 }
 
-export default function RootLayout({
+import { getProfile, getProjects, getSkills } from "@/lib/data";
+
+// ... metadata
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const profile = await getProfile();
+  const projects = await getProjects();
+  const skills = await getSkills();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} ${jetbrainsMono.variable} min-h-screen`}>
@@ -59,8 +67,8 @@ export default function RootLayout({
           <BackgroundEffects />
           <InteractiveSound />
           <main className="min-h-screen relative z-10">{children}</main>
-          <Footer />
-          <DockNav />
+          <Footer profile={profile} />
+          <DockNav profile={profile} projects={projects} skills={skills} />
           <Toaster />
           <Analytics />
            <SpeedInsights />

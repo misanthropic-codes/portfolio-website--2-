@@ -5,8 +5,15 @@ import { FloatingDock } from "@/components/ui/floating-dock";
 import { Terminal } from "@/components/terminal";
 import { Home, User, FolderGit2, Mail, Terminal as TerminalIcon, Palette } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
+import data from "@/data/data.json";
 
-export function DockNav() {
+interface DockNavProps {
+  profile?: typeof data.bio
+  skills?: typeof data.skills
+  projects?: typeof data.projects
+}
+
+export function DockNav({ profile = data.bio, skills = data.skills, projects = data.projects }: DockNavProps) {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -62,7 +69,7 @@ export function DockNav() {
           mobileClassName=""
         />
       </div>
-      <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
+      <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} profile={profile} skills={skills} projects={projects} />
     </>
   );
 }

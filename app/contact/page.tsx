@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { ContactForm } from "@/components/contact-form"
 import { ContactInfo } from "@/components/contact-info"
+import { getProfile } from "@/lib/data"
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -8,7 +9,11 @@ export const metadata: Metadata = {
     "Get in touch with Abhishek Kumar for collaboration opportunities, project inquiries, or just to say hello.",
 }
 
-export default function ContactPage() {
+export const revalidate = 60;
+
+export default async function ContactPage() {
+  const profile = await getProfile();
+  
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
@@ -22,7 +27,7 @@ export default function ContactPage() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          <ContactInfo />
+          <ContactInfo profile={profile} />
           <ContactForm />
         </div>
       </div>

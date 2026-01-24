@@ -3,19 +3,26 @@ import { AboutHero } from "@/components/about-hero"
 import { Timeline } from "@/components/timeline"
 import { SkillsDetailed } from "@/components/skills-detailed"
 import { GitHubActivity } from "@/components/github-activity"
-import data from "@/data/data.json"
+import { getProfile, getSkills, getExperience, getEducation } from "@/lib/data"
 
 export const metadata: Metadata = {
   title: "About",
   description: "Learn more about Abhishek Kumar - Full Stack Developer, his journey, skills, and experience.",
 }
 
-export default function AboutPage() {
+export const revalidate = 60;
+
+export default async function AboutPage() {
+  const profile = await getProfile();
+  const skills = await getSkills();
+  const experience = await getExperience();
+  const education = await getEducation();
+
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
-        <AboutHero />
-        <SkillsDetailed skills={data.skills} />
+        <AboutHero profile={profile} />
+        <SkillsDetailed skills={skills} />
 
         {/* GitHub Activity Section */}
         <section className="mb-20">
@@ -32,7 +39,7 @@ export default function AboutPage() {
 
         <Timeline
           title="Experience"
-          items={data.experience.map((exp) => ({
+          items={experience.map((exp: any) => ({
             title: exp.role,
             subtitle: exp.company,
             date: `${exp.start} - ${exp.end}`,
@@ -43,7 +50,7 @@ export default function AboutPage() {
         />
         <Timeline
           title="Education"
-          items={data.education.map((edu) => ({
+          items={education.map((edu: any) => ({
             title: edu.degree,
             subtitle: edu.institution,
             date: `${edu.start} - ${edu.end}`,

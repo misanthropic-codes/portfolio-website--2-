@@ -16,17 +16,24 @@ import { Typewriter } from "./typewriter";
 import { TechGlobe } from "./tech-globe";
 import { useState } from "react";
 import { Terminal } from "./terminal";
+import { Spotlight } from "./ui/spotlight";
+import { EncryptedText } from "./ui/encrypted-text";
+import { FlipWords } from "./ui/flip-words";
+import { TextGenerateEffect } from "./ui/text-generate-effect";
+import { useTheme } from "next-themes";
+
+const roles = [
+  "Full Stack Developer",
+  "UI/UX Designer",
+  "Open Source Contributor",
+  "Freelancer"
+];
+
+// ... imports
 import data from "@/data/data.json";
-import { Spotlight } from "@/components/ui/spotlight";
-import { FlipWords } from "@/components/ui/flip-words";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { BackgroundLines } from "@/components/ui/background-lines";
-import { EncryptedText } from "@/components/ui/encrypted-text";
-import { useTheme } from "@/components/theme-provider";
+// ...
 
-const roles = ["Full Stack Developer", "UI/UX Enthusiast", "Problem Solver", "Tech Explorer"];
-
-export function Hero() {
+export function Hero({ profile = data.bio }: { profile?: typeof data.bio }) {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const { theme } = useTheme();
 
@@ -80,12 +87,12 @@ export function Hero() {
               >
                 {theme === "hacker" ? (
                   <EncryptedText
-                    text={data.bio.name}
+                    text={profile.name}
                     className="gradient-text"
                   />
                 ) : (
                   <Typewriter
-                    text={data.bio.name}
+                    text={profile.name}
                     delay={100}
                     className="gradient-text"
                   />
@@ -103,8 +110,8 @@ export function Hero() {
               <div className="relative w-64 h-64 mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/50 rounded-full blur-3xl opacity-20 glow-strong"></div>
                 <Image
-                  src="/profile.jpeg"
-                  alt={data.bio.name}
+                  src={profile.profileImage || "/profile.jpeg"}
+                  alt={profile.name}
                   width={256}
                   height={256}
                   className="relative z-10 rounded-full border-4 border-primary/20 glass-card"
@@ -130,7 +137,7 @@ export function Hero() {
               </div>
               <p className="text-base text-muted-foreground">
                 <TextGenerateEffect 
-                  words={data.bio.summary}
+                  words={profile.summary}
                   className="text-base"
                   duration={0.3}
                 />
@@ -176,7 +183,7 @@ export function Hero() {
                   size="lg"
                   className="glass-card flex-1"
                 >
-                  <Link href={data.bio.resumeUrl} target="_blank" download>
+                  <Link href={profile.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
                   </Link>
@@ -192,21 +199,21 @@ export function Hero() {
               className="flex space-x-6"
             >
               <Link
-                href={data.bio.socials.github}
+                href={profile.socials.github}
                 target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors p-2 glass rounded-lg"
               >
                 <Github className="w-6 h-6" />
               </Link>
               <Link
-                href={data.bio.socials.linkedin}
+                href={profile.socials.linkedin}
                 target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors p-2 glass rounded-lg"
               >
                 <Linkedin className="w-6 h-6" />
               </Link>
               <Link
-                href={data.bio.socials.twitter}
+                href={profile.socials.twitter}
                 target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors p-2 glass rounded-lg"
               >
@@ -239,12 +246,12 @@ export function Hero() {
               >
                 {theme === "hacker" ? (
                   <EncryptedText
-                    text={data.bio.name}
+                    text={profile.name}
                     className="gradient-text"
                   />
                 ) : (
                   <Typewriter
-                    text={data.bio.name}
+                    text={profile.name}
                     delay={100}
                     className="gradient-text"
                   />
@@ -267,7 +274,7 @@ export function Hero() {
                 </div>
                 <div className="text-lg text-muted-foreground max-w-2xl">
                   <TextGenerateEffect 
-                    words={data.bio.summary}
+                    words={profile.summary}
                     duration={0.3}
                   />
                 </div>
@@ -300,7 +307,7 @@ export function Hero() {
                   size="lg"
                   className="glass-card"
                 >
-                  <Link href={data.bio.resumeUrl} target="_blank" download>
+                  <Link href={profile.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
                   </Link>
@@ -314,21 +321,21 @@ export function Hero() {
                 className="flex space-x-6"
               >
                 <Link
-                  href={data.bio.socials.github}
+                  href={profile.socials.github}
                   target="_blank"
                   className="text-muted-foreground hover:text-primary transition-colors p-2 glass rounded-lg"
                 >
                   <Github className="w-6 h-6" />
                 </Link>
                 <Link
-                  href={data.bio.socials.linkedin}
+                  href={profile.socials.linkedin}
                   target="_blank"
                   className="text-muted-foreground hover:text-primary transition-colors p-2 glass rounded-lg"
                 >
                   <Linkedin className="w-6 h-6" />
                 </Link>
                 <Link
-                  href={data.bio.socials.twitter}
+                  href={profile.socials.twitter}
                   target="_blank"
                   className="text-muted-foreground hover:text-primary transition-colors p-2 glass rounded-lg"
                 >
@@ -348,8 +355,8 @@ export function Hero() {
                 <div className="relative w-80 h-80 mx-auto mb-8">
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/50 rounded-full blur-3xl opacity-20 glow-strong"></div>
                   <Image
-                    src="/profile.jpeg"
-                    alt={data.bio.name}
+                    src={profile.profileImage || "/profile.jpeg"}
+                    alt={profile.name}
                     width={320}
                     height={320}
                     className="relative z-10 rounded-full border-4 border-primary/20 glass-card"

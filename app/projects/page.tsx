@@ -1,13 +1,16 @@
 import type { Metadata } from "next"
 import { ProjectsGrid } from "@/components/projects-grid"
-import data from "@/data/data.json"
+import { getProjects } from "@/lib/data"
 
 export const metadata: Metadata = {
   title: "Projects",
   description: "Explore my portfolio of web development projects, from SaaS platforms to AI-powered applications.",
 }
 
-export default function ProjectsPage() {
+export const revalidate = 60;
+
+export default async function ProjectsPage() {
+  const projects = await getProjects();
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
@@ -19,7 +22,7 @@ export default function ProjectsPage() {
             A collection of projects that showcase my skills in full-stack development, from concept to deployment.
           </p>
         </div>
-        <ProjectsGrid projects={data.projects} />
+        <ProjectsGrid projects={projects} />
       </div>
     </div>
   )
