@@ -55,10 +55,6 @@ export function Hero() {
           ></div>
         </div>
 
-        <BackgroundLines className="absolute inset-0 z-0 h-full w-full">
-           <div /> 
-        </BackgroundLines>
-
         <div className="container mx-auto relative z-10">
           {/* Mobile Layout */}
           <div className="lg:hidden flex flex-col items-center text-center space-y-8">
