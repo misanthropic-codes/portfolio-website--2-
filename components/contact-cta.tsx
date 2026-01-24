@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { MovingBorderButton } from "@/components/ui/moving-border"
 import { ArrowRight, Mail } from "lucide-react"
 
 export function ContactCTA() {
@@ -23,15 +24,20 @@ export function ContactCTA() {
             I'm always open to discussing new opportunities, interesting projects, or just having a chat about
             technology and development.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg">
-              <Link href="/contact">
-                <Mail className="w-4 h-4 mr-2" />
-                Get In Touch
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="bg-black text-white">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {/* Moving Border CTA Button */}
+            <MovingBorderButton
+              as={Link}
+              href="/contact"
+              containerClassName="h-12"
+              className="flex items-center gap-2"
+            >
+              <Mail className="w-4 h-4" />
+              Get In Touch
+              <ArrowRight className="w-4 h-4" />
+            </MovingBorderButton>
+            
+            <Button asChild size="lg" variant="outline" className="glass-card">
               <Link href="/projects">View My Work</Link>
             </Button>
           </div>

@@ -1,14 +1,25 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SkillBadge } from "@/components/skill-badge";
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import data from "@/data/data.json";
 
 export function SkillsSection() {
-  const allSkills = data.skills.flatMap((category) => category.items);
+  // Transform skills into format for InfiniteMovingCards
+  const skillItems = data.skills.flatMap((category) =>
+    category.items.map((skill) => ({
+      quote: skill,
+      name: category.category,
+      title: `${category.items.length} technologies`,
+    }))
+  );
+
+  // Split into two rows for visual interest
+  const firstRow = skillItems.slice(0, Math.ceil(skillItems.length / 2));
+  const secondRow = skillItems.slice(Math.ceil(skillItems.length / 2));
 
   return (
-    <section className="py-20 px-4 glass-card border-t border-border">
+    <section className="py-20 px-4 glass-card border-t border-border overflow-hidden">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -30,19 +41,23 @@ export function SkillsSection() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="flex flex-wrap justify-center gap-3"
+          className="space-y-4"
         >
-          {allSkills.map((skill, index) => (
-            <motion.div
-              key={skill}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2, delay: index * 0.02 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <SkillBadge skill={skill} />
-            </motion.div>
-          ))}
+          {/* First row - scrolls left */}
+          <InfiniteMovingCards
+            items={firstRow}
+            direction="left"
+            speed="slow"
+            pauseOnHover={true}
+          />
+          
+          {/* Second row - scrolls right */}
+          <InfiniteMovingCards
+            items={secondRow}
+            direction="right"
+            speed="slow"
+            pauseOnHover={true}
+          />
         </motion.div>
       </div>
     </section>
