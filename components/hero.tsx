@@ -20,11 +20,15 @@ import data from "@/data/data.json";
 import { Spotlight } from "@/components/ui/spotlight";
 import { FlipWords } from "@/components/ui/flip-words";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { BackgroundLines } from "@/components/ui/background-lines";
+import { EncryptedText } from "@/components/ui/encrypted-text";
+import { useTheme } from "@/components/theme-provider";
 
 const roles = ["Full Stack Developer", "UI/UX Enthusiast", "Problem Solver", "Tech Explorer"];
 
 export function Hero() {
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const { theme } = useTheme();
 
   return (
     <>
@@ -51,6 +55,10 @@ export function Hero() {
           ></div>
         </div>
 
+        <BackgroundLines className="absolute inset-0 z-0 h-full w-full">
+           <div /> 
+        </BackgroundLines>
+
         <div className="container mx-auto relative z-10">
           {/* Mobile Layout */}
           <div className="lg:hidden flex flex-col items-center text-center space-y-8">
@@ -74,11 +82,18 @@ export function Hero() {
                 transition={{ delay: 0.2 }}
                 className="text-3xl md:text-5xl font-bold mb-6"
               >
-                <Typewriter
-                  text={data.bio.name}
-                  delay={100}
-                  className="gradient-text"
-                />
+                {theme === "hacker" ? (
+                  <EncryptedText
+                    text={data.bio.name}
+                    className="gradient-text"
+                  />
+                ) : (
+                  <Typewriter
+                    text={data.bio.name}
+                    delay={100}
+                    className="gradient-text"
+                  />
+                )}
               </motion.h1>
             </motion.div>
 
@@ -226,11 +241,18 @@ export function Hero() {
                 transition={{ delay: 0.2 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
               >
-                <Typewriter
-                  text={data.bio.name}
-                  delay={100}
-                  className="gradient-text"
-                />
+                {theme === "hacker" ? (
+                  <EncryptedText
+                    text={data.bio.name}
+                    className="gradient-text"
+                  />
+                ) : (
+                  <Typewriter
+                    text={data.bio.name}
+                    delay={100}
+                    className="gradient-text"
+                  />
+                )}
               </motion.h1>
 
               <motion.div
