@@ -78,3 +78,20 @@ export async function submitQuotation(data: any) {
     return { success: false, message: "Network error" };
   }
 }
+
+export async function submitContact(data: any) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+    return json;
+  } catch (error) {
+    console.error("Failed to submit message:", error);
+    return { success: false, message: "Network error" };
+  }
+}

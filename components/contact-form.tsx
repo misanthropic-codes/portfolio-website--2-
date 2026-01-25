@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { Send } from "lucide-react"
+import { submitContact } from "@/lib/data"
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -23,25 +24,22 @@ export function ContactForm() {
     const formData = new FormData(form)
     const name = formData.get("name") as string
     const email = formData.get("email") as string
+    const subject = formData.get("subject") as string
     const message = formData.get("message") as string
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
-      })
-      if (res.ok) {
+      const res = await submitContact({ name, email, subject, message })
+      
+      if (res.success) {
         toast({
           title: "Message sent!",
           description: "Thank you for your message. I'll get back to you soon.",
         })
         form.reset()
       } else {
-        const data = await res.json()
         toast({
           title: "Error",
-          description: data.error || "Failed to send message. Please try again later.",
+          description: res.message || "Failed to send message. Please try again later.",
           variant: "destructive",
         })
       }
