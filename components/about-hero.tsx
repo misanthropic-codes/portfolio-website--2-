@@ -51,7 +51,7 @@ export function AboutHero({ profile = data.bio }: { profile?: typeof data.bio })
               alt={profile.name}
               width={400}
               height={400}
-              className="relative z-10 rounded-2xl border-4 border-primary/20 glass-card"
+              className="relative z-10 rounded-2xl border-4 border-primary/20 glass-card object-cover w-full h-full aspect-square"
               priority
             />
           </div>

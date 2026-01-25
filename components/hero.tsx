@@ -114,7 +114,7 @@ export function Hero({ profile = data.bio }: { profile?: typeof data.bio }) {
                   alt={profile.name}
                   width={256}
                   height={256}
-                  className="relative z-10 rounded-full border-4 border-primary/20 glass-card"
+                  className="relative z-10 rounded-full border-4 border-primary/20 glass-card object-cover w-full h-full"
                   priority
                 />
               </div>
@@ -359,7 +359,7 @@ export function Hero({ profile = data.bio }: { profile?: typeof data.bio }) {
                     alt={profile.name}
                     width={320}
                     height={320}
-                    className="relative z-10 rounded-full border-4 border-primary/20 glass-card"
+                    className="relative z-10 rounded-full border-4 border-primary/20 glass-card object-cover w-full h-full"
                     priority
                   />
                 </div>
