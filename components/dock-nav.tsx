@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
 import { Terminal } from "@/components/terminal";
-import { Home, User, FolderGit2, Mail, Terminal as TerminalIcon, Palette } from "lucide-react";
+import { Home, User, FolderGit2, Mail, Terminal as TerminalIcon, Palette, Briefcase } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import data from "@/data/data.json";
 
@@ -40,6 +40,11 @@ export function DockNav({ profile = data.bio, skills = data.skills, projects = d
       title: "Projects",
       icon: <FolderGit2 className="h-full w-full text-foreground" />,
       href: "/projects",
+    },
+    {
+      title: "Services",
+      icon: <Briefcase className="h-full w-full text-foreground" />,
+      href: "/services",
     },
     {
       title: "Contact",

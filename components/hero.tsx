@@ -135,13 +135,13 @@ export function Hero({ profile = data.bio }: { profile?: typeof data.bio }) {
                   className="text-primary font-bold"
                 />
               </div>
-              <p className="text-base text-muted-foreground">
+              <div className="text-base text-muted-foreground">
                 <TextGenerateEffect 
                   words={profile.summary}
                   className="text-base"
                   duration={0.3}
                 />
-              </p>
+              </div>
             </motion.div>
 
             {/* Tech Globe - Mobile */}
@@ -149,7 +149,7 @@ export function Hero({ profile = data.bio }: { profile?: typeof data.bio }) {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.3 }}
-              className="scale-75"
+              className="w-full flex justify-center"
             >
               <TechGlobe />
             </motion.div>
@@ -183,10 +183,10 @@ export function Hero({ profile = data.bio }: { profile?: typeof data.bio }) {
                   size="lg"
                   className="glass-card flex-1"
                 >
-                  <Link href={profile.resumeUrl} target="_blank" download>
+                  <a href={profile.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
-                  </Link>
+                  </a>
                 </Button>
               </div>
             </motion.div>
@@ -307,10 +307,10 @@ export function Hero({ profile = data.bio }: { profile?: typeof data.bio }) {
                   size="lg"
                   className="glass-card"
                 >
-                  <Link href={profile.resumeUrl} target="_blank" download>
+                  <a href={profile.resumeUrl} target="_blank" download>
                     <Download className="w-4 h-4 mr-2" />
                     Resume
-                  </Link>
+                  </a>
                 </Button>
               </motion.div>
 

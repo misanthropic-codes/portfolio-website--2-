@@ -1,87 +1,80 @@
-import { client } from "./sanity";
+const API_BASE_URL = "https://api.misanthropic.codes/api";
 import data from "@/data/data.json";
 
-export async function getProfile() {
+async function fetchAPI(endpoint: string) {
   try {
-    const query = `*[_type == "profile"][0]{
-      name,
-      title,
-      headline,
-      summary,
-      "profileImage": profileImage.asset->url,
-      email,
-      phone,
-      location,
-      resumeUrl,
-      socials
-    }`;
-    const profile = await client.fetch(query);
-    return profile || data.bio;
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+      next: { revalidate: 60 },
+    }); // 60s cache
+    if (!res.ok) throw new Error("Failed to fetch data");
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message || "API error");
+    return json.data;
   } catch (error) {
-    console.error("Sanity fetch failed:", error);
-    return data.bio;
+    console.error(`API fetch failed for ${endpoint}:`, error);
+    return null;
   }
+}
+
+export async function getProfile() {
+  const profile = await fetchAPI("/profile");
+  return profile || data.bio;
 }
 
 export async function getProjects() {
-  try {
-    const query = `*[_type == "project"] | order(year desc) {
-      ...,
-      "id": slug.current,
-      "images": images[].asset->url
-    }`;
-    const projects = await client.fetch(query);
-    return projects.length > 0 ? projects : data.projects;
-  } catch (error) {
-    console.warn("Sanity fetch failed:", error);
-    return data.projects;
-  }
+  const projects = await fetchAPI("/projects");
+  return projects || data.projects;
 }
 
-export async function getProject(id: string) {
-  try {
-    const query = `*[_type == "project" && slug.current == $id][0] {
-      ...,
-      "id": slug.current,
-      "images": images[].asset->url
-    }`;
-    const project = await client.fetch(query, { id });
-    return project || data.projects.find((p) => p.id === id);
-  } catch (error) {
-    console.warn("Sanity fetch failed:", error);
-    return data.projects.find((p) => p.id === id);
-  }
+export async function getProject(slug: string) {
+  const project = await fetchAPI(`/projects/${slug}`);
+  return project || data.projects.find((p) => p.id === slug);
 }
 
 export async function getSkills() {
-  try {
-    const query = `*[_type == "skill"]`;
-    const skills = await client.fetch(query);
-    return skills.length > 0 ? skills : data.skills;
-  } catch (error) {
-    console.warn("Sanity fetch failed:", error);
-    return data.skills;
-  }
+  const skills = await fetchAPI("/skills");
+  // Ensure we fallback if API returns empty array or null, but API should return list
+  return skills?.length ? skills : data.skills;
 }
 
 export async function getExperience() {
-  try {
-    const query = `*[_type == "experience"] | order(start desc)`;
-    const experience = await client.fetch(query);
-    return experience.length > 0 ? experience : data.experience;
-  } catch (error) {
-    console.warn("Sanity fetch failed:", error);
-    return data.experience;
-  }
+  const experience = await fetchAPI("/experience");
+  return experience?.length ? experience : data.experience;
 }
 
 export async function getEducation() {
+  const education = await fetchAPI("/education");
+  return education?.length ? education : data.education;
+}
+
+export async function getServices() {
+  const services = await fetchAPI("/services");
+  return services || [];
+}
+
+export async function getService(slug: string) {
+  const service = await fetchAPI(`/services/${slug}`);
+  return service || null;
+}
+
+export async function getServicePrice(slug: string) {
+  const data = await fetchAPI(`/services/${slug}/price`);
+  return data || null;
+}
+
+export async function submitQuotation(data: any) {
   try {
-    const query = `*[_type == "education"] | order(start desc)`;
-    const education = await client.fetch(query);
-    return education.length > 0 ? education : data.education;
+    const res = await fetch(`${API_BASE_URL}/quotations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+    return json;
   } catch (error) {
-    console.warn("Sanity fetch failed:", error);
-    return data.education;
+    console.error("Failed to submit quotation:", error);
+    return { success: false, message: "Network error" };
   }
 }

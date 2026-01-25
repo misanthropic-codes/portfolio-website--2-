@@ -42,7 +42,7 @@ export function TechGlobe() {
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [autoRotate, setAutoRotate] = useState(true);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const lastUpdateRef = useRef<number>(0);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export function TechGlobe() {
         const scale = (z + radius) / (radius * 2)
         const opacity = Math.max(0.3, scale)
 
-        element.style.transform = `translate3d(${x}px, ${y}px, 0px) scale(${scale})`
+        element.style.transform = `translate3d(${x}px, ${y}px, 0px) translate(-50%, -50%) scale(${scale})`
         element.style.opacity = opacity.toString()
         element.style.zIndex = Math.floor(z + radius).toString()
         element.style.willChange = 'transform, opacity'
@@ -160,7 +160,7 @@ export function TechGlobe() {
   };
 
   return (
-    <div className="relative w-80 h-80 mx-auto cursor-grab active:cursor-grabbing select-none">
+    <div className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] mx-auto cursor-grab active:cursor-grabbing select-none flex items-center justify-center">
       <div
         ref={containerRef}
         className="relative w-full h-full"
