@@ -25,3 +25,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# build output and OS files
+/dist
+.DS_Store
+.sanity
