@@ -1,30 +1,36 @@
-import type { Metadata } from "next"
-import { ServicesGrid } from "@/components/services-grid"
-import { getServices } from "@/lib/data"
+import type { Metadata } from "next";
+import Link from "next/link";
+import { getServices } from "@/lib/api";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description: "Professional web development and software engineering services.",
-}
-
-export const revalidate = 60;
+export const revalidate = 300;
+export const metadata: Metadata = { title: "Services", description: "Full-stack, mobile and frontend development." };
 
 export default async function ServicesPage() {
   const services = await getServices();
-  
   return (
-    <div className="min-h-screen py-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            My <span className="gradient-text">Services</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            High-quality software solutions tailored to your specific needs, from web applications to system architecture.
-          </p>
-        </div>
-        <ServicesGrid services={services} />
+    <section className="page wrap">
+      <div className="page-head rv">
+        <span className="label">Services</span>
+        <h1>Work with me</h1>
+        <p>Pick what you need, then send a brief from the contact page.</p>
       </div>
-    </div>
-  )
+      {services.length ? (
+        <div className="svcs">
+          {services.map((s, i) => (
+            <Link key={s.id} href={`/services/${s.slug}`} className="feat svc-card rv" data-cursor="Open">
+              <i>{String(i + 1).padStart(2, "0")}</i>
+              <div>
+                <b>{s.title}</b>
+                <small>{s.tagline}</small>
+                {s.base_price != null && <span className="mono svc-from">from {s.currency ?? "USD"} {Number(s.base_price).toLocaleString("en-GB")}</span>}
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <p className="muted">Services are being updated. <Link className="link" href="/contact">Get in touch</Link> in the meantime.</p>
+      )}
+      <div style={{ height: 96 }} />
+    </section>
+  );
 }
