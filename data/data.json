@@ -92,14 +92,15 @@
       "start": "2026-03",
       "end": "Present",
       "location": "Noida · Onsite · Full-time",
-      "description": "AlphaPe teaches school and college students how money works, through lessons, quizzes, quests and an 8-day money simulation. I work across the mobile app, the web app and the API, and wrote most of the React Native app.",
+      "description": "AlphaPe teaches school and college students how money works, through lessons, quizzes, quests and an 8-day money simulation. I own core backend systems in FastAPI and MySQL (profile versioning, simulation scoring, payments and admin tooling) and built most of the mobile app.",
       "achievements": [
-        "Built most of the AlphaPe mobile app in React Native and Expo (344 of its 373 commits), from sign-in to App Store and Play Store releases",
-        "Shipped Apple in-app purchases on StoreKit 2, with receipts and webhooks verified on the server, alongside Cashfree payments",
-        "Added Google and Apple sign-in on Firebase, secure token storage with refresh-token rotation, and retries for weak networks",
-        "Built the teacher dashboard: class reports, CSV export, nudges and push notifications",
-        "Wrote FastAPI and MySQL services for quizzes, quests with autosave, leaderboards, subscriptions and an admin API with bulk user provisioning",
-        "Built simulation scenes and the admin panel (quiz builder, Communications Center, audit logs) in React and Redux Toolkit, with English and Hindi throughout"
+        "Built profile versioning for the college simulation: each run is frozen once as its own versioned profile (27 micro-tags, 6 traits and the report the player saw), which made stored profile data 80% cleaner",
+        "Built the Simulation Lab for testing simulations against content internally, backed by a run recorder that captures every scene and pick, an admin API and a backfill for past runs",
+        "Versioned the Day 8 settlement so tag and trait scores record their engine version and inputs, and added endpoints that compare a player's profiles across sets; 87 tests cover the work",
+        "Hardened payments: Apple IAP with StoreKit 2 signed transactions, Cashfree order validation and webhook timestamp checks, subscriptions and B2C free access",
+        "Built the admin API (user management, audit logs, schools and grades), bulk user provisioning, push campaigns, daily and weekly behaviour-report jobs, and health-checked production deploys with automatic rollback",
+        "Built most of the React Native and Expo app (344 of its 373 commits): Google and Apple sign-in, refresh-token rotation, the teacher dashboard, and App Store and Play Store releases",
+        "Built simulation scenes for College Days 3, 5 and 7 and the web admin panel, including the Internal Testing Dashboard, in React and Redux Toolkit"
       ]
     },
     {
