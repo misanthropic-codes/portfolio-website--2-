@@ -4,7 +4,7 @@ import { replayEvents, shortLabel } from "@/lib/replay";
 import { breakdown, levels, yearStats } from "@/lib/contributions";
 import { highlight } from "@/lib/highlight";
 import { formatMonth, period, timeAgo } from "@/lib/format";
-import { allTech, canonicalTech, layerOf } from "@/lib/stack";
+import { allTech, canonicalTech, layerOf, techInRole } from "@/lib/stack";
 import type { Project, Profile } from "@/lib/types";
 
 const project = (id: string, over: Partial<Project> = {}): Project => ({
@@ -114,5 +114,18 @@ describe("format and stack", () => {
     expect(canonicalTech("Tailwind CSS")).toBe("Tailwind");
     expect(layerOf("Express.js")).toBe("Server");
     expect(allTech([project("a", { tech: ["Stripe", "React.js"] }), project("b", { tech: ["React", "Prisma"] })])).toEqual(["React", "Prisma", "Stripe"]);
+  });
+});
+
+describe("techInRole", () => {
+  const skills = [{ category: "x", items: ["React", "React Native", "Next.js", "AWS (EC2, RDS)", "Git", "Express.js"] }];
+  const role = (text: string) => ({ role: "Dev", company: "Co", start: "2026-03", end: null, location: null, description: text, achievements: [] });
+
+  it("finds whole tool names, strips the bracket and applies aliases", () => {
+    expect(techInRole(role("Built the React Native app and deploys to AWS EC2 with Express"), skills)).toEqual(["React", "React Native", "AWS", "Express"]);
+  });
+
+  it("does not match a tool inside a longer word", () => {
+    expect(techInRole(role("Set up GitHub Actions and Next.js pages"), skills)).toEqual(["Next.js"]);
   });
 });

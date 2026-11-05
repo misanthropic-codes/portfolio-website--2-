@@ -2,12 +2,12 @@
   "bio": {
     "name": "Abhishek Kumar",
     "pronouns": "He/Him",
-    "title": "Full Stack Web Developer | Graphics Designer",
+    "title": "Full-stack developer",
     "location": "Ranchi, Jharkhand, India",
     "email": "misanthropic.codes@outlook.com",
     "phone": "+91-9523035004",
     "headline": "Full Stack Developer | Co-Founder @BullBear.Ai | React, Firebase, Next.js",
-    "summary": "I'm a passionate full-stack web developer and designer currently pursuing B.Tech in Electrical Engineering at Haldia Institute of Technology. From crafting SaaS platforms to building AI-driven fintech products, I bring a mix of design, development, and leadership to everything I do.",
+    "summary": "I'm a full-stack developer. At AlphaPe in Noida I work on the FastAPI backend and the React Native app, and I lead development at Fixxer, a platform for appliance repairs and spare parts. I'm also studying Electrical Engineering at HIT Haldia.",
     "profileImage": "/profile.jpg",
     "socials": {
       "github": "https://github.com/misanthropic-codes",
@@ -44,7 +44,9 @@
         "MySQL",
         "MongoDB",
         "Firebase",
+        "AWS (EC2, RDS)",
         "Docker",
+        "GitHub Actions",
         "EAS Build",
         "Cloudinary",
         "Azure",
@@ -98,7 +100,7 @@
         "Built the Simulation Lab, an internal tool where content writers and QA play any day's scenes without an account, jump straight to a scene and check content against the scoring files. Testing new content no longer means rebuilding the simulation, cutting the cycle from weeks to minutes",
         "Versioned the Day 8 settlement so tag and trait scores record their engine version and inputs, and added endpoints that compare a player's profiles across sets",
         "Hardened payments: Apple IAP with StoreKit 2 signed transactions, Cashfree order validation and webhook checks, subscriptions and B2C free access",
-        "Built the admin API (user management, audit logs, schools and grades), bulk user provisioning, push campaigns, behaviour-report jobs, and production deploys with health checks and automatic rollback",
+        "Built the admin API (user management, audit logs, schools and grades), bulk user provisioning, push campaigns and behaviour-report jobs, and automated deploys to AWS EC2 (Docker, GitHub Actions) with health checks and automatic rollback",
         "Built most of the React Native and Expo app: Google and Apple sign-in, refresh-token rotation, the teacher dashboard, and App Store and Play Store releases",
         "Built simulation scenes for College Days 3, 5 and 7 and the web admin panel in React and Redux Toolkit"
       ]

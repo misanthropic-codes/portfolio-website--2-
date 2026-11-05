@@ -11,8 +11,8 @@ export function shortLabel(title: string): string {
  * Orders projects by when their repo was created (projects without a public repo fall back to the
  * end of their stated year) and records which tools each one used for the first time.
  */
-export function replayEvents(projects: Project[], created: Record<string, string | null>) {
-  const when = (p: Project) => created[p.id] ?? (p.year ? `${p.year}-12-31` : "9999-12-31");
+export function replayEvents(projects: Pick<Project, "id" | "year" | "tech">[], created: Record<string, string | null>) {
+  const when = (p: Pick<Project, "id" | "year">) => created[p.id] ?? (p.year ? `${p.year}-12-31` : "9999-12-31");
   const seen = new Set<string>();
   return [...projects]
     .sort((a, b) => when(a).localeCompare(when(b)))

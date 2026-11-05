@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { reducedMotion } from "@/components/site/client-utils";
 
-export interface GraphProject { id: string; title: string; label: string; year: string | null; status: string | null; tech: string[] }
+/** A project, or a job shown alongside the projects (`href` points it at its own page). */
+export interface GraphProject { id: string; title: string; label: string; year: string | null; status: string | null; tech: string[]; href?: string }
 export interface ReplayEvent { id: string; date: string | null; newTech: string[] }
 
 /*
@@ -80,7 +81,7 @@ export function StackGraph({ projects, tech, events, timelineSlot }: { projects:
       const n = active();
       if (!n) setReadout(null);
       else if (n.kind === "p") setReadout({ title: n.p!.title, sub: [n.p!.year, `${n.p!.tech.length} tools`, n.p!.status].filter(Boolean).join(" · ") });
-      else setReadout({ title: n.label, sub: `used in ${projects.filter((p) => p.tech.includes(n.label)).length} of ${projects.length} projects` });
+      else setReadout({ title: n.label, sub: `used in ${projects.filter((p) => p.tech.includes(n.label)).length} of ${projects.length} projects and roles` });
     };
     const setHover = (n: N | null) => { if (n !== hover) { hover = n; updateReadout(); } };
     const cursorLabel = () => {
@@ -90,7 +91,7 @@ export function StackGraph({ projects, tech, events, timelineSlot }: { projects:
     const onMove = (e: PointerEvent) => { [px, py] = local(e); inside = true; if (drag) { if (Math.hypot(px - down[0], py - down[1]) > 4) moved = true; } else setHover(pick(px, py)); cursorLabel(); wake(); };
     const onLeave = () => { inside = false; if (!drag) { setHover(null); delete cv.dataset.cursor; } wake(); };
     const onDown = (e: PointerEvent) => { const [x, y] = local(e); const n = pick(x, y); if (!n) return; px = x; py = y; drag = n; down = [x, y]; moved = false; inside = true; cv.setPointerCapture(e.pointerId); setHover(n); cursorLabel(); wake(); };
-    const onUp = () => { if (!drag) return; const n = drag; drag = null; cursorLabel(); updateReadout(); if (!moved && n.kind === "p") router.push(`/projects/${n.p!.id}`); wake(); };
+    const onUp = () => { if (!drag) return; const n = drag; drag = null; cursorLabel(); updateReadout(); if (!moved && n.kind === "p") router.push(n.p!.href ?? `/projects/${n.p!.id}`); wake(); };
     const onCancel = () => { drag = null; setHover(null); wake(); };
     cv.addEventListener("pointermove", onMove); cv.addEventListener("pointerleave", onLeave);
     cv.addEventListener("pointerdown", onDown); cv.addEventListener("pointerup", onUp); cv.addEventListener("pointercancel", onCancel);
@@ -294,7 +295,7 @@ export function StackGraph({ projects, tech, events, timelineSlot }: { projects:
         ) : ev && evProject ? (
           <><b>{ev.date ? when(ev.date, true) : evProject.year ?? "Date not public"}</b> · {evProject.title}{ev.newTech.length ? ` · picked up ${ev.newTech.join(", ")}` : " · no new tools"}</>
         ) : (
-          <><b>{projects.length} projects · {tech.length} tools</b> · in the order each repo was created</>
+          <><b>{projects.length} projects and roles · {tech.length} tools</b> · in the order I started them</>
         )}
       </p>
     </div>
@@ -304,7 +305,7 @@ export function StackGraph({ projects, tech, events, timelineSlot }: { projects:
     <div className="graph" ref={wrap}>
       <div className="g-stage"><canvas className="g-cv" ref={canvas} aria-hidden="true" /></div>
       <div className="g-a11y">
-        {projects.map((p) => <a key={p.id} className="sr" href={`/projects/${p.id}`}>Open {p.title}</a>)}
+        {projects.map((p) => <a key={p.id} className="sr" href={p.href ?? `/projects/${p.id}`}>Open {p.title}</a>)}
       </div>
       {timelineSlot ? (slot ? createPortal(timeline, slot) : null) : timeline}
     </div>

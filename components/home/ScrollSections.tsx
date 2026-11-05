@@ -132,8 +132,8 @@ export function Closing({ email, children }: { email: string | null; children?: 
   }, []);
   return (
     <div className="closing" ref={ref}>
-      <h2>Let&apos;s build<br />something.</h2>
-      <p>Taking on full-stack, mobile and frontend projects.{email ? " Email is the fastest way to reach me." : ""}</p>
+      <h2>Have a project<br />in mind?</h2>
+      <p>I take on freelance work: web apps, mobile apps and backends.{email ? " Email is the quickest way to reach me." : ""}</p>
       <div className="actions">{children}</div>
     </div>
   );
