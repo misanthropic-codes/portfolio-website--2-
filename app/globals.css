@@ -1012,3 +1012,23 @@ footer{border-top:1px solid var(--line)}
 .g-track{margin-bottom:32px}
 .g-cap{margin-top:0}
 @media (max-width:520px){.g-track{margin-bottom:8px}}
+
+/* ---- hero: two rows so the timeline shares the stats line and nothing re-centres ---- */
+.hero{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);grid-template-areas:"text graph" "stats timeline";align-items:center;row-gap:28px}
+.hero-text{grid-area:text}
+.hero .graph{grid-area:graph}
+.hero .stats{grid-area:stats;align-self:start;margin-top:0}
+.hero-tl{grid-area:timeline;align-self:start;min-height:76px}
+.hero-tl .g-rp{margin-top:-1px;padding:0}
+.hero-tl .g-track{margin:0 0 30px;height:1px;background:var(--line)}
+.hero-tl .g-fill{height:2px;top:-.5px}
+.hero-tl .g-cap{text-align:left;padding:0;min-height:2.9em}
+.g-fill{transform:scaleX(0)}
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"text" "graph" "timeline" "stats"}
+  .hero-tl{min-height:64px}
+}
+@media (max-width:520px){.hero-tl .g-track{margin-bottom:10px}}
+.rot{position:relative;display:inline-block;white-space:nowrap;vertical-align:bottom}
+.rot-sizer{visibility:hidden}
+.rot-live{position:absolute;left:0;top:0;white-space:nowrap}

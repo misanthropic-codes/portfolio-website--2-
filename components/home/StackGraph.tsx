@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { reducedMotion } from "@/components/site/client-utils";
 
 export interface GraphProject { id: string; title: string; label: string; year: string | null; status: string | null; tech: string[] }
@@ -13,13 +14,16 @@ export interface ReplayEvent { id: string; date: string | null; newTech: string[
  * Fixed 120 Hz physics steps, nearest-node picking with hysteresis, pauses off screen and in
  * background tabs. The replay grows the graph in the order the repos were created.
  */
-export function StackGraph({ projects, tech, events }: { projects: GraphProject[]; tech: string[]; events: ReplayEvent[] }) {
+export function StackGraph({ projects, tech, events, timelineSlot }: { projects: GraphProject[]; tech: string[]; events: ReplayEvent[]; timelineSlot?: string }) {
   const router = useRouter();
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const api = useRef<{ seek: (i: number) => void } | null>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const [readout, setReadout] = useState<{ title: string; sub: string } | null>(null);
-  const [rp, setRp] = useState({ t: events.length, playing: false });
+  const [shown, setShown] = useState(-1); // replay step in the caption; -1 = complete
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
+  useEffect(() => setSlot(timelineSlot ? document.getElementById(timelineSlot) : null), [timelineSlot]);
 
   useEffect(() => {
     const el = wrap.current!, cv = canvas.current!, ctx = cv.getContext("2d")!;
@@ -42,9 +46,8 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     events.forEach((ev, i) => { if (by[`p:${ev.id}`]) by[`p:${ev.id}`].born = i; ev.newTech.forEach((t) => { if (by[`t:${t}`]) by[`t:${t}`].born = i; }); });
     // Replay loop: starts when the graph first scrolls into view, grows one project every
     // ~2.5 s, holds the full graph, then replays. Reduced motion keeps the full graph.
-    const SPEED = 0.4, HOLD = 9;
+    const SPEED = 0.4, HOLD = 6;
     const state = { t: reduce ? events.length : 0, playing: false, started: false, hold: 0 };
-    setRp({ t: state.t, playing: false });
 
     const C: Record<string, string> = {};
     let glow = document.createElement("canvas");
@@ -208,16 +211,15 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     const tick = (now: number) => {
       const dt = Math.min(Math.max((now - last) / 1000, 0), 0.05); last = now; T += dt; acc += dt;
       let n = 0; while (acc >= STEP && n < 8) { step(STEP); acc -= STEP; n++; } if (n === 8) acc = 0;
-      if (state.started && !reduce && !active()) {
+      if (!reduce && !active()) {
         if (state.playing) {
           state.t = Math.min(events.length, state.t + dt * SPEED);
-          if (state.t >= events.length) { state.playing = false; state.hold = HOLD; }
-        } else if ((state.hold -= dt) <= 0 && events.length > 1) {
-          state.t = 0; state.playing = true;
+          if (state.t >= events.length) state.playing = false; // played once: stays complete
+        } else if (state.hold > 0 && (state.hold -= dt) <= 0) {
+          state.playing = true; // after a date was clicked, carry on to the full graph
         }
-        const ui = Math.round(state.t * 20) * 2 + Number(state.playing);
-        if (ui !== lastUi) { lastUi = ui; setRp({ t: state.t, playing: state.playing }); }
       }
+      paintTimeline();
       const eased = ease(dt);
       if (!reduce) { movePulses(dt); sweep = (sweep + dt * 0.55) % (Math.PI * 2); }
       draw();
@@ -226,15 +228,28 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     };
     function wake() { if (!running && visible) { running = true; last = performance.now(); raf = requestAnimationFrame(tick); } }
 
+    // The timeline is written straight to the DOM every frame; React only hears about step changes,
+    // so the replay never re-renders this component (or shifts layout) 60 times a second.
+    const paintTimeline = () => {
+      const slot = timelineRef.current;
+      if (!slot) return;
+      const fill = slot.querySelector<HTMLElement>(".g-fill");
+      if (fill) fill.style.transform = `scaleX(${(state.t / Math.max(events.length, 1)).toFixed(4)})`;
+      const reached = Math.floor(state.t - 0.001);
+      slot.querySelectorAll<HTMLElement>(".g-tick").forEach((t, i) => t.classList.toggle("on", i <= reached));
+      const step = state.t >= events.length && !state.playing ? -1 : Math.min(events.length - 1, reached);
+      if (step !== lastUi) { lastUi = step; setShown(step); }
+    };
+
     api.current = {
-      // clicking a date jumps there, holds, then the loop carries on
-      seek: (i: number) => { state.started = true; state.playing = false; state.t = i + 1; state.hold = HOLD; setRp({ t: state.t, playing: false }); wake(); },
+      // clicking a date shows the history up to it, holds, then grows on to the full graph
+      seek: (i: number) => { state.started = true; state.playing = false; state.t = i + 1; state.hold = HOLD; paintTimeline(); wake(); },
     };
 
     const ro = new ResizeObserver(resize); ro.observe(cv);
     const io = new IntersectionObserver(([en]) => {
       visible = en.isIntersecting && !document.hidden;
-      if (visible && !state.started && !reduce) { state.started = true; state.playing = events.length > 1; if (!state.playing) state.t = events.length; }
+      if (visible && !state.started) { state.started = true; state.playing = !reduce && events.length > 1; if (!state.playing) state.t = events.length; }
       if (visible) wake();
     }, { threshold: 0.35 });
     io.observe(el);
@@ -254,23 +269,18 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     };
   }, [projects, tech, events, router]);
 
-  const shown = rp.t >= events.length && !rp.playing ? -1 : Math.min(events.length - 1, Math.floor(rp.t - 0.001));
   const ev = shown >= 0 ? events[shown] : null;
   const evProject = ev ? projects.find((p) => p.id === ev.id) : null;
   const when = (d: string | null, long = false, year?: string | null) => d ? new Date(`${d}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", year: long ? "numeric" : "2-digit", timeZone: "UTC" }) : year ?? "—";
 
-  return (
-    <div className="graph" ref={wrap}>
-      <div className="g-stage"><canvas className="g-cv" ref={canvas} aria-hidden="true" /></div>
-      <div className="g-a11y">
-        {projects.map((p) => <a key={p.id} className="sr" href={`/projects/${p.id}`}>Open {p.title}</a>)}
-      </div>
+  const timeline = (
+    <div className="g-tl" ref={timelineRef}>
       {events.length > 1 && (
         <div className="g-rp">
           <div className="g-track">
-            <span className="g-fill" style={{ transform: `scaleX(${(rp.t / events.length).toFixed(4)})` }} />
+            <span className="g-fill" />
             {events.map((e, i) => (
-              <button key={e.id} type="button" className={`g-tick ${i <= Math.floor(rp.t - 0.001) ? "on" : ""}`} style={{ left: `${((i + 1) / events.length) * 100}%` }}
+              <button key={e.id} type="button" className="g-tick" style={{ left: `${((i + 1) / events.length) * 100}%` }}
                 onClick={() => api.current?.seek(i)} aria-label={`Show history up to ${projects.find((p) => p.id === e.id)?.title}`}>
                 <i /><span className="mono">{when(e.date, false, projects.find((p) => p.id === e.id)?.year)}</span>
               </button>
@@ -287,6 +297,16 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
           <><b>{projects.length} projects · {tech.length} tools</b> · in the order each repo was created</>
         )}
       </p>
+    </div>
+  );
+
+  return (
+    <div className="graph" ref={wrap}>
+      <div className="g-stage"><canvas className="g-cv" ref={canvas} aria-hidden="true" /></div>
+      <div className="g-a11y">
+        {projects.map((p) => <a key={p.id} className="sr" href={`/projects/${p.id}`}>Open {p.title}</a>)}
+      </div>
+      {timelineSlot ? (slot ? createPortal(timeline, slot) : null) : timeline}
     </div>
   );
 }

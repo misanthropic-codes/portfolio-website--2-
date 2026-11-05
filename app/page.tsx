@@ -37,7 +37,7 @@ export default async function HomePage() {
       <section className="page wrap">
         <div className="hero" id="hero">
           <div className="hero-bg" aria-hidden="true" />
-          <div>
+          <div className="hero-text">
             {current && (
               <span className="pill">
                 <span className="av av-sm av-on"><img src={profile.profileImage} alt="" width={22} height={22} /></span>
@@ -53,14 +53,15 @@ export default async function HomePage() {
               <Link className="btn" href="/projects">View work {arrow}</Link>
               <Link className="btn sec" href="/contact">Start a project</Link>
             </div>
-            <div className="stats">
-              <div><CountUp value={projects.length} /><span>Products built</span></div>
-              <div><CountUp value={experience.length} /><span>Roles held</span></div>
-              <div><CountUp value={tech.length} /><span>Tools in production</span></div>
-              {contributions && <div><CountUp value={contributions.total} /><span>Contributions in {year}</span></div>}
-            </div>
           </div>
-          <StackGraph projects={graphProjects} tech={tech} events={events} />
+          <StackGraph projects={graphProjects} tech={tech} events={events} timelineSlot="hero-timeline" />
+          <div className="stats">
+            <div><CountUp value={projects.length} /><span>Products built</span></div>
+            <div><CountUp value={experience.length} /><span>Roles held</span></div>
+            <div><CountUp value={tech.length} /><span>Tools in production</span></div>
+            {contributions && <div><CountUp value={contributions.total} /><span>Contributions in {year}</span></div>}
+          </div>
+          <div className="hero-tl" id="hero-timeline" />
         </div>
         <div className="ticker" aria-label="Roles">
           <div className="ticker-in">{[...experience, ...experience].map((e, i) => <span key={i}>{e.role} · {e.company}</span>)}</div>
