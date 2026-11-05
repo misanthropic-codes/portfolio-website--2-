@@ -133,7 +133,7 @@ function toService(s: any): Service {
 export const getSnippets = async (projectSlug?: string): Promise<Snippet[]> =>
   (await get<Snippet[]>(projectSlug ? `/snippets?project=${encodeURIComponent(projectSlug)}` : "/snippets", 900)) ?? [];
 
-export const getNow = () => get<NowData>("/now", 300);
+export const getNow = () => get<NowData>("/now", 60);
 
 export const getContributions = (year: number) => get<ContributionYear>(`/github/contributions?year=${year}`, 3600);
 
