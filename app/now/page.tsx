@@ -4,7 +4,7 @@ import { getNow, getProfile } from "@/lib/api";
 import { formatDate, timeAgo } from "@/lib/format";
 import { LiveClock } from "@/components/now/LiveClock";
 
-export const revalidate = 300;
+export const revalidate = 60;
 export const metadata: Metadata = { title: "Now", description: "What Abhishek is working on right now, from his live GitHub activity." };
 
 const arrow = <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
