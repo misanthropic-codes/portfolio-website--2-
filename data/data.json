@@ -18,16 +18,51 @@
   },
   "skills": [
     {
-      "category": "Frontend",
-      "items": ["React.js", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Redux"]
+      "category": "Frontend & mobile",
+      "items": [
+        "TypeScript",
+        "React",
+        "Next.js",
+        "React Native",
+        "Expo",
+        "Redux Toolkit",
+        "Zustand",
+        "Tailwind CSS",
+        "Radix UI",
+        "Framer Motion",
+        "i18next"
+      ]
     },
     {
       "category": "Backend",
-      "items": ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "Firebase", "JWT"]
+      "items": ["Node.js", "NestJS", "Express", "Python", "FastAPI", "REST APIs", "JWT & OAuth", "Elasticsearch", "Swagger"]
     },
     {
-      "category": "Tools & Others",
-      "items": ["Git", "Linux", "Graphics Design", "Project Management", "Figma", "Docker"]
+      "category": "Data, cloud & tools",
+      "items": [
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Firebase",
+        "Docker",
+        "EAS Build",
+        "Cloudinary",
+        "Azure",
+        "Git",
+        "Linux",
+        "Figma"
+      ]
+    },
+    {
+      "category": "Payments & platform",
+      "items": [
+        "Apple IAP (StoreKit 2)",
+        "Cashfree",
+        "Push notifications (FCM)",
+        "Google & Apple sign-in",
+        "GST invoicing",
+        "PDF & Excel exports"
+      ]
     }
   ],
   "education": [
@@ -52,6 +87,38 @@
   ],
   "experience": [
     {
+      "role": "SDE Intern",
+      "company": "Anabin Technologies (AlphaPe)",
+      "start": "2026-03",
+      "end": "Present",
+      "location": "Noida · Onsite · Full-time",
+      "description": "AlphaPe teaches school and college students how money works, through lessons, quizzes, quests and an 8-day money simulation. I work across the mobile app, the web app and the API, and wrote most of the React Native app.",
+      "achievements": [
+        "Built most of the AlphaPe mobile app in React Native and Expo (344 of its 373 commits), from sign-in to App Store and Play Store releases",
+        "Shipped Apple in-app purchases on StoreKit 2, with receipts and webhooks verified on the server, alongside Cashfree payments",
+        "Added Google and Apple sign-in on Firebase, secure token storage with refresh-token rotation, and retries for weak networks",
+        "Built the teacher dashboard: class reports, CSV export, nudges and push notifications",
+        "Wrote FastAPI and MySQL services for quizzes, quests with autosave, leaderboards, subscriptions and an admin API with bulk user provisioning",
+        "Built simulation scenes and the admin panel (quiz builder, Communications Center, audit logs) in React and Redux Toolkit, with English and Hindi throughout"
+      ]
+    },
+    {
+      "role": "Lead Full-stack Developer",
+      "company": "Busigrow (Fixxer)",
+      "start": "2026-04",
+      "end": "Present",
+      "location": "Part-time contract",
+      "description": "Fixxer books appliance repairs and sells spare parts. I lead development and wrote most of the NestJS backend and the Next.js web app.",
+      "achievements": [
+        "Designed the NestJS and MongoDB backend (73 of 95 commits): bookings, technician assignment, visits and job sheets",
+        "Built search on Elasticsearch with autocomplete, falling back to MongoDB",
+        "Built GST invoicing with PDF and Excel exports, warranty claims, and technician settlements and payouts",
+        "Launched the spare-parts shop: catalogue with bulk upload, cart, checkout and orders",
+        "Built the Next.js 16 web app: a booking flow that resumes drafts, the customer dashboard and the admin dashboard",
+        "Added phone quick login, Google sign-in and email OTP, plus a code that verifies each technician visit"
+      ]
+    },
+    {
       "role": "Co-Founder & Developer",
       "company": "BullBear.Ai",
       "start": "2025-06",
@@ -71,11 +138,7 @@
       "end": "Present",
       "location": "Remote",
       "description": "Led frontend development of a SaaS platform from scratch, improved SEO, and managed a team to enhance reach and engagement.",
-      "achievements": [
-        "Built SaaS platform from ground up",
-        "Improved SEO performance by 150%",
-        "Led team of 3 developers"
-      ]
+      "achievements": ["Built SaaS platform from ground up", "Improved SEO performance by 150%", "Led team of 3 developers"]
     },
     {
       "role": "Web Developer",
@@ -143,73 +206,78 @@
       "solution": "Built comprehensive ML pipelines and an intuitive stock sentiment dashboard that provides actionable insights for smarter trading decisions.",
       "learnings": "Learned to work under extreme time pressure, improved teamwork skills, and discovered the powerful synergy between ML and web technologies.",
       "future": "Planning to integrate brokerage APIs, add advanced charting capabilities, and implement real-time sentiment heatmaps for market analysis.",
-      "images": ["/images/f1.png", "/images/f2.png","/images/f3.png", "/images/f4.png", "/images/f5.png"],
+      "images": ["/images/f1.png", "/images/f2.png", "/images/f3.png", "/images/f4.png", "/images/f5.png"],
       "featured": true,
       "githubUrl": "https://github.com/misanthropic-codes/finai-hackfest"
     },
-   {
-  "id": "blog-website",
-  "title": "Dev Blog Platform",
-  "year": "2024",
-  "tech": ["Next.js", "Prisma", "Cloudinary", "NextAuth", "Express.js", "REST APIs"],
-  "description": "A full-featured blog platform with authentication, user dashboards, dynamic post creation, and media support using Cloudinary.",
-  "problem": "Content creators needed a minimal, modern blogging solution with rich text editing, secure auth, and media uploads—without relying on bloated CMS tools.",
-  "solution": "Developed a fully functional blog platform using Next.js for the frontend and server-side rendering, Prisma for database ORM, Express.js REST APIs for data operations, Cloudinary for image uploads, and NextAuth for secure user authentication.",
-  "learnings": "Learned how to integrate a complete auth system using NextAuth with role-based access, implement image storage via Cloudinary, and structure a full-stack app with clean separation between backend (Express) and frontend (Next.js).",
-  "future": "Plan to add markdown support, scheduled publishing, AI-generated summaries, and a notification system for user interactions.",
-  "images": ["/images/bq.png", "/images/b2.png"],
-  "featured": false,
-  "githubUrl": "https://github.com/misanthropic-codes/blogity",
-  "liveUrl": "https://blogity-ten.vercel.app/"
-}
-,
     {
-  "id": "skillsync-ai",
-  "title": "SkillSync AI",
-  "year": "2025",
-  "tech": ["Next.js", "Node.js", "MongoDB", "Tailwind CSS", "Socket.io", "OpenAI API"],
-  "description": "An AI-powered networking platform that connects users based on shared or complementary skillsets. Enables real-time chat and team formation.",
-  "problem": "Finding ideal teammates or collaborators with matching or complementary skills is difficult, especially in large communities or remote environments.",
-  "solution": "Developed an intelligent matching system using AI to analyze user skills, preferences, and availability. Integrated real-time chat and team creation to foster instant collaboration.",
-  "learnings": "Gained experience in building AI-driven user matching algorithms, working with real-time chat systems using Socket.io, and enhancing user engagement with tailored recommendations.",
-  "future": "Plans to add calendar sync for collaboration schedules, skill endorsement system, gamified user progress, and integration with GitHub and LinkedIn for automatic skill imports.",
-  "images": ["/images/s1.png", "/images/s2.png","/images/s3.png", "/images/s4.png","/images/s5.png", "/images/s6.png"],
-  "featured": false,
- 
-  "githubUrl": "https://github.com/misanthropic-codes/skillsync-ai"
-},
-
-   {
-  "id": "gdg-recruitment-platform",
-  "title": "GDG Recruitment Management Platform",
-  "year": "2025",
-  "tech": ["React.js", "Node.js", "Express", "MongoDB", "Redis", "Socket.io", "Bull Queue", "Tailwind CSS", "JWT Authentication", "Cloudinary"],
-  "description": "Comprehensive recruitment management system built for Google Developer Group on Campus to streamline team member selection and application tracking.",
-  "problem": "GDG on Campus faced challenges managing hundreds of applications, tracking candidate progress, and coordinating between recruiters during team member selection process.",
-  "solution": "Developed a full-stack platform with applicant dashboard, recruiter panel, automated screening, interview scheduling, and real-time status tracking to digitize the entire recruitment workflow.",
-  "learnings": "Gained expertise in building scalable web applications, user authentication systems, database design for complex workflows, and creating intuitive admin interfaces.",
-  "future": "Planning to add AI-powered resume screening, video interview integration, analytics dashboard, and bulk communication features.",
-  "images": ["/images/g1.png", "/images/g2.png", "/images/g3.png"],
-  "featured": true,
-  "liveUrl": "https://gdghit.site"
-  
-},
-   
+      "id": "blog-website",
+      "title": "Dev Blog Platform",
+      "year": "2024",
+      "tech": ["Next.js", "Prisma", "Cloudinary", "NextAuth", "Express.js", "REST APIs"],
+      "description": "A full-featured blog platform with authentication, user dashboards, dynamic post creation, and media support using Cloudinary.",
+      "problem": "Content creators needed a minimal, modern blogging solution with rich text editing, secure auth, and media uploads—without relying on bloated CMS tools.",
+      "solution": "Developed a fully functional blog platform using Next.js for the frontend and server-side rendering, Prisma for database ORM, Express.js REST APIs for data operations, Cloudinary for image uploads, and NextAuth for secure user authentication.",
+      "learnings": "Learned how to integrate a complete auth system using NextAuth with role-based access, implement image storage via Cloudinary, and structure a full-stack app with clean separation between backend (Express) and frontend (Next.js).",
+      "future": "Plan to add markdown support, scheduled publishing, AI-generated summaries, and a notification system for user interactions.",
+      "images": ["/images/bq.png", "/images/b2.png"],
+      "featured": false,
+      "githubUrl": "https://github.com/misanthropic-codes/blogity",
+      "liveUrl": "https://blogity-ten.vercel.app/"
+    },
     {
-  "id": "ecommerce-platform",
-  "title": "E-Commerce Platform",
-  "year": "2024",
-  "tech": ["Next.js", "Stripe", "PostgreSQL", "Prisma"],
-  "description": "A modern e-commerce platform currently in development with core features like payment integration, inventory management, and admin dashboard already implemented.",
-  "problem": "Small businesses needed an affordable, feature-rich e-commerce solution.",
-  "solution": "Built a scalable and modular architecture with essential e-commerce features such as secure payment processing, product inventory tracking, and admin analytics dashboard.",
-  "learnings": "Learned payment gateway integration, database optimization, and complex state management during MVP development.",
-  "future": "Currently in active development. Upcoming features include multi-vendor support, AI-powered product recommendations, real-time analytics, and a mobile application for end-users.",
-  "images": ["/images/e1.png", "/images/e2.png"],
-  "featured": false,
-  "githubUrl": "https://github.com/misanthropic-codes/ecommerce-platform"
-}
-
+      "id": "skillsync-ai",
+      "title": "SkillSync AI",
+      "year": "2025",
+      "tech": ["Next.js", "Node.js", "MongoDB", "Tailwind CSS", "Socket.io", "OpenAI API"],
+      "description": "An AI-powered networking platform that connects users based on shared or complementary skillsets. Enables real-time chat and team formation.",
+      "problem": "Finding ideal teammates or collaborators with matching or complementary skills is difficult, especially in large communities or remote environments.",
+      "solution": "Developed an intelligent matching system using AI to analyze user skills, preferences, and availability. Integrated real-time chat and team creation to foster instant collaboration.",
+      "learnings": "Gained experience in building AI-driven user matching algorithms, working with real-time chat systems using Socket.io, and enhancing user engagement with tailored recommendations.",
+      "future": "Plans to add calendar sync for collaboration schedules, skill endorsement system, gamified user progress, and integration with GitHub and LinkedIn for automatic skill imports.",
+      "images": ["/images/s1.png", "/images/s2.png", "/images/s3.png", "/images/s4.png", "/images/s5.png", "/images/s6.png"],
+      "featured": false,
+      "githubUrl": "https://github.com/misanthropic-codes/skillsync-ai"
+    },
+    {
+      "id": "gdg-recruitment-platform",
+      "title": "GDG Recruitment Management Platform",
+      "year": "2025",
+      "tech": [
+        "React.js",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Redis",
+        "Socket.io",
+        "Bull Queue",
+        "Tailwind CSS",
+        "JWT Authentication",
+        "Cloudinary"
+      ],
+      "description": "Comprehensive recruitment management system built for Google Developer Group on Campus to streamline team member selection and application tracking.",
+      "problem": "GDG on Campus faced challenges managing hundreds of applications, tracking candidate progress, and coordinating between recruiters during team member selection process.",
+      "solution": "Developed a full-stack platform with applicant dashboard, recruiter panel, automated screening, interview scheduling, and real-time status tracking to digitize the entire recruitment workflow.",
+      "learnings": "Gained expertise in building scalable web applications, user authentication systems, database design for complex workflows, and creating intuitive admin interfaces.",
+      "future": "Planning to add AI-powered resume screening, video interview integration, analytics dashboard, and bulk communication features.",
+      "images": ["/images/g1.png", "/images/g2.png", "/images/g3.png"],
+      "featured": true,
+      "liveUrl": "https://gdghit.site"
+    },
+    {
+      "id": "ecommerce-platform",
+      "title": "E-Commerce Platform",
+      "year": "2024",
+      "tech": ["Next.js", "Stripe", "PostgreSQL", "Prisma"],
+      "description": "A modern e-commerce platform currently in development with core features like payment integration, inventory management, and admin dashboard already implemented.",
+      "problem": "Small businesses needed an affordable, feature-rich e-commerce solution.",
+      "solution": "Built a scalable and modular architecture with essential e-commerce features such as secure payment processing, product inventory tracking, and admin analytics dashboard.",
+      "learnings": "Learned payment gateway integration, database optimization, and complex state management during MVP development.",
+      "future": "Currently in active development. Upcoming features include multi-vendor support, AI-powered product recommendations, real-time analytics, and a mobile application for end-users.",
+      "images": ["/images/e1.png", "/images/e2.png"],
+      "featured": false,
+      "githubUrl": "https://github.com/misanthropic-codes/ecommerce-platform"
+    }
   ],
   "contact": {
     "email": "misanthropic.codes@outlook.com",
