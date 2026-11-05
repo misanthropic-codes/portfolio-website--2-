@@ -95,12 +95,12 @@
       "description": "AlphaPe teaches school and college students how money works, through lessons, quizzes, quests and an 8-day money simulation. I own core backend systems in FastAPI and MySQL (profile versioning, simulation scoring, payments and admin tooling) and built most of the mobile app.",
       "achievements": [
         "Built profile versioning for the college simulation: each run is frozen once as its own versioned profile (27 micro-tags, 6 traits and the report the player saw), which made stored profile data 80% cleaner",
-        "Built the Simulation Lab for testing simulations against content internally, backed by a run recorder that captures every scene and pick, an admin API and a backfill for past runs",
-        "Versioned the Day 8 settlement so tag and trait scores record their engine version and inputs, and added endpoints that compare a player's profiles across sets; 87 tests cover the work",
-        "Hardened payments: Apple IAP with StoreKit 2 signed transactions, Cashfree order validation and webhook timestamp checks, subscriptions and B2C free access",
-        "Built the admin API (user management, audit logs, schools and grades), bulk user provisioning, push campaigns, daily and weekly behaviour-report jobs, and health-checked production deploys with automatic rollback",
-        "Built most of the React Native and Expo app (344 of its 373 commits): Google and Apple sign-in, refresh-token rotation, the teacher dashboard, and App Store and Play Store releases",
-        "Built simulation scenes for College Days 3, 5 and 7 and the web admin panel, including the Internal Testing Dashboard, in React and Redux Toolkit"
+        "Built the Simulation Lab, an internal tool where content writers and QA play any day's scenes without an account, jump straight to a scene and check content against the scoring files. Testing new content no longer means rebuilding the simulation, cutting the cycle from weeks to minutes",
+        "Versioned the Day 8 settlement so tag and trait scores record their engine version and inputs, and added endpoints that compare a player's profiles across sets",
+        "Hardened payments: Apple IAP with StoreKit 2 signed transactions, Cashfree order validation and webhook checks, subscriptions and B2C free access",
+        "Built the admin API (user management, audit logs, schools and grades), bulk user provisioning, push campaigns, behaviour-report jobs, and production deploys with health checks and automatic rollback",
+        "Built most of the React Native and Expo app: Google and Apple sign-in, refresh-token rotation, the teacher dashboard, and App Store and Play Store releases",
+        "Built simulation scenes for College Days 3, 5 and 7 and the web admin panel in React and Redux Toolkit"
       ]
     },
     {
@@ -111,7 +111,7 @@
       "location": "Part-time contract",
       "description": "Fixxer books appliance repairs and sells spare parts. I lead development and wrote most of the NestJS backend and the Next.js web app.",
       "achievements": [
-        "Designed the NestJS and MongoDB backend (73 of 95 commits): bookings, technician assignment, visits and job sheets",
+        "Designed the NestJS and MongoDB backend: bookings, technician assignment, visits and job sheets",
         "Built search on Elasticsearch with autocomplete, falling back to MongoDB",
         "Built GST invoicing with PDF and Excel exports, warranty claims, and technician settlements and payouts",
         "Launched the spare-parts shop: catalogue with bulk upload, cart, checkout and orders",
