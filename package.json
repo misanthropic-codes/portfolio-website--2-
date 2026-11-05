@@ -2,10 +2,12 @@
   "name": "misanthropic-portfolio",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "26.x"
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
     "start": "next start",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
@@ -13,7 +15,7 @@
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "next": "15.2.8",
+    "next": "^16.4.5",
     "react": "^19",
     "react-dom": "^19"
   },
