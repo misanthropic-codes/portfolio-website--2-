@@ -5,14 +5,17 @@ import { useEffect } from "react";
 import { finePointer } from "./client-utils";
 
 /*
- * Pointer: a ring driven by a critically damped spring (real frame time, no overshoot) that snaps to
- * the shape of interactive elements and turns into a labelled disc over [data-cursor] cards.
+ * Pointer: a ring centred on the pointer that snaps to the shape of interactive elements and turns
+ * into a labelled disc over [data-cursor] cards. Off a target the ring sits exactly on the pointer and
+ * only its size eases; on a target a critically damped spring moves it, and scrolling carries it with
+ * the element so it never trails. Elements with their own hover effect (OWN) get the dot only.
  * Hit-testing runs on pointer and scroll events only; snapped elements are measured without their own
  * magnetic offset (no feedback loop); a 10px band stops flicker at edges; the loop sleeps when settled.
  * Mouse only. Touch and reduced-motion users keep the native pointer.
  */
-const SNAP = ".btn,.nav a,.icon-btn,.kbd,.chip,.st,.ao label,.seg button,.xpx-item,.chan-a,.link,.logo,.svc-opt,.tags a.tag,.crumb a,.foot a,.proj-body aside a,.pal li.it,.mail-big,.a-layer,.ide-file,.ide-note";
+const SNAP = ".btn,.nav a,.icon-btn,.kbd,.chip,.st,.ao label,.seg button,.xpx-item,.link,.logo,.svc-opt,.tags a.tag,.crumb a,.foot a,.proj-body aside a,.pal li.it,.mail-big,.a-layer,.ide-file,.ide-note";
 const NO_PULL = ".xpx-item,.svc-opt,.mail-big,.pal li.it,.a-layer,.ao label,.ide-file,.ide-note";
+const OWN = ".chan,.xpx-item";
 
 export function Cursor() {
   const path = usePathname();
@@ -39,6 +42,7 @@ export function Cursor() {
     const KEYS = ["x", "y", "w", "h", "r"] as const;
     let mx = -100, my = -100, seen = false, down = false, mode = "free", running = false, last = 0;
     let snapEl: HTMLElement | null = null;
+    let anchor: { el: HTMLElement; left: number; top: number } | null = null;
 
     const shapeOf = (el: Element) => (el.matches(".a-layer") ? el.querySelector("rect") ?? el : el);
     const baseRect = (el: HTMLElement) => {
@@ -56,6 +60,7 @@ export function Cursor() {
     const hit = () => {
       const el = document.elementFromPoint(mx, my);
       const text = el?.closest('input[type="text"],input[type="email"],textarea');
+      const own = !text && el?.closest(OWN);
       let snap = el?.closest<HTMLElement>(SNAP) ?? null;
       const view = el?.closest<HTMLElement>("[data-cursor]") ?? null;
       if (!text && snapEl?.isConnected) {
@@ -63,7 +68,7 @@ export function Cursor() {
         if (mx > b.left - m && mx < b.left + b.width + m && my > b.top - m && my < b.top + b.height + m) snap = snapEl;
       }
       if (snap && view && !view.contains(snap)) snap = null;
-      mode = text ? "text" : snap ? "snap" : view ? "view" : "free";
+      mode = text ? "text" : own ? "own" : snap ? "snap" : view ? "view" : "free";
       setSnap(mode === "snap" ? snap : null);
       const label = mode === "view" ? view!.dataset.cursor ?? "" : "";
       if (lab.textContent !== label) lab.textContent = label;
@@ -73,30 +78,38 @@ export function Cursor() {
     const targets = () => {
       if (mode === "snap" && snapEl?.isConnected) {
         const b = baseRect(snapEl), pad = 4, cx = b.left + b.width / 2, cy = b.top + b.height / 2, dx = mx - cx, dy = my - cy;
+        // scrolling or layout moved the element: carry the ring with it instead of chasing it
+        if (anchor?.el === snapEl) { pos.x += b.left - anchor.left; pos.y += b.top - anchor.top; }
+        anchor = { el: snapEl, left: b.left, top: b.top };
         tgt.w = b.width + pad * 2; tgt.h = b.height + pad * 2;
-        tgt.x = b.left - pad + dx * 0.08; tgt.y = b.top - pad + dy * 0.08;
+        // lean a few px toward the pointer, never enough to look off target
+        tgt.x = b.left - pad + Math.max(-3, Math.min(3, dx * 0.04)); tgt.y = b.top - pad + Math.max(-3, Math.min(3, dy * 0.04));
         tgt.r = Math.min((radius.get(snapEl) ?? 8) + pad, tgt.h / 2);
         if (!snapEl.matches(NO_PULL)) {
           const px = Math.max(-6, Math.min(6, dx * 0.12)), py = Math.max(-4, Math.min(4, dy * 0.18));
           snapEl.style.translate = `${px.toFixed(2)}px ${py.toFixed(2)}px`;
         }
       } else if (mode === "view") { tgt.w = tgt.h = 84; tgt.x = mx - 42; tgt.y = my - 42; tgt.r = 42; }
-      else if (mode === "text") { tgt.w = tgt.h = 4; tgt.x = mx - 2; tgt.y = my - 2; tgt.r = 2; }
+      else if (mode === "text" || mode === "own") { tgt.w = tgt.h = 4; tgt.x = mx - 2; tgt.y = my - 2; tgt.r = 2; }
       else { tgt.w = tgt.h = 28; tgt.x = mx - 14; tgt.y = my - 14; tgt.r = 14; }
       if (down) { tgt.x += tgt.w * 0.06; tgt.y += tgt.h * 0.06; tgt.w *= 0.88; tgt.h *= 0.88; tgt.r *= 0.88; }
+      if (mode !== "snap") anchor = null;
     };
     const frame = (now: number) => {
       const dt = Math.min(Math.max((now - last) / 1000, 0), 1 / 30);
       last = now;
       targets();
-      const k = mode === "snap" ? 620 : mode === "view" ? 300 : 420, c = 2 * Math.sqrt(k);
+      const k = mode === "snap" ? 900 : 520, c = 2 * Math.sqrt(k), free = mode !== "snap";
       let moving = false;
       for (const key of KEYS) {
+        if (free && (key === "x" || key === "y")) continue;
         const a = -k * (pos[key] - tgt[key]) - c * vel[key];
         vel[key] += a * dt; pos[key] += vel[key] * dt;
         if (Math.abs(pos[key] - tgt[key]) > 0.02 || Math.abs(vel[key]) > 0.02) moving = true;
         else { pos[key] = tgt[key]; vel[key] = 0; }
       }
+      // off a target the ring stays centred on the pointer; only its size eases
+      if (free) { pos.x = mx - pos.w / 2; pos.y = my - pos.h / 2; vel.x = vel.y = 0; }
       ring.style.transform = `translate3d(${pos.x}px,${pos.y}px,0)`;
       ring.style.width = `${pos.w}px`; ring.style.height = `${pos.h}px`; ring.style.borderRadius = `${pos.r}px`;
       if (moving) requestAnimationFrame(frame); else running = false;

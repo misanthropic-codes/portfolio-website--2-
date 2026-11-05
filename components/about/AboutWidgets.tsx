@@ -51,6 +51,12 @@ export function IdCard({ profile, studying }: { profile: Profile; studying: stri
 export function ExperienceBrowser({ items }: { items: Experience[] }) {
   const [sel, setSel] = useState(0);
   const list = useRef<HTMLDivElement>(null);
+  // Hover selects a role only once the pointer rests on it, so sweeping across the list does not
+  // restart the panel's animation on every row it passes.
+  const intent = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const hoverSel = (i: number) => { clearTimeout(intent.current); intent.current = setTimeout(() => setSel(i), 90); };
+  const pick = (i: number) => { clearTimeout(intent.current); setSel(i); };
+  useEffect(() => () => clearTimeout(intent.current), []);
   const [ind, setInd] = useState({ top: 0, height: 0 });
   useEffect(() => {
     const place = () => {
@@ -69,7 +75,7 @@ export function ExperienceBrowser({ items }: { items: Experience[] }) {
         <span className="xpx-ind" style={{ transform: `translateY(${ind.top}px)`, height: ind.height }} />
         {items.map((x, i) => (
           <button key={`${x.company}-${x.role}`} type="button" role="tab" className="xpx-item" aria-selected={i === sel}
-            onPointerEnter={() => setSel(i)} onFocus={() => setSel(i)} onClick={() => setSel(i)}>
+            onPointerEnter={() => hoverSel(i)} onPointerLeave={() => clearTimeout(intent.current)} onFocus={() => pick(i)} onClick={() => pick(i)}>
             <span className="mono">{String(i + 1).padStart(2, "0")}</span>
             <span className="xpx-r"><b>{x.company}</b><small>{x.role}</small></span>
             <span className="xpx-arrow">→</span>
