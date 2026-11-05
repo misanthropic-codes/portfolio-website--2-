@@ -45,5 +45,5 @@ export function techInRole(role: Experience, skills: SkillGroup[]): string[] {
   const text = [role.role, role.description ?? "", ...role.achievements].join(" ");
   const names = new Set(skills.flatMap((g) => g.items.map((i) => canonicalTech(i.replace(/\s*\(.*\)\s*$/, "")))));
   const esc = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return [...names].filter((t) => new RegExp(`(^|[^\\w.])${esc(t)}(?![\\w])`, "i").test(text));
+  return [...names].filter((t) => new RegExp(`(^|[^\\w.-])${esc(t)}(?![\\w-])`, "i").test(text));
 }

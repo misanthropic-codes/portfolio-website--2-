@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- FinAI portfolio dashboard mock-up (sample data). Shows the features in GeekAlpha-Hackfest:
+     live prices from Yahoo Finance, the beta/volatility/drawdown risk score, similar-stock suggestions. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --bg:#050505; --card:#0f0f10; --line:#1f1f22; --fg:#f2f2f2; --mute:#8a8a90; --y:#facc15; --up:#4ade80; --down:#f87171; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); color: var(--fg);
+               font-family: "Poppins", "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  nav { height: 64px; display: flex; align-items: center; gap: 40px; padding: 0 36px; border-bottom: 1px solid var(--line); }
+  .logo { color: var(--y); font-weight: 700; font-size: 22px; }
+  nav a { color: var(--mute); font-size: 14px; text-decoration: none; }
+  nav a.on { color: var(--fg); }
+  .me { margin-left: auto; display: flex; gap: 14px; align-items: center; color: var(--mute); font-size: 13px; }
+  .me b { width: 34px; height: 34px; border-radius: 50%; background: var(--y); color: #000; display: grid; place-items: center; font-size: 13px; }
+  main { padding: 26px 36px; display: grid; grid-template-columns: 1fr 420px; gap: 22px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
+  .k { color: var(--mute); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  .big { font-size: 38px; font-weight: 600; margin-top: 6px; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .row { display: flex; align-items: baseline; gap: 14px; }
+  .tabs { margin-left: auto; display: flex; gap: 6px; }
+  .tabs span { font-size: 12px; padding: 5px 10px; border-radius: 8px; color: var(--mute); border: 1px solid var(--line); }
+  .tabs span.on { background: var(--y); color: #000; border-color: var(--y); }
+  .note { color: var(--mute); font-size: 12px; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: right; color: var(--mute); font-weight: 500; font-size: 12px; padding: 0 0 10px; }
+  td { text-align: right; padding: 11px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; }
+  td small { color: var(--mute); display: block; font-size: 11px; }
+  .gauge { display: flex; gap: 20px; align-items: center; margin: 14px 0 18px; }
+  .risk { display: grid; gap: 12px; }
+  .risk div { display: flex; justify-content: space-between; font-size: 14px; }
+  .risk span { color: var(--mute); }
+  .bar { height: 6px; border-radius: 3px; background: #222; margin-top: 6px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--y); }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .chips span { font-size: 13px; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); }
+  .chips span b { color: var(--up); font-weight: 500; margin-left: 6px; }
+
+  .badge { position: fixed; right: 24px; bottom: 20px; padding: 7px 14px; border-radius: 999px; font: 13px ui-monospace, "SF Mono", Menlo, monospace; }
+  .badge { background: rgba(5,5,5,.85); border: 1px solid #2a2a2e; color: #c9c9d1; }
+</style>
+</head>
+<body>
+  <nav>
+    <span class="logo">Fin.ai</span>
+    <a class="on">Dashboard</a><a>Portfolio</a><a>Markets</a><a>Insights</a>
+    <span class="me">Prices from Yahoo Finance · 2 min ago <b>AK</b></span>
+  </nav>
+  <main>
+    <div style="display:grid;gap:22px">
+      <div class="card">
+        <div class="row"><span class="k">Portfolio value</span>
+          <span class="tabs"><span>1W</span><span class="on">1M</span><span>6M</span><span>1Y</span></span></div>
+        <div class="row"><span class="big">₹12,48,320</span><span class="up">+₹22,410 · +1.83% today</span></div>
+        <svg width="100%" height="300" viewBox="0 0 1000 190" preserveAspectRatio="none" style="margin-top:10px">
+          <defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#facc15" stop-opacity=".35"/><stop offset="1" stop-color="#facc15" stop-opacity="0"/></linearGradient></defs>
+          <g stroke="#1f1f22"><line x1="0" x2="1000" y1="40" y2="40"/><line x1="0" x2="1000" y1="95" y2="95"/><line x1="0" x2="1000" y1="150" y2="150"/></g>
+          <path d="M0 150 L60 138 L120 142 L180 120 L240 126 L300 104 L360 112 L420 96 L480 101 L540 84 L600 92 L660 70 L720 78 L780 60 L840 66 L900 48 L960 52 L1000 38 L1000 190 L0 190 Z" fill="url(#g)"/>
+          <path d="M0 150 L60 138 L120 142 L180 120 L240 126 L300 104 L360 112 L420 96 L480 101 L540 84 L600 92 L660 70 L720 78 L780 60 L840 66 L900 48 L960 52 L1000 38" fill="none" stroke="#facc15" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="card">
+        <div class="row" style="margin-bottom:12px"><span class="k">Holdings</span><span class="note" style="margin-left:auto">Live prices fetched in parallel; a failed quote keeps the last stored price</span></div>
+        <table>
+          <tr><th>Holding</th><th>Qty</th><th>Avg cost</th><th>Live price</th><th>Value</th><th>Today</th></tr>
+          <tr><td>RELIANCE<small>Reliance Industries</small></td><td>120</td><td>₹2,410</td><td>₹2,486.40</td><td>₹2,98,368</td><td class="up">+1.2%</td></tr>
+          <tr><td>INFY<small>Infosys</small></td><td>180</td><td>₹1,452</td><td>₹1,529.10</td><td>₹2,75,238</td><td class="up">+2.4%</td></tr>
+          <tr><td>HDFCBANK<small>HDFC Bank</small></td><td>160</td><td>₹1,598</td><td>₹1,571.85</td><td>₹2,51,496</td><td class="down">−0.6%</td></tr>
+          <tr><td>TCS<small>Tata Consultancy Services</small></td><td>55</td><td>₹3,690</td><td>₹3,842.00</td><td>₹2,11,310</td><td class="up">+0.9%</td></tr>
+          <tr><td>ITC<small>ITC Ltd</small></td><td>300</td><td>₹418</td><td>₹431.75</td><td>₹1,29,525</td><td class="up">+0.4%</td></tr>
+          <tr><td>NIFTYBEES<small>Nippon India ETF Nifty 50</small></td><td>320</td><td>₹248</td><td>₹256.20</td><td>₹81,984</td><td class="down">−0.2%</td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="display:grid;gap:22px;align-content:start">
+      <div class="card">
+        <span class="k">Risk score</span>
+        <div class="gauge">
+          <svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="#222" stroke-width="10"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#facc15" stroke-width="10" stroke-linecap="round" stroke-dasharray="182 314" transform="rotate(-90 60 60)"/>
+            <text x="60" y="68" text-anchor="middle" fill="#f2f2f2" font-size="28" font-weight="600">58</text></svg>
+          <div><div style="font-size:22px;font-weight:600">Moderate</div><div class="note">Combines beta, volatility and drawdown instead of trusting one signal</div></div>
+        </div>
+        <div class="risk">
+          <div><span>Beta vs NIFTY 50</span>1.12</div><div class="bar"><i style="width:56%"></i></div>
+          <div><span>Volatility (20-day)</span>1.9%</div><div class="bar"><i style="width:38%"></i></div>
+          <div><span>Max drawdown</span>−8.4%</div><div class="bar"><i style="width:42%"></i></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="k">Similar to INFY</span>
+        <div class="note">From the trained model's similarity matrix</div>
+        <div class="chips"><span>WIPRO<b>0.91</b></span><span>HCLTECH<b>0.88</b></span><span>TECHM<b>0.84</b></span><span>LTIM<b>0.79</b></span></div>
+      </div>
+    </div>
+  </main>
+  <span class="badge">Mock-up · sample data</span>
+</body>
+</html>

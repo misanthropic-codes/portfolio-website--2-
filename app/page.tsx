@@ -21,10 +21,12 @@ export default async function HomePage() {
   const metrics = await Promise.all(projects.map((p) => (p.repo ? getProjectMetrics(p.id) : Promise.resolve(null))));
   const created = Object.fromEntries(projects.map((p, i) => [p.id, metrics[i]?.repo?.created_at?.slice(0, 10) ?? null]));
 
-  // Jobs join the graph next to the projects, linked to the tools their experience entry names.
+  // Jobs join the graph next to the projects, linked to the tools their experience entry names,
+  // when they bring at least two tools no project shows.
+  const projectTech = new Set(allTech(projects));
   const roles = experience
     .map((e) => ({ e, tech: techInRole(e, skills) }))
-    .filter(({ e, tech }) => e.start && tech.length >= 3)
+    .filter(({ e, tech }) => e.start && tech.filter((t) => !projectTech.has(t)).length >= 2)
     .map(({ e, tech }) => ({
       id: `role-${e.company.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`, title: `${e.role} · ${e.company}`,
       label: e.company.match(/\(([^)]+)\)/)?.[1] ?? shortLabel(e.company), year: e.start!.slice(0, 4), status: "Work",

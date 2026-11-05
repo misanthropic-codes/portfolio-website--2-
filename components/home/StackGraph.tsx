@@ -195,7 +195,7 @@ export function StackGraph({ projects, tech, events, timelineSlot }: { projects:
         const c = Math.cos(n.a), s = Math.sin(n.a);
         if (n.kind === "t") {
           ctx.font = `11px ${MONO}`; ctx.fillStyle = n.h > 0.5 ? C["--fg"] : C["--muted"];
-          ctx.textAlign = Math.abs(c) < 0.25 ? "center" : c > 0 ? "left" : "right";
+          ctx.textAlign = Math.abs(c) < 0.06 ? "center" : c > 0 ? "left" : "right";
           ctx.fillText(n.label, n.x + c * 12, n.y + s * 12 + 4 + (s < -0.9 ? -6 : s > 0.9 ? 6 : 0));
         } else {
           ctx.font = `500 12.5px ${SANS}`; ctx.fillStyle = C["--fg"];

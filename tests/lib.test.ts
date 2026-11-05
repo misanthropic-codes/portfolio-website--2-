@@ -127,5 +127,6 @@ describe("techInRole", () => {
 
   it("does not match a tool inside a longer word", () => {
     expect(techInRole(role("Set up GitHub Actions and Next.js pages"), skills)).toEqual(["Next.js"]);
+    expect(techInRole(role("Forms built with react-hook-form"), skills)).toEqual([]);
   });
 });

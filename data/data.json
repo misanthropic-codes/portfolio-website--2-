@@ -127,33 +127,36 @@
       "start": "2025-06",
       "end": "Present",
       "location": "Remote",
-      "description": "Leading product development for AI-powered trading systems. Building scalable backend infrastructure, integrating ML models, and crafting seamless SaaS UIs for financial clarity.",
+      "description": "BullBear.Ai is an early-stage AI trading-analysis product. I co-founded it and build the product.",
       "achievements": [
-        "Built AI-powered trading analysis platform",
-        "Integrated ML models for market predictions",
-        "Designed scalable SaaS architecture"
+        "Built and launched the landing site in Next.js and Tailwind, with founder and join-the-team pages, forms validated with react-hook-form and zod, and Vercel Analytics",
+        "Shaping the product: an AI trading-analysis dashboard and the backend and ML services behind it"
       ]
     },
     {
       "role": "Frontend Developer",
-      "company": "CrackIIT:JEE Smashers",
+      "company": "CrackIIT: JEE Smashers",
       "start": "2024-05",
       "end": "Present",
       "location": "Remote",
-      "description": "Led frontend development of a SaaS platform from scratch, improved SEO, and managed a team to enhance reach and engagement.",
-      "achievements": ["Built SaaS platform from ground up", "Improved SEO performance by 150%", "Led team of 3 developers"]
+      "description": "CrackIIT runs JEE coaching and mentorship. I built its website and keep it up to date.",
+      "achievements": [
+        "Built the site in Next.js, TypeScript and Tailwind: home, mentorship programme, about, why-us and FAQ sections",
+        "Ship course launches and content changes as the programme changes, including new course pages",
+        "Look after search visibility: page metadata, internal links and site structure"
+      ]
     },
     {
       "role": "Web Developer",
-      "company": "GDG on Campus - HIT",
+      "company": "GDG on Campus HIT",
       "start": "2024-11",
       "end": "Present",
       "location": "Haldia",
-      "description": "Collaborated on building the GDG HIT website, focusing on design, performance, and UX to boost student engagement.",
+      "description": "I build the GDG on Campus HIT website with the chapter's tech team, and built its recruitment platform.",
       "achievements": [
-        "Designed responsive website architecture",
-        "Improved user engagement by 200%",
-        "Implemented modern UI/UX patterns"
+        "Built the events section and the event registration flow, with progress shown across the registration steps",
+        "Built the home, about, contact and login pages, and moved the animations from GSAP to Framer Motion",
+        "Built the recruitment platform (Next.js, NextAuth, Prisma, PostgreSQL), where admins promote selected applicants to members"
       ]
     },
     {
@@ -162,11 +165,12 @@
       "start": "2024-12",
       "end": "Present",
       "location": "Haldia",
-      "description": "Contributed to the campus media portal, delivering dynamic content pages and mobile-responsive layouts.",
+      "description": "The HIT Times is the campus media body at HIT. I work on its website and admin portal with the rest of the web team.",
       "achievements": [
-        "Built dynamic content management system",
-        "Optimized for mobile-first experience",
-        "Integrated social media features"
+        "Redesigned the site with an editorial layout, dark mode and a shared component system",
+        "Rebuilt the admin portal screens for posts, live matches, alumni, teams and notices, with loading skeletons and clearer errors",
+        "Built the esports section: hero, games, schedule, rules and registration",
+        "Added a mobile bottom navigation bar and fixed layouts across pages on small screens"
       ]
     },
     {
@@ -175,11 +179,10 @@
       "start": "2024-06",
       "end": "2024-09",
       "location": "Remote",
-      "description": "Worked on scalable education-tech projects. Collaborated with teams to prototype solutions and develop project-based learning tools.",
+      "description": "Summer internship in Scaler's Young Innovator programme, working on education projects in small teams.",
       "achievements": [
-        "Developed project-based learning tools",
-        "Collaborated with cross-functional teams",
-        "Prototyped innovative EdTech solutions"
+        "Prototyped project-based learning tools for education-tech projects",
+        "Worked with teammates from design and product on each prototype"
       ]
     }
   ],
@@ -188,12 +191,12 @@
       "id": "campus-connect",
       "title": "Campus Connect",
       "year": "2024",
-      "tech": ["React", "Firebase", "Tailwind CSS", "Framer Motion"],
-      "description": "A real-time task collaboration platform for college communities with auth, roles, notifications, and a reputation system.",
-      "problem": "Lack of efficient collaboration and task tracking within colleges. Students struggled to coordinate group projects and track progress effectively.",
-      "solution": "Created a dynamic task board with real-time chat, email authentication, badge system, and comprehensive dashboards using Firebase for seamless collaboration.",
-      "learnings": "Mastered Firebase Auth and Realtime Database, learned advanced animation techniques with Framer Motion, and gained expertise in responsive design patterns.",
-      "future": "Planning to develop a mobile app version, implement AI-powered task routing, and integrate calendar synchronization for better project management.",
+      "tech": ["React", "Vite", "Firebase", "Tailwind CSS", "Framer Motion"],
+      "description": "Task board for college students. Post a task, pick one up, and build a reputation as tasks get done. Changes appear for everyone in real time.",
+      "problem": "Students who need help with an assignment, an event or a project ask in scattered group chats, and nobody can see who took what or who usually delivers.",
+      "solution": "A React and Vite app on Firebase. Firebase Auth handles sign-up, and Firestore stores tasks and profiles, so a change reaches every open screen at once. Each profile keeps a helpfulnessScore and a tasksCompleted count that grow as tasks are finished.",
+      "learnings": "Shaping data around Firestore's real-time listeners, and turning Firebase error codes into messages people understand.",
+      "future": "Planned: a mobile app and calendar sync for task deadlines.",
       "images": ["/images/p3.png", "/images/p2.png", "/images/p1.png"],
       "featured": true,
       "liveUrl": "https://campus-connect-demo.vercel.app",
@@ -201,85 +204,175 @@
     },
     {
       "id": "finai",
-      "title": "FinAI (Hackfest 2025 - IIT Dhanbad)",
+      "title": "FinAI (Hackfest 2025, IIT Dhanbad)",
       "year": "2025",
-      "tech": ["React", "Node.js", "MongoDB", "ML", "Python"],
-      "description": "An AI-based stock and portfolio analysis tool built in a 36hr hackathon. Trained a financial ML model and designed end-to-end stock insights dashboard.",
-      "problem": "Traders lack real-time, intelligent financial predictions and struggle with complex market analysis without proper tools.",
-      "solution": "Built comprehensive ML pipelines and an intuitive stock sentiment dashboard that provides actionable insights for smarter trading decisions.",
-      "learnings": "Learned to work under extreme time pressure, improved teamwork skills, and discovered the powerful synergy between ML and web technologies.",
-      "future": "Planning to integrate brokerage APIs, add advanced charting capabilities, and implement real-time sentiment heatmaps for market analysis.",
-      "images": ["/images/f1.png", "/images/f2.png", "/images/f3.png", "/images/f4.png", "/images/f5.png"],
+      "tech": ["Next.js", "Node.js", "Express", "MongoDB", "Python", "Flask", "scikit-learn"],
+      "description": "Portfolio tracker with an ML risk model, built in 36 hours at Hackfest 2025, IIT Dhanbad. It prices holdings live from Yahoo Finance and gives each stock a risk score.",
+      "problem": "Beginner investors see prices but not risk. Judging a stock means reading beta, volatility and drawdown separately, and most people never do.",
+      "solution": "Three parts: a Next.js dashboard, an Express and MongoDB API that stores holdings and fetches live quotes in parallel, and a Flask service running a scikit-learn model. The model combines beta, 20-day volatility and drawdown into one risk bucket, and suggests similar stocks from a similarity matrix.",
+      "learnings": "Running the model as its own Flask service let the web work and the ML work move in parallel during a 36-hour build. Falling back to the stored price when a quote fails kept the dashboard usable.",
+      "future": "Planned: importing holdings from a broker, and alerts when a stock moves to a different risk bucket.",
+      "images": ["/images/finai-dashboard.png", "/images/f4.png", "/images/f3.png"],
       "featured": true,
       "githubUrl": "https://github.com/misanthropic-codes/finai-hackfest"
     },
     {
       "id": "blog-website",
-      "title": "Dev Blog Platform",
+      "title": "Blogity",
       "year": "2024",
-      "tech": ["Next.js", "Prisma", "Cloudinary", "NextAuth", "Express.js", "REST APIs"],
-      "description": "A full-featured blog platform with authentication, user dashboards, dynamic post creation, and media support using Cloudinary.",
-      "problem": "Content creators needed a minimal, modern blogging solution with rich text editing, secure auth, and media uploads—without relying on bloated CMS tools.",
-      "solution": "Developed a fully functional blog platform using Next.js for the frontend and server-side rendering, Prisma for database ORM, Express.js REST APIs for data operations, Cloudinary for image uploads, and NextAuth for secure user authentication.",
-      "learnings": "Learned how to integrate a complete auth system using NextAuth with role-based access, implement image storage via Cloudinary, and structure a full-stack app with clean separation between backend (Express) and frontend (Next.js).",
-      "future": "Plan to add markdown support, scheduled publishing, AI-generated summaries, and a notification system for user interactions.",
+      "tech": ["Next.js", "NextAuth", "Prisma", "PostgreSQL", "UploadThing", "Tailwind CSS"],
+      "description": "Blogging platform where writers sign in and publish posts with images, and readers can subscribe to a newsletter.",
+      "problem": "Writers wanted a clean place to publish without setting up and maintaining a full CMS.",
+      "solution": "A Next.js app with NextAuth sign-in, posts and categories in PostgreSQL through Prisma, image uploads through UploadThing, and newsletter sign-ups sent to Beehiiv from an API route. A post and its author load in one Prisma query.",
+      "learnings": "Using Next.js route handlers as the whole backend, and keeping a 404 for a missing post separate from real server errors.",
+      "future": "Planned: markdown support, scheduled publishing and comment notifications.",
       "images": ["/images/bq.png", "/images/b2.png"],
       "featured": false,
       "githubUrl": "https://github.com/misanthropic-codes/blogity",
-      "liveUrl": "https://blogity-ten.vercel.app/"
+      "liveUrl": "https://blogity-ten.vercel.app/",
+      "features": [
+        {
+          "title": "Accounts",
+          "detail": "Sign-in with NextAuth"
+        },
+        {
+          "title": "Writer dashboard",
+          "detail": "Each writer manages their own posts"
+        },
+        {
+          "title": "Image uploads",
+          "detail": "Uploaded with each post through UploadThing"
+        },
+        {
+          "title": "Newsletter",
+          "detail": "Readers subscribe through Beehiiv"
+        }
+      ]
     },
     {
       "id": "skillsync-ai",
-      "title": "SkillSync AI",
+      "title": "SkillSync",
       "year": "2025",
-      "tech": ["Next.js", "Node.js", "MongoDB", "Tailwind CSS", "Socket.io", "OpenAI API"],
-      "description": "An AI-powered networking platform that connects users based on shared or complementary skillsets. Enables real-time chat and team formation.",
-      "problem": "Finding ideal teammates or collaborators with matching or complementary skills is difficult, especially in large communities or remote environments.",
-      "solution": "Developed an intelligent matching system using AI to analyze user skills, preferences, and availability. Integrated real-time chat and team creation to foster instant collaboration.",
-      "learnings": "Gained experience in building AI-driven user matching algorithms, working with real-time chat systems using Socket.io, and enhancing user engagement with tailored recommendations.",
-      "future": "Plans to add calendar sync for collaboration schedules, skill endorsement system, gamified user progress, and integration with GitHub and LinkedIn for automatic skill imports.",
+      "tech": ["Next.js", "TypeScript", "Tailwind CSS", "Radix UI"],
+      "description": "Frontend prototype of a teammate finder for hackathons. Search people by skill, open their profile and message them.",
+      "problem": "Hackathon teams form in group chats, so finding someone with the one skill your team is missing is slow and mostly luck.",
+      "solution": "A Next.js and TypeScript frontend built with shadcn/ui on Radix: sign-up with a skills picker, a search that filters people by skill as you type, profiles and a chat screen. It runs on sample data; the matching API and real-time chat come next.",
+      "learnings": "Designing the screens first showed what the backend needs to store: a list of skills on each profile and conversations keyed by user. Also building accessible forms and dialogs on Radix primitives.",
+      "future": "Next: a backend for profiles and matching, real-time chat over WebSockets, and GitHub sign-in to import skills.",
       "images": ["/images/s1.png", "/images/s2.png", "/images/s3.png", "/images/s4.png", "/images/s5.png", "/images/s6.png"],
       "featured": false,
-      "githubUrl": "https://github.com/misanthropic-codes/skillsync-ai"
+      "githubUrl": "https://github.com/misanthropic-codes/skillsync-ai",
+      "status": "Prototype",
+      "features": [
+        {
+          "title": "Skill search",
+          "detail": "Filters people by skill as you type"
+        },
+        {
+          "title": "Skills on sign-up",
+          "detail": "Add and remove skills while creating a profile"
+        },
+        {
+          "title": "Profiles",
+          "detail": "Skills, links and bio in one place"
+        },
+        {
+          "title": "Chat screen",
+          "detail": "Conversation list and message view"
+        }
+      ],
+      "trace": {
+        "title": "Search for a teammate by skill",
+        "source_path": "app/skillsync/page.tsx",
+        "steps": [
+          {
+            "layer": "Client",
+            "text": "Typing in the search box updates searchQuery in React state."
+          },
+          {
+            "layer": "Client",
+            "text": "filteredUsers keeps each person who has a skill containing the query, ignoring case."
+          },
+          {
+            "layer": "Client",
+            "text": "The grid re-renders with only the matching profile cards."
+          },
+          {
+            "layer": "Client",
+            "text": "Each card links to a profile and a chat. The data is sample data until the API exists."
+          }
+        ]
+      }
     },
     {
       "id": "gdg-recruitment-platform",
-      "title": "GDG Recruitment Management Platform",
+      "title": "GDG Recruitment Platform",
       "year": "2025",
-      "tech": [
-        "React.js",
-        "Node.js",
-        "Express",
-        "MongoDB",
-        "Redis",
-        "Socket.io",
-        "Bull Queue",
-        "Tailwind CSS",
-        "JWT Authentication",
-        "Cloudinary"
-      ],
-      "description": "Comprehensive recruitment management system built for Google Developer Group on Campus to streamline team member selection and application tracking.",
-      "problem": "GDG on Campus faced challenges managing hundreds of applications, tracking candidate progress, and coordinating between recruiters during team member selection process.",
-      "solution": "Developed a full-stack platform with applicant dashboard, recruiter panel, automated screening, interview scheduling, and real-time status tracking to digitize the entire recruitment workflow.",
-      "learnings": "Gained expertise in building scalable web applications, user authentication systems, database design for complex workflows, and creating intuitive admin interfaces.",
-      "future": "Planning to add AI-powered resume screening, video interview integration, analytics dashboard, and bulk communication features.",
+      "tech": ["Next.js", "NextAuth", "Prisma", "PostgreSQL"],
+      "description": "Recruitment system for GDG on Campus HIT. Applicants apply through one form, recruiters track every application, and admins promote the people they select to team members.",
+      "problem": "GDG on Campus HIT recruits from hundreds of applicants. Applications lived in forms and spreadsheets, so keeping track of who was reviewed, shortlisted or selected took a lot of manual work.",
+      "solution": "A Next.js app with NextAuth sign-in and PostgreSQL through Prisma. Applicants and members are separate tables. Promoting an applicant checks for an existing member with the same email, then creates the member with role, department and join date in one step.",
+      "learnings": "Modelling the workflow as data: keeping applicants and members apart turned promotion into one step that can be checked. Also how NextAuth sessions and Prisma fit together inside route handlers.",
+      "future": "Planned: stats for each recruitment round, bulk emails to applicants, and resume screening.",
       "images": ["/images/g1.png", "/images/g2.png", "/images/g3.png"],
       "featured": true,
       "liveUrl": "https://gdghit.site"
     },
     {
       "id": "ecommerce-platform",
-      "title": "E-Commerce Platform",
-      "year": "2024",
-      "tech": ["Next.js", "Stripe", "PostgreSQL", "Prisma"],
-      "description": "A modern e-commerce platform currently in development with core features like payment integration, inventory management, and admin dashboard already implemented.",
-      "problem": "Small businesses needed an affordable, feature-rich e-commerce solution.",
-      "solution": "Built a scalable and modular architecture with essential e-commerce features such as secure payment processing, product inventory tracking, and admin analytics dashboard.",
-      "learnings": "Learned payment gateway integration, database optimization, and complex state management during MVP development.",
-      "future": "Currently in active development. Upcoming features include multi-vendor support, AI-powered product recommendations, real-time analytics, and a mobile application for end-users.",
-      "images": ["/images/e1.png", "/images/e2.png"],
+      "title": "Eshop",
+      "year": "2025",
+      "tech": ["TypeScript", "Nx", "Node.js", "Express", "Docker", "GitHub Actions"],
+      "description": "Microservices e-commerce backend in an Nx monorepo, in early development. An API gateway sits in front of the services, starting with authentication.",
+      "problem": "I wanted to learn how a store splits into services (auth, catalogue, orders, payments) and what the gateway in front of them has to handle.",
+      "solution": "An Nx workspace with an Express API gateway and an auth service, a Dockerfile, and CI on GitHub Actions. The gateway allows only the storefront origin, rate-limits each IP (100 requests per 15 minutes), logs requests, and forwards them to the services behind it.",
+      "learnings": "Putting rules every service needs (CORS, rate limits, request logging) in the gateway once, instead of repeating them in each service.",
+      "future": "Next: sign-up and sign-in in the auth service, then catalogue, cart and order services, and the storefront shown in the concept mock-up.",
+      "images": ["/images/eshop-store.png"],
       "featured": false,
-      "githubUrl": "https://github.com/misanthropic-codes/ecommerce-platform"
+      "githubUrl": "https://github.com/misanthropic-codes/eshop",
+      "status": "In progress",
+      "repo": "misanthropic-codes/eshop",
+      "features": [
+        {
+          "title": "API gateway",
+          "detail": "One entry point with CORS and request logging"
+        },
+        {
+          "title": "Rate limiting",
+          "detail": "Per-IP limits on every request"
+        },
+        {
+          "title": "Service proxy",
+          "detail": "Requests forwarded to the services behind it"
+        }
+      ],
+      "trace": {
+        "title": "A request through the gateway",
+        "source_path": "apps/api-gateway/src/main.ts",
+        "steps": [
+          {
+            "layer": "Client",
+            "text": "The storefront sends a request to the gateway with its cookies."
+          },
+          {
+            "layer": "Server",
+            "text": "CORS accepts only the storefront origin, with credentials."
+          },
+          {
+            "layer": "Server",
+            "text": "The rate limiter counts requests per IP and answers 429 over the limit."
+          },
+          {
+            "layer": "Server",
+            "text": "express-http-proxy forwards the request to the service behind the gateway."
+          },
+          {
+            "layer": "Services",
+            "text": "The service answers, and the gateway passes its response back."
+          }
+        ]
+      }
     }
   ],
   "contact": {
