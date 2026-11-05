@@ -3,22 +3,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
-    unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn.sanity.io',
-      },
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-      },
-    ],
+    remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

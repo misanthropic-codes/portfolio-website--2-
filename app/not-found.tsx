@@ -1,37 +1,12 @@
-"use client"
-
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Home, ArrowLeft } from "lucide-react"
+import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="text-center">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <h1 className="text-9xl font-bold gradient-text mb-4">404</h1>
-          <h2 className="text-3xl font-bold mb-4">Page Not Found</h2>
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-            The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
-          </p>
-
-          <div className="flex gap-4 justify-center">
-            <Button asChild variant="default">
-              <Link href="/">
-                <Home className="w-4 h-4 mr-2" />
-                Go Home
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="bg-black text-white">
-              <Link href="/projects">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                View Projects
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  )
+    <section className="page wrap" style={{ minHeight: "60vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <span className="label">404</span>
+      <h1 style={{ fontSize: "clamp(40px,7vw,80px)", letterSpacing: "-.05em", margin: "12px 0 16px" }}>Nothing ships here.</h1>
+      <p className="muted" style={{ maxWidth: "44ch" }}>This page doesn&apos;t exist. Press <kbd>⌘K</kbd> to search, or head back home.</p>
+      <div className="actions"><Link className="btn" href="/">Home</Link><Link className="btn sec" href="/projects">See projects</Link></div>
+    </section>
+  );
 }

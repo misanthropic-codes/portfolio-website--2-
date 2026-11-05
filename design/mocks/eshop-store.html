@@ -1,0 +1,93 @@
+<!doctype html>
+<!-- Eshop storefront concept (sample data). The repo has the API gateway and auth service so far;
+     this shows the storefront those services are being built for. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --bg:#f7f7f5; --card:#fff; --line:#e7e7e2; --fg:#111; --mute:#6b6b70; --acc:#111; --tint:#efeee9; --ok:#15803d; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); color: var(--fg);
+               font-family: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  nav { height: 68px; display: flex; align-items: center; gap: 28px; padding: 0 40px; background: #fff; border-bottom: 1px solid var(--line); }
+  .logo { font-weight: 700; font-size: 22px; letter-spacing: -.02em; }
+  .search { flex: 0 0 520px; height: 42px; border-radius: 10px; background: var(--tint); display: flex; align-items: center; padding: 0 16px; color: var(--mute); font-size: 14px; }
+  nav a { font-size: 14px; color: var(--mute); }
+  .right { margin-left: auto; display: flex; gap: 22px; align-items: center; font-size: 14px; }
+  .cart { position: relative; padding: 9px 16px; border-radius: 10px; background: var(--acc); color: #fff; }
+  .cart b { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: #f59e0b; color: #111; font-size: 11px; display: grid; place-items: center; }
+  main { padding: 26px 40px; display: grid; grid-template-columns: 240px 1fr; gap: 28px; }
+  aside h4 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); }
+  aside label { display: flex; justify-content: space-between; font-size: 14px; padding: 8px 0; }
+  aside label span { color: var(--mute); }
+  aside .sep { height: 1px; background: var(--line); margin: 16px 0; }
+  .hero { height: 220px; border-radius: 16px; background: linear-gradient(110deg, #1f2937, #111 60%); color: #fff; display: flex; align-items: center; padding: 0 44px; gap: 40px; overflow: hidden; }
+  .hero h2 { margin: 0; font-size: 40px; letter-spacing: -.02em; }
+  .hero p { margin: 8px 0 18px; color: #c8c8cc; }
+  .hero .btn { display: inline-block; padding: 11px 20px; background: #fff; color: #111; border-radius: 10px; font-size: 14px; font-weight: 600; }
+  .hero svg { margin-left: auto; }
+  .head { display: flex; align-items: baseline; margin: 24px 0 14px; }
+  .head h3 { margin: 0; font-size: 20px; }
+  .head span { margin-left: auto; color: var(--mute); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .p { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .p .img { height: 176px; background: var(--tint); display: grid; place-items: center; }
+  .p .b { padding: 12px 14px 14px; }
+  .p .t { font-size: 14px; font-weight: 600; }
+  .p .m { display: flex; justify-content: space-between; margin-top: 6px; font-size: 13px; color: var(--mute); }
+  .p .m b { color: var(--fg); font-size: 15px; }
+  .stock { color: var(--ok); }
+
+  .badge { position: fixed; right: 24px; bottom: 20px; padding: 7px 14px; border-radius: 999px; font: 13px ui-monospace, "SF Mono", Menlo, monospace; }
+  .badge { background: #111; color: #fff; }
+</style>
+</head>
+<body>
+  <nav>
+    <span class="logo">eshop</span>
+    <span class="search">Search products, brands and categories</span>
+    <a>Electronics</a><a>Fashion</a><a>Home</a>
+    <span class="right"><span>Sign in</span><span class="cart">Cart<b>2</b></span></span>
+  </nav>
+  <main>
+    <aside>
+      <h4>Category</h4>
+      <label>Audio <span>48</span></label><label>Wearables <span>31</span></label><label>Footwear <span>62</span></label><label>Bags <span>27</span></label>
+      <div class="sep"></div>
+      <h4>Price</h4>
+      <label>Under ₹1,000 <span>54</span></label><label>₹1,000 – ₹5,000 <span>88</span></label><label>Over ₹5,000 <span>26</span></label>
+      <div class="sep"></div>
+      <h4>Availability</h4>
+      <label>In stock <span>152</span></label>
+    </aside>
+    <section>
+      <div class="hero">
+        <div><h2>New season essentials</h2><p>Free delivery on orders over ₹999</p><span class="btn">Shop the range</span></div>
+        <svg width="300" height="200" viewBox="0 0 300 200"><circle cx="190" cy="100" r="92" fill="#ffffff" fill-opacity=".06"/>
+          <path d="M120 120 a70 70 0 0 1 140 0" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+          <rect x="104" y="112" width="34" height="58" rx="12" fill="#f59e0b"/><rect x="242" y="112" width="34" height="58" rx="12" fill="#f59e0b"/></svg>
+      </div>
+      <div class="head"><h3>Popular right now</h3><span>Sorted by best selling</span></div>
+      <div class="grid">
+        <div class="p"><div class="img"><svg width="90" height="90" viewBox="0 0 90 90"><path d="M15 55a30 30 0 0 1 60 0" fill="none" stroke="#111" stroke-width="7" stroke-linecap="round"/><rect x="8" y="50" width="16" height="28" rx="6" fill="#111"/><rect x="66" y="50" width="16" height="28" rx="6" fill="#111"/></svg></div>
+          <div class="b"><div class="t">Wireless headphones</div><div class="m"><span class="stock">In stock · 34</span><b>₹3,499</b></div></div></div>
+        <div class="p"><div class="img"><svg width="90" height="90" viewBox="0 0 90 90"><rect x="30" y="8" width="30" height="74" rx="10" fill="#d4d4cf"/><rect x="22" y="24" width="46" height="42" rx="12" fill="#111"/><circle cx="45" cy="45" r="11" fill="none" stroke="#f59e0b" stroke-width="4"/></svg></div>
+          <div class="b"><div class="t">Fitness watch</div><div class="m"><span class="stock">In stock · 12</span><b>₹2,199</b></div></div></div>
+        <div class="p"><div class="img"><svg width="110" height="90" viewBox="0 0 110 90"><path d="M10 62 C30 60 40 40 52 30 L70 44 C80 50 96 52 100 62 L100 72 L10 72 Z" fill="#111"/><rect x="10" y="70" width="90" height="8" rx="3" fill="#f59e0b"/></svg></div>
+          <div class="b"><div class="t">Everyday running shoes</div><div class="m"><span class="stock">In stock · 58</span><b>₹4,299</b></div></div></div>
+        <div class="p"><div class="img"><svg width="90" height="90" viewBox="0 0 90 90"><rect x="18" y="22" width="54" height="60" rx="14" fill="#111"/><path d="M33 22v-6a12 12 0 0 1 24 0v6" fill="none" stroke="#111" stroke-width="6"/><rect x="30" y="48" width="30" height="16" rx="5" fill="#f59e0b"/></svg></div>
+          <div class="b"><div class="t">Commuter backpack</div><div class="m"><span style="color:#b45309">Only 3 left</span><b>₹1,899</b></div></div></div>
+        <div class="p"><div class="img"><svg width="100" height="90" viewBox="0 0 100 90"><rect x="8" y="30" width="84" height="34" rx="6" fill="#111"/><g fill="#d4d4cf"><rect x="16" y="38" width="10" height="7" rx="2"/><rect x="30" y="38" width="10" height="7" rx="2"/><rect x="44" y="38" width="10" height="7" rx="2"/><rect x="58" y="38" width="10" height="7" rx="2"/><rect x="72" y="38" width="12" height="7" rx="2"/><rect x="26" y="50" width="48" height="7" rx="2"/></g></svg></div>
+          <div class="b"><div class="t">Mechanical keyboard</div><div class="m"><span class="stock">In stock · 21</span><b>₹5,499</b></div></div></div>
+        <div class="p"><div class="img"><svg width="90" height="90" viewBox="0 0 90 90"><rect x="32" y="14" width="26" height="10" rx="3" fill="#f59e0b"/><rect x="28" y="24" width="34" height="58" rx="10" fill="#111"/></svg></div>
+          <div class="b"><div class="t">Steel water bottle</div><div class="m"><span class="stock">In stock · 96</span><b>₹699</b></div></div></div>
+        <div class="p"><div class="img"><svg width="110" height="90" viewBox="0 0 110 90"><path d="M8 40h94" stroke="#111" stroke-width="5"/><rect x="12" y="38" width="38" height="24" rx="10" fill="#111"/><rect x="60" y="38" width="38" height="24" rx="10" fill="#111"/></svg></div>
+          <div class="b"><div class="t">Polarised sunglasses</div><div class="m"><span class="stock">In stock · 40</span><b>₹1,299</b></div></div></div>
+        <div class="p"><div class="img"><svg width="90" height="90" viewBox="0 0 90 90"><path d="M28 18h34l10 34H18z" fill="#f59e0b"/><rect x="42" y="52" width="6" height="22" fill="#111"/><rect x="28" y="72" width="34" height="6" rx="3" fill="#111"/></svg></div>
+          <div class="b"><div class="t">Desk lamp</div><div class="m"><span style="color:#b45309">Only 5 left</span><b>₹1,599</b></div></div></div>
+      </div>
+    </section>
+  </main>
+  <span class="badge">Concept mock-up</span>
+</body>
+</html>

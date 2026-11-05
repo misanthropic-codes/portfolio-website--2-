@@ -1,79 +1,66 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter, JetBrains_Mono } from "next/font/google"
-import "./globals.css"
-import { Footer } from "@/components/footer"
-import { Toaster } from "@/components/ui/toaster"
-import { ThemeProvider } from "@/components/theme-provider"
-import { BackgroundEffects } from "@/components/background-effects"
-import { InteractiveSound } from "@/components/interactive-sound"
-import { DockNav } from "@/components/dock-nav"
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import "./globals.css";
+import { getEducation, getExperience, getProfile, getProjects, getSkills } from "@/lib/api";
+import { buildFacts } from "@/lib/search";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { CommandPalette } from "@/components/site/CommandPalette";
+import { Cursor } from "@/components/site/Cursor";
+import { Effects } from "@/components/site/Effects";
+import { THEME_SCRIPT } from "@/components/site/client-utils";
 
+const sans = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
-const inter = Inter({ subsets: ["latin"] })
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
+const SITE = "https://www.misanthropic.codes";
+const DESCRIPTION = "Abhishek Kumar is a full-stack developer building SaaS platforms and AI fintech products, end to end.";
 
 export const metadata: Metadata = {
-  title: {
-    default: "Abhishek Kumar - Full Stack Developer",
-    template: "%s | Abhishek Kumar",
-  },
-  description:
-    "Full Stack Developer & Graphics Designer. Building innovative web solutions with React, Next.js, and modern technologies.",
-  keywords: ["Full Stack Developer", "React", "Next.js", "Web Developer", "JavaScript", "TypeScript"],
+  metadataBase: new URL(SITE),
+  title: { default: "Abhishek Kumar · Full-stack developer", template: "%s · Abhishek Kumar" },
+  description: DESCRIPTION,
   authors: [{ name: "Abhishek Kumar" }],
-  creator: "Abhishek Kumar",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://misanthropic.site",
-    title: "Abhishek Kumar - Full Stack Developer",
-    description:
-      "Full Stack Developer & Graphics Designer. Building innovative web solutions with React, Next.js, and modern technologies.",
-    siteName: "Abhishek Kumar Portfolio",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Abhishek Kumar - Full Stack Developer",
-    description:
-      "Full Stack Developer & Graphics Designer. Building innovative web solutions with React, Next.js, and modern technologies.",
-    creator: "@airabhishek098",
-  },
-   
-}
+  openGraph: { type: "website", locale: "en_US", url: SITE, siteName: "Abhishek Kumar", title: "Abhishek Kumar · Full-stack developer", description: DESCRIPTION },
+  twitter: { card: "summary_large_image", creator: "@airabhishek098", title: "Abhishek Kumar · Full-stack developer", description: DESCRIPTION },
+};
 
-import { getProfile, getProjects, getSkills } from "@/lib/data";
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#09090B" }, { media: "(prefers-color-scheme: light)", color: "#FAFAFA" }],
+};
 
-// ... metadata
-
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const profile = await getProfile();
-  const projects = await getProjects();
-  const skills = await getSkills();
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [profile, projects, experience, education, skills] = await Promise.all([
+    getProfile(), getProjects(), getExperience(), getEducation(), getSkills(),
+  ]);
+  const facts = buildFacts({ profile, projects, experience, education, skills });
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${jetbrainsMono.variable} min-h-screen`}>
-        <ThemeProvider>
-          <BackgroundEffects />
-          <InteractiveSound />
-          <main className="min-h-screen relative z-10">{children}</main>
-          <Footer profile={profile} />
-          <DockNav profile={profile} projects={projects} skills={skills} />
-          <Toaster />
-          <Analytics />
-           <SpeedInsights />
-        </ThemeProvider>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
+      <body>
+        <Header name={profile.name} photo={profile.profileImage} />
+        <main id="app">{children}</main>
+        <Footer profile={profile} />
+        <CommandPalette
+          facts={facts}
+          projects={projects.map((p) => ({ id: p.id, title: p.title, year: p.year }))}
+          email={profile.email}
+          github={profile.socials.github ?? null}
+          linkedin={profile.socials.linkedin ?? null}
+        />
+        <Cursor />
+        <Effects />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
-  )
+  );
 }
