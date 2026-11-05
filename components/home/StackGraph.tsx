@@ -17,8 +17,8 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
   const router = useRouter();
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const api = useRef<{ play: () => void; seek: (i: number) => void } | null>(null);
-  const [readout, setReadout] = useState({ title: `${projects.length} projects · ${tech.length} tools`, sub: "Hover or drag any node" });
+  const api = useRef<{ seek: (i: number) => void } | null>(null);
+  const [readout, setReadout] = useState<{ title: string; sub: string } | null>(null);
   const [rp, setRp] = useState({ t: events.length, playing: false });
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     type N = { k: string; kind: "p" | "t"; label: string; p?: GraphProject; a: number; ax: number; ay: number; r: number; x: number; y: number; vx: number; vy: number; fx: number; fy: number; h: number; vis: number; born: number; i: number };
     const nodes: N[] = [], by: Record<string, N> = {};
     const mk = (k: string, kind: "p" | "t", label: string, a: number, rad: number, p?: GraphProject) => {
-      const n: N = { k, kind, label, p, a, ax: cx + Math.cos(a) * rad, ay: cy + Math.sin(a) * rad, r: kind === "p" ? 7.5 : 4.5, x: 0, y: 0, vx: 0, vy: 0, fx: 0, fy: 0, h: 0, vis: 1, born: 0, i: nodes.length };
+      const n: N = { k, kind, label, p, a, ax: cx + Math.cos(a) * rad, ay: cy + Math.sin(a) * rad, r: kind === "p" ? 7.5 : 4.5, x: 0, y: 0, vx: 0, vy: 0, fx: 0, fy: 0, h: 0, vis: reduce ? 1 : 0, born: 0, i: nodes.length };
       n.x = n.ax; n.y = n.ay; nodes.push(n); by[k] = n;
     };
     tech.forEach((t, i) => mk(`t:${t}`, "t", t, -Math.PI / 2 + (i / tech.length) * Math.PI * 2, rOut));
@@ -40,7 +40,11 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     const spokes = projects.map((p) => ({ b: by[`p:${p.id}`], h: 0 }));
 
     events.forEach((ev, i) => { if (by[`p:${ev.id}`]) by[`p:${ev.id}`].born = i; ev.newTech.forEach((t) => { if (by[`t:${t}`]) by[`t:${t}`].born = i; }); });
-    const state = { t: events.length, playing: false };
+    // Replay loop: starts when the graph first scrolls into view, grows one project every
+    // ~2.5 s, holds the full graph, then replays. Reduced motion keeps the full graph.
+    const SPEED = 0.4, HOLD = 9;
+    const state = { t: reduce ? events.length : 0, playing: false, started: false, hold: 0 };
+    setRp({ t: state.t, playing: false });
 
     const C: Record<string, string> = {};
     let glow = document.createElement("canvas");
@@ -71,9 +75,9 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     };
     const updateReadout = () => {
       const n = active();
-      if (!n) setReadout({ title: `${projects.length} projects · ${tech.length} tools`, sub: "Hover or drag any node" });
+      if (!n) setReadout(null);
       else if (n.kind === "p") setReadout({ title: n.p!.title, sub: [n.p!.year, `${n.p!.tech.length} tools`, n.p!.status].filter(Boolean).join(" · ") });
-      else setReadout({ title: n.label, sub: `Used in ${projects.filter((p) => p.tech.includes(n.label)).length} of ${projects.length} projects` });
+      else setReadout({ title: n.label, sub: `used in ${projects.filter((p) => p.tech.includes(n.label)).length} of ${projects.length} projects` });
     };
     const setHover = (n: N | null) => { if (n !== hover) { hover = n; updateReadout(); } };
     const cursorLabel = () => {
@@ -204,11 +208,15 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     const tick = (now: number) => {
       const dt = Math.min(Math.max((now - last) / 1000, 0), 0.05); last = now; T += dt; acc += dt;
       let n = 0; while (acc >= STEP && n < 8) { step(STEP); acc -= STEP; n++; } if (n === 8) acc = 0;
-      if (state.playing) {
-        state.t = Math.min(events.length, state.t + dt * 0.85);
-        if (state.t >= events.length) state.playing = false;
-        const ui = Math.round(state.t * 20);
-        if (ui !== lastUi || !state.playing) { lastUi = ui; setRp({ t: state.t, playing: state.playing }); }
+      if (state.started && !reduce && !active()) {
+        if (state.playing) {
+          state.t = Math.min(events.length, state.t + dt * SPEED);
+          if (state.t >= events.length) { state.playing = false; state.hold = HOLD; }
+        } else if ((state.hold -= dt) <= 0 && events.length > 1) {
+          state.t = 0; state.playing = true;
+        }
+        const ui = Math.round(state.t * 20) * 2 + Number(state.playing);
+        if (ui !== lastUi) { lastUi = ui; setRp({ t: state.t, playing: state.playing }); }
       }
       const eased = ease(dt);
       if (!reduce) { movePulses(dt); sweep = (sweep + dt * 0.55) % (Math.PI * 2); }
@@ -219,16 +227,17 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
     function wake() { if (!running && visible) { running = true; last = performance.now(); raf = requestAnimationFrame(tick); } }
 
     api.current = {
-      play: () => {
-        if (state.playing) state.playing = false;
-        else { if (state.t >= events.length) state.t = 0; state.playing = true; if (reduce) state.t = events.length; }
-        setRp({ t: state.t, playing: state.playing }); wake();
-      },
-      seek: (i: number) => { state.playing = false; state.t = i + 1; setRp({ t: state.t, playing: false }); wake(); },
+      // clicking a date jumps there, holds, then the loop carries on
+      seek: (i: number) => { state.started = true; state.playing = false; state.t = i + 1; state.hold = HOLD; setRp({ t: state.t, playing: false }); wake(); },
     };
 
     const ro = new ResizeObserver(resize); ro.observe(cv);
-    const io = new IntersectionObserver(([en]) => { visible = en.isIntersecting && !document.hidden; if (visible) wake(); }); io.observe(el);
+    const io = new IntersectionObserver(([en]) => {
+      visible = en.isIntersecting && !document.hidden;
+      if (visible && !state.started && !reduce) { state.started = true; state.playing = events.length > 1; if (!state.playing) state.t = events.length; }
+      if (visible) wake();
+    }, { threshold: 0.35 });
+    io.observe(el);
     const onVis = () => { visible = !document.hidden; if (visible) wake(); };
     const onTheme = () => { readColors(); wake(); };
     const mq = window.matchMedia("(prefers-color-scheme: light)");
@@ -248,7 +257,7 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
   const shown = rp.t >= events.length && !rp.playing ? -1 : Math.min(events.length - 1, Math.floor(rp.t - 0.001));
   const ev = shown >= 0 ? events[shown] : null;
   const evProject = ev ? projects.find((p) => p.id === ev.id) : null;
-  const when = (d: string | null, long = false) => d ? new Date(`${d}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", year: long ? "numeric" : "2-digit", timeZone: "UTC" }) : "—";
+  const when = (d: string | null, long = false, year?: string | null) => d ? new Date(`${d}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", year: long ? "numeric" : "2-digit", timeZone: "UTC" }) : year ?? "—";
 
   return (
     <div className="graph" ref={wrap}>
@@ -258,28 +267,26 @@ export function StackGraph({ projects, tech, events }: { projects: GraphProject[
       </div>
       {events.length > 1 && (
         <div className="g-rp">
-          <button type="button" className="g-play" onClick={() => api.current?.play()} aria-label={rp.playing ? "Pause replay" : "Replay my shipping history"}>
-            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d={rp.playing ? "M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" : "M3 1.5v9l7.5-4.5z"} fill="currentColor" /></svg>
-          </button>
           <div className="g-track">
             <span className="g-fill" style={{ transform: `scaleX(${(rp.t / events.length).toFixed(4)})` }} />
             {events.map((e, i) => (
               <button key={e.id} type="button" className={`g-tick ${i <= Math.floor(rp.t - 0.001) ? "on" : ""}`} style={{ left: `${((i + 1) / events.length) * 100}%` }}
                 onClick={() => api.current?.seek(i)} aria-label={`Show history up to ${projects.find((p) => p.id === e.id)?.title}`}>
-                <i /><span className="mono">{when(e.date)}</span>
+                <i /><span className="mono">{when(e.date, false, projects.find((p) => p.id === e.id)?.year)}</span>
               </button>
             ))}
           </div>
         </div>
       )}
       <p className="g-cap mono" aria-live="polite">
-        {ev && evProject ? (
-          <><b>{ev.date ? when(ev.date, true) : "Date not public"}</b> · {evProject.title}{ev.newTech.length ? ` · picked up ${ev.newTech.join(", ")}` : " · no new tools"}</>
+        {readout ? (
+          <><b>{readout.title}</b> · {readout.sub}</>
+        ) : ev && evProject ? (
+          <><b>{ev.date ? when(ev.date, true) : evProject.year ?? "Date not public"}</b> · {evProject.title}{ev.newTech.length ? ` · picked up ${ev.newTech.join(", ")}` : " · no new tools"}</>
         ) : (
-          <><b>{projects.length} projects · {tech.length} tools</b> · ordered by when each repo was created. Press play to replay it.</>
+          <><b>{projects.length} projects · {tech.length} tools</b> · in the order each repo was created</>
         )}
       </p>
-      <div className="readout"><span className="mono">Stack graph</span><b>{readout.title}</b><span className="mono">{readout.sub}</span></div>
     </div>
   );
 }

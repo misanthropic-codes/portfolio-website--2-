@@ -1008,3 +1008,7 @@ footer{border-top:1px solid var(--line)}
 .idc-row h3{font-size:22px}
 @media (hover:none){.portrait{cursor:pointer}}
 .idc>.idc-shine{position:absolute;z-index:6}
+.g-track{margin-left:0}
+.g-track{margin-bottom:32px}
+.g-cap{margin-top:0}
+@media (max-width:520px){.g-track{margin-bottom:8px}}
