@@ -46,7 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
       <body>
-        <Header name={profile.name} />
+        <Header name={profile.name} photo={profile.profileImage} />
         <main id="app">{children}</main>
         <Footer profile={profile} />
         <CommandPalette

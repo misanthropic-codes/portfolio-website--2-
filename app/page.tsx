@@ -38,7 +38,12 @@ export default async function HomePage() {
         <div className="hero" id="hero">
           <div className="hero-bg" aria-hidden="true" />
           <div>
-            {current && <span className="pill"><b>Now</b>{current.role} at {current.company}</span>}
+            {current && (
+              <span className="pill">
+                <span className="av av-sm av-on"><img src={profile.profileImage} alt="" width={22} height={22} /></span>
+                <b>Now</b>{current.role} at {current.company}
+              </span>
+            )}
             <h1>
               <HeroName first={first} last={rest.join(" ") + "."} />
               <span className="sub">I build <RotatingPhrase phrases={phrases} /> that ship.</span>

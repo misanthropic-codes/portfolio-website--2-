@@ -12,7 +12,7 @@ const NAV = [
   { href: "/now", label: "Now" },
 ];
 
-export function Header({ name }: { name: string }) {
+export function Header({ name, photo }: { name: string; photo: string }) {
   const path = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [time, setTime] = useState("--:--");
@@ -43,9 +43,9 @@ export function Header({ name }: { name: string }) {
       <div className="progress" aria-hidden="true" />
       <header id="hdr" className={scrolled ? "scrolled" : ""}>
         <div className="wrap bar">
-          <Link className="logo" href="/" aria-label="Home">
-            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="none" stroke="currentColor" strokeWidth="1.5" /><path d="M7 16 L10.5 8 L14 16 M8.4 13 H12.6 M15.5 8 V16 M15.5 12.5 L18 8 M16.6 11 L18.2 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            <b>{name}</b>
+          <Link className="logo" href="/" aria-label={`${name}, home`}>
+            <span className="av av-on"><img src={photo} alt="" width={32} height={32} /></span>
+            <span className="logo-t"><b>{name}</b><small className="mono">misanthropic.codes</small></span>
           </Link>
           <nav className="nav" aria-label="Main">
             {NAV.map((n) => (

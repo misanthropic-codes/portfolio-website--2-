@@ -6,6 +6,7 @@ import { reducedMotion } from "@/components/site/client-utils";
 import { period } from "@/lib/format";
 import { projectsUsing } from "@/lib/stack";
 import type { Experience, Profile, Project, SkillGroup } from "@/lib/types";
+import { Portrait } from "./Portrait";
 
 export function IdCard({ profile, studying }: { profile: Profile; studying: string | null }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,13 +25,14 @@ export function IdCard({ profile, studying }: { profile: Profile; studying: stri
     el.style.setProperty("--sx", `${(x * 100).toFixed(1)}%`); el.style.setProperty("--sy", `${(y * 100).toFixed(1)}%`);
   };
   const reset = () => { ref.current?.style.setProperty("--ry", "0deg"); ref.current?.style.setProperty("--rx", "0deg"); };
-  const initials = profile.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+  const tags = [profile.location?.split(",")[0], profile.nowBuilding?.split(",")[0]].filter(Boolean) as string[];
   return (
     <div className="idc-wrap">
       <div className="idc" ref={ref} onPointerMove={tilt} onPointerLeave={reset}>
         <div className="idc-shine" aria-hidden="true" />
+        <Portrait src={profile.profileImage} name={profile.name} tags={tags} />
         <div className="idc-top"><span className="label">Developer ID</span><span className="status live"><i />{profile.availability ?? "Active"}</span></div>
-        <div className="idc-row"><div className="idc-av" aria-hidden="true">{initials}</div><div><h3>{profile.name}</h3><p className="muted">{profile.title}</p></div></div>
+        <div className="idc-row"><div><h3>{profile.name}</h3><p className="muted">{profile.title}</p></div></div>
         <dl className="idc-grid">
           <div><dt className="label">Base</dt><dd>{profile.location?.split(",")[0] ?? "—"}</dd></div>
           <div><dt className="label">Local time</dt><dd className="mono">{time}</dd></div>
