@@ -117,7 +117,7 @@ export function Timeline({ items }: { items: Experience[] }) {
 }
 
 /** Large closing heading that fills with colour as it scrolls into view. */
-export function Closing({ email, children }: { email: string | null; children?: React.ReactNode }) {
+export function Closing({ email, responseTime, children }: { email: string | null; responseTime?: string | null; children?: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current!;
@@ -133,7 +133,7 @@ export function Closing({ email, children }: { email: string | null; children?: 
   return (
     <div className="closing" ref={ref}>
       <h2>Have a project<br />in mind?</h2>
-      <p>I take on freelance work: web apps, mobile apps and backends.{email ? " Email is the quickest way to reach me." : ""}</p>
+      <p>I take on freelance work: web apps, mobile apps and backends.{responseTime ? ` I reply ${responseTime}.` : email ? " Email is the quickest way to reach me." : ""}</p>
       <div className="actions">{children}</div>
     </div>
   );

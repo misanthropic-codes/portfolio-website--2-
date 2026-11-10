@@ -14,6 +14,20 @@ export interface Profile {
   nowFocus: string | null;
   nowBuilding: string | null;
   availability: string | null;
+  /** https link to book an intro call (Cal.com, Calendly...), or null */
+  bookingUrl: string | null;
+  /** e.g. "within 24 hours" */
+  responseTime: string | null;
+}
+
+export interface Testimonial {
+  id: string;
+  name: string;
+  role: string | null;
+  company: string | null;
+  quote: string;
+  projectSlug: string | null;
+  url: string | null;
 }
 
 export interface Project {

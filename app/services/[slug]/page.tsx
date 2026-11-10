@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getService } from "@/lib/api";
+import { getProfile, getService } from "@/lib/api";
 import { RegionalPrice } from "@/components/services/RegionalPrice";
 
 export const revalidate = 300;
@@ -9,11 +9,14 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const s = await getService((await params).slug);
-  return s ? { title: s.title, description: s.tagline ?? undefined } : { title: "Service not found" };
+  if (!s) return { title: "Service not found" };
+  const from = s.base_price != null ? ` From ${s.currency ?? "USD"} ${Number(s.base_price).toLocaleString("en-GB")}.` : "";
+  const description = `${s.tagline ?? s.title}.${from} Freelance ${s.title.toLowerCase()} by Abhishek Kumar.`.replace("..", ".");
+  return { title: `${s.title} · Freelance`, description, alternates: { canonical: `/services/${s.slug}` }, openGraph: { title: s.title, description } };
 }
 
 export default async function ServicePage({ params }: Props) {
-  const service = await getService((await params).slug);
+  const [service, profile] = await Promise.all([getService((await params).slug), getProfile()]);
   if (!service) notFound();
   return (
     <section className="page wrap">
@@ -23,7 +26,11 @@ export default async function ServicePage({ params }: Props) {
         <div className="card">
           <RegionalPrice slug={service.slug} base={service.base_price != null ? Number(service.base_price) : null} currency={service.currency ?? "USD"} />
           {service.timeline && <p className="muted" style={{ marginTop: 10 }}>Typical timeline: {service.timeline}</p>}
-          <div className="actions" style={{ marginTop: 16 }}><Link className="btn" href="/contact">Start a project</Link></div>
+          <div className="actions" style={{ marginTop: 16 }}>
+            <Link className="btn" href="/contact">Start a project</Link>
+            {profile.bookingUrl && <a className="btn sec" href={profile.bookingUrl} target="_blank" rel="noopener noreferrer">Book a call</a>}
+          </div>
+          {profile.responseTime && <p className="muted hire-note">I reply {profile.responseTime}.</p>}
         </div>
       </div>
       <div className="proj-body" style={{ gridTemplateColumns: "1fr" }}>

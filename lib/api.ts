@@ -1,6 +1,6 @@
 import fallback from "@/data/data.json";
 import type {
-  ContributionYear, Education, Experience, NowData, Profile, Project, ProjectMetrics, Service, SkillGroup, Snippet,
+  ContributionYear, Education, Experience, NowData, Profile, Project, ProjectMetrics, Service, SkillGroup, Snippet, Testimonial,
 } from "./types";
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
@@ -19,6 +19,9 @@ async function get<T>(endpoint: string, revalidate = 300): Promise<T | null> {
 }
 
 const arr = <T>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+
+/** Only https links are rendered as buttons. */
+export const httpsUrl = (v: unknown): string | null => (typeof v === "string" && /^https:\/\/\S+$/.test(v.trim()) ? v.trim() : null);
 
 export async function getProfile(): Promise<Profile> {
   const p = await get<any>("/profile");
@@ -41,6 +44,8 @@ export async function getProfile(): Promise<Profile> {
     nowFocus: p?.now_focus ?? null,
     nowBuilding: p?.now_building ?? null,
     availability: p?.availability ?? null,
+    bookingUrl: httpsUrl(p?.booking_url ?? b.bookingUrl),
+    responseTime: p?.response_time ?? b.responseTime ?? null,
   };
 }
 
@@ -132,6 +137,15 @@ function toService(s: any): Service {
 
 export const getSnippets = async (projectSlug?: string): Promise<Snippet[]> =>
   (await get<Snippet[]>(projectSlug ? `/snippets?project=${encodeURIComponent(projectSlug)}` : "/snippets", 900)) ?? [];
+
+export async function getTestimonials(): Promise<Testimonial[]> {
+  return ((await get<any[]>("/testimonials")) ?? [])
+    .filter((t) => t?.name && t?.quote)
+    .map((t) => ({
+      id: t.id, name: t.name, role: t.role ?? null, company: t.company ?? null, quote: t.quote,
+      projectSlug: t.project_slug ?? null, url: httpsUrl(t.url),
+    }));
+}
 
 export const getNow = () => get<NowData>("/now", 60);
 
