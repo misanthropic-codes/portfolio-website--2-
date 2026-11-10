@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getContributions, getExperience, getProfile, getProjectMetrics, getProjects, getSkills, getSnippets } from "@/lib/api";
+import { getContributions, getExperience, getProfile, getProjectMetrics, getProjects, getServices, getSkills, getSnippets, getTestimonials } from "@/lib/api";
 import { allTech, canonicalTech, techInRole } from "@/lib/stack";
 import { replayEvents, shortLabel } from "@/lib/replay";
 import { StackGraph } from "@/components/home/StackGraph";
@@ -8,6 +8,8 @@ import { Closing, Gallery, Timeline } from "@/components/home/ScrollSections";
 import { GitLog } from "@/components/home/GitLog";
 import { CodeReviews } from "@/components/home/CodeReviews";
 import { CopyButton } from "@/components/site/CopyButton";
+import { ServiceCards } from "@/components/services/ServiceCards";
+import { Testimonials } from "@/components/home/Testimonials";
 
 export const revalidate = 300;
 
@@ -15,8 +17,8 @@ const arrow = <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"
 
 export default async function HomePage() {
   const year = new Date().getUTCFullYear();
-  const [profile, projects, experience, skills, snippets, contributions] = await Promise.all([
-    getProfile(), getProjects(), getExperience(), getSkills(), getSnippets(), getContributions(year),
+  const [profile, projects, experience, skills, snippets, contributions, services, testimonials] = await Promise.all([
+    getProfile(), getProjects(), getExperience(), getSkills(), getSnippets(), getContributions(year), getServices(), getTestimonials(),
   ]);
   const metrics = await Promise.all(projects.map((p) => (p.repo ? getProjectMetrics(p.id) : Promise.resolve(null))));
   const created = Object.fromEntries(projects.map((p, i) => [p.id, metrics[i]?.repo?.created_at?.slice(0, 10) ?? null]));
@@ -53,7 +55,12 @@ export default async function HomePage() {
         <div className="hero" id="hero">
           <div className="hero-bg" aria-hidden="true" />
           <div className="hero-text">
-            {current && (
+            {profile.availability ? (
+              <span className="pill">
+                <span className="av av-sm av-on"><img src={profile.profileImage} alt="" width={22} height={22} /></span>
+                <b>Available</b>{profile.availability}
+              </span>
+            ) : current && (
               <span className="pill">
                 <span className="av av-sm av-on"><img src={profile.profileImage} alt="" width={22} height={22} /></span>
                 <b>Now</b>{current.role} at {current.company}
@@ -65,8 +72,9 @@ export default async function HomePage() {
             </h1>
             <p className="lede">{profile.summary ?? profile.headline}</p>
             <div className="actions">
-              <Link className="btn" href="/projects">View work {arrow}</Link>
-              <Link className="btn sec" href="/contact">Get in touch</Link>
+              <Link className="btn" href="/contact">Start a project {arrow}</Link>
+              {profile.bookingUrl && <a className="btn sec" href={profile.bookingUrl} target="_blank" rel="noopener noreferrer">Book a call</a>}
+              <Link className="btn sec" href="/projects">View work</Link>
             </div>
           </div>
           <StackGraph projects={graphProjects} tech={tech} events={graphEvents} timelineSlot="hero-timeline" />
@@ -87,6 +95,20 @@ export default async function HomePage() {
       <Gallery projects={projects} />
 
       <section className="wrap">
+        {services.length > 0 && (
+          <div className="sec">
+            <div className="sec-head rv"><div><span className="label">Services</span><h2>What I can build for you</h2><p>Starting prices. I confirm the final quote after a short call about your project.</p></div><Link className="link" href="/services">All services {arrow}</Link></div>
+            <ServiceCards services={services} />
+          </div>
+        )}
+
+        {testimonials.length > 0 && (
+          <div className="sec">
+            <div className="sec-head rv"><div><span className="label">Clients</span><h2>What clients say</h2></div></div>
+            <Testimonials items={testimonials} projectTitles={Object.fromEntries(projects.map((p) => [p.id, p.title]))} />
+          </div>
+        )}
+
         <div className="sec">
           <div className="sec-head rv"><div><span className="label">Project log</span><h2>Timeline</h2><p>My projects in the order I started them. Use the arrow keys to move through the list and Enter to open one.</p></div></div>
           <GitLog entries={events.map((ev) => ({ project: projects.find((p) => p.id === ev.id)!, created: ev.date, branch: ev.id === branchId })).reverse()} />
@@ -116,8 +138,9 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <Closing email={profile.email}>
-          <Link className="btn" href="/contact">Get in touch {arrow}</Link>
+        <Closing email={profile.email} responseTime={profile.responseTime}>
+          <Link className="btn" href="/contact">Start a project {arrow}</Link>
+          {profile.bookingUrl && <a className="btn sec" href={profile.bookingUrl} target="_blank" rel="noopener noreferrer">Book a call</a>}
           {profile.email && <CopyButton className="btn sec" text={profile.email} done="Email copied">Copy email</CopyButton>}
         </Closing>
       </section>

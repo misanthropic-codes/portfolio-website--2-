@@ -1045,3 +1045,13 @@ footer{border-top:1px solid var(--line)}
 .rot{position:relative;display:inline-block;white-space:nowrap;vertical-align:bottom}
 .rot-sizer{visibility:hidden}
 .rot-live{position:absolute;left:0;top:0;white-space:nowrap}
+
+/* testimonials and hire prompts */
+.tsts{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.tst{margin:0;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:22px;display:flex;flex-direction:column;gap:18px}
+.tst blockquote{margin:0;font-size:16px;line-height:1.55}
+.tst blockquote::before{content:"\201C"}.tst blockquote::after{content:"\201D"}
+.tst figcaption{display:flex;flex-direction:column;gap:2px;font-size:14px;margin-top:auto}
+.tst figcaption b{font-weight:500}
+.tst-p{font-size:12px;color:var(--accent-2);margin-top:6px}
+.hire-note{margin-top:14px;font-size:14px}

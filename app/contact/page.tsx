@@ -5,13 +5,14 @@ import { BigEmail, BriefBuilder, MessageForm, RanchiSky } from "@/components/con
 import { CopyButton } from "@/components/site/CopyButton";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "Contact", description: "Start a project or send a message." };
+export const metadata: Metadata = { title: "Hire me", description: "Book a call, send a project brief or a quick message to hire Abhishek Kumar for freelance web, mobile or backend work." };
 
 const ext = <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2h6v6M10 2 3 9" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>;
 
 export default async function ContactPage() {
   const [profile, services] = await Promise.all([getProfile(), getServices()]);
   const channels = [
+    ["Book a call", profile.bookingUrl],
     ["GitHub", profile.socials.github],
     ["LinkedIn", profile.socials.linkedin],
     ["X", profile.socials.twitter],
@@ -23,6 +24,9 @@ export default async function ContactPage() {
         <span className="label">Contact</span>
         <h1 className="ct-h">Let&apos;s build <span className="grad-t">something.</span></h1>
         {profile.email && <BigEmail email={profile.email} />}
+        {(profile.availability || profile.responseTime) && (
+          <p className="muted hire-note">{[profile.availability, profile.responseTime && `I reply ${profile.responseTime}`].filter(Boolean).join(" · ")}</p>
+        )}
       </div>
       <div className="ct-grid">
         <div className="chans">
@@ -33,7 +37,7 @@ export default async function ContactPage() {
           )}
           {channels.map(([label, href], i) => (
             <a key={label} className="chan" href={href} target="_blank" rel="noopener noreferrer">
-              <span className="mono">{String(i + 2).padStart(2, "0")}</span><b>{label}</b><span className="chan-h">{stripProtocol(href).split("/").pop()}</span><span className="chan-a">{ext}</span>
+              <span className="mono">{String(i + 2).padStart(2, "0")}</span><b>{label}</b><span className="chan-h">{label === "Book a call" ? "Pick a time" : stripProtocol(href).split("/").pop()}</span><span className="chan-a">{ext}</span>
             </a>
           ))}
         </div>

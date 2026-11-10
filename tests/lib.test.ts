@@ -5,6 +5,8 @@ import { breakdown, levels, yearStats } from "@/lib/contributions";
 import { highlight } from "@/lib/highlight";
 import { formatMonth, period, timeAgo } from "@/lib/format";
 import { allTech, canonicalTech, layerOf, techInRole } from "@/lib/stack";
+import { httpsUrl } from "@/lib/api";
+import { structuredData } from "@/lib/structured-data";
 import type { Project, Profile } from "@/lib/types";
 
 const project = (id: string, over: Partial<Project> = {}): Project => ({
@@ -14,6 +16,7 @@ const project = (id: string, over: Partial<Project> = {}): Project => ({
 const profile: Profile = {
   name: "Abhishek Kumar", title: "Full-stack developer", location: "Ranchi", email: "a@b.co", phone: null, headline: null,
   summary: "Builds SaaS.", profileImage: "/p.jpg", resumeUrl: null, socials: {}, nowFocus: "Fixer", nowBuilding: "BullBear.Ai", availability: null,
+  bookingUrl: null, responseTime: null,
 };
 
 describe("search", () => {
@@ -128,5 +131,26 @@ describe("techInRole", () => {
   it("does not match a tool inside a longer word", () => {
     expect(techInRole(role("Set up GitHub Actions and Next.js pages"), skills)).toEqual(["Next.js"]);
     expect(techInRole(role("Forms built with react-hook-form"), skills)).toEqual([]);
+  });
+});
+
+describe("httpsUrl", () => {
+  it("keeps https links and drops anything else", () => {
+    expect(httpsUrl(" https://cal.com/me/intro ")).toBe("https://cal.com/me/intro");
+    expect(httpsUrl("http://cal.com/me")).toBeNull();
+    expect(httpsUrl("javascript:alert(1)")).toBeNull();
+    expect(httpsUrl("")).toBeNull();
+    expect(httpsUrl(null)).toBeNull();
+  });
+});
+
+describe("structuredData", () => {
+  it("lists services as offers and cannot break out of the script tag", () => {
+    const svc = { id: "1", slug: "web", title: "Web app</script><b>", tagline: "x", description: null, base_price: "500", currency: "USD", timeline: null, features: [], deliverables: [] };
+    const out = structuredData(profile, [svc]);
+    expect(out).not.toContain("</script>");
+    const json = JSON.parse(out);
+    const biz = json["@graph"].find((n: any) => n["@type"] === "ProfessionalService");
+    expect(biz.hasOfferCatalog.itemListElement[0].priceSpecification.minPrice).toBe(500);
   });
 });
